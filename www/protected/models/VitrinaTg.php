@@ -8,7 +8,7 @@ abstract class VitrinaArticleSection extends VitrinaSectionItemBase
     
     public function tableName()
     {
-        return 'tag_action_rubrics';
+        return 'tag_tags';
     }
     
 }

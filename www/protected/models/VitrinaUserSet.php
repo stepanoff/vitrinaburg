@@ -1,13 +1,7 @@
 <?php
-class VitrinaShop extends ExtendedActiveRecord
+class VitrinaUserSet extends ExtendedActiveRecord
 {
-	protected $__visibleCollections = null; // отображаемые на сайте коллекции
-
-    protected $collectionModel = 'VitrinaShopCollection';
-    protected $addressModel = 'VitrinaShopAddress';
-    protected $photoModel = 'VitrinaShopPhoto';
-    protected $brandModel = 'VitrinaShopPhoto';
-    protected $brandTable = 'obj_shop_brand';
+    protected $userModel = 'User';
 
 	public static function model($className = __CLASS__)
     {
@@ -16,7 +10,7 @@ class VitrinaShop extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'object_shop';
+        return 'obj_widgetset';
     }
     
 	public function scopes()
@@ -30,7 +24,6 @@ class VitrinaShop extends ExtendedActiveRecord
     {
         $res = parent::manyToManyRelations();
         return array_merge($res, array(
-            'brands' => array($this->brandModel, $this->brandTable, 'obj_id', 'prop_id'),
         ));
     }
 
@@ -38,9 +31,7 @@ class VitrinaShop extends ExtendedActiveRecord
     {
         $res = parent::relations();
         return array_merge($res, array(
-			'photos' => array(self::HAS_MANY, $this->photoModel, 'shop', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
-        	'collections' => array(self::HAS_MANY, $this->collectionModel, 'shop'),
-        	'addresses' => array(self::HAS_MANY, $this->addressModel, 'shop'),
+            'user' => array(self::BELONGS_TO, $this->userModel, 'user_id'),
         ));
     }
 
@@ -48,14 +39,13 @@ class VitrinaShop extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
-        	array('name', 'required', 'message' => 'Укажите название магазина'),
-        	array('text', 'required', 'message' => 'Укажите наличие скидок, опишите качество товара и другие приемущества вашего магазина перед другими. Все то, что должно привлекать покупателя'),
-            array('logo', 'ImageValidator'),
-        	array('name, logo, site, text', 'safe', 'on' => 'admin'),
+        	array('name', 'required', 'message' => 'Укажите название образа'),
+            array('author', 'checkAuthor'),
+        	array('name, announce, author, html, image, data, user_id', 'safe'),
 		));
     }
 
-    public function ImageValidator($attribute, $params) {
+    public function checkAuthor($attribute, $params) {
     }
 
     public function attributeLabels()
@@ -63,9 +53,12 @@ class VitrinaShop extends ExtendedActiveRecord
         $res = parent::attributeLabels();
         return array_merge($res, array(
         	'name' => 'Название',
-        	'logo' => 'Логотип',
-        	'site' => 'Сайт',
-        	'text' => 'Описание',
+            'announce' => 'Подпись',
+        	'author' => 'Автор',
+        	'html' => 'html-код',
+        	'image' => 'Изображение',
+            'data' => 'Данные сета',
+            'user_id' => 'Пользователь',
         ));
     }
 
@@ -103,39 +96,7 @@ class VitrinaShop extends ExtendedActiveRecord
     
 	protected function afterDelete()
 	{
-		if ($this->collections)
-		{
-			foreach ($this->collections as $item)
-				$item->delete();
-		}
-		
-        if ($this->photos)
-        {
-            foreach ($this->photos as $item)
-                $item->delete();
-        }
-
-        if ($this->addresses)
-        {
-            foreach ($this->addresses as $item)
-                $item->delete();
-        }
-
 		parent::afterDelete();
-	}
-
-	/*
-	 * возвращает отображаемые на сайте очереди
-	 */
-	public function getVisibleCollections ()
-	{
-		if ($this->__visibleCollections === null)
-		{
-			$this->__visibleCollections = array();
-			$modelName = $this->collectionModel;
-			$this->__visibleCollections = $modelName::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
-		}
-		return $this->__visibleCollections;
 	}
 
 }

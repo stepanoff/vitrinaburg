@@ -40,14 +40,14 @@ $mainConfig = array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.*',
-        'application.extensions.eoauth.*',
-        'application.extensions.eoauth.lib.*',
-        'application.extensions.lightopenid.*',
-        'application.extensions.eauth.*',
-        'application.extensions.eauth.services.*',
-        'application.extensions.gporauth.*',
-        'application.extensions.gporauth.custom_services.*',
-        'application.extensions.gporauth.models.*',
+//        'application.extensions.eoauth.*',
+//        'application.extensions.eoauth.lib.*',
+//        'application.extensions.lightopenid.*',
+//        'application.extensions.eauth.*',
+//        'application.extensions.eauth.services.*',
+//        'application.extensions.gporauth.*',
+//        'application.extensions.gporauth.custom_services.*',
+//        'application.extensions.gporauth.models.*',
 		'application.helpers.*',
 		'application.widgets.*',
 ),
@@ -79,6 +79,7 @@ $mainConfig = array(
 				),
 			),
 		),
+        /*
         'loid' => array(
             'class' => 'ext.lightopenid.loid',
         ),
@@ -89,6 +90,15 @@ $mainConfig = array(
 			'compressCss'=>false,
 			'compressJs'=>false,
 		),
+		'user'=>array(
+			'class'=>'application.extensions.gporauth.GporAuthUser',
+			'allowAutoLogin'=>true,
+            'dbDriver'=> $params['dbDriver'] == 'redis' ? 'RedisGporAuthDbDriver' : 'MysqlGporAuthDbDriver',
+//			'loginUrl'=>null,
+			'identityCookie'=>array('domain'=>'.'.$params['domain']),
+//            'visitorTTL' => 183 * 24*60*60,
+		),
+        */
         'urlManager'=>require(dirname(__FILE__).'/urlManager.php'),
         
         'cache' => array(
@@ -108,14 +118,6 @@ $mainConfig = array(
 		'localConfig' => array(
             'class' => 'application.components.LocalConfigComponent'
         ),
-		'user'=>array(
-			'class'=>'application.extensions.gporauth.GporAuthUser',
-			'allowAutoLogin'=>true,
-            'dbDriver'=> $params['dbDriver'] == 'redis' ? 'RedisGporAuthDbDriver' : 'MysqlGporAuthDbDriver',
-//			'loginUrl'=>null,
-			'identityCookie'=>array('domain'=>'.'.$params['domain']),
-//            'visitorTTL' => 183 * 24*60*60,
-		),
     ),
     
     'modules'=>require(dirname(__FILE__).'/modules.php'),

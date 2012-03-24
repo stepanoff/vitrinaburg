@@ -1,13 +1,11 @@
 <?php
-class VitrinaShop extends ExtendedActiveRecord
+class VitrinaArticle extends ExtendedActiveRecord
 {
 	protected $__visibleCollections = null; // отображаемые на сайте коллекции
-    protected $__brandIds = null;
 
-    protected $collectionModel = 'VitrinaShopCollection';
-    protected $addressModel = 'VitrinaShopAddress';
-    protected $photoModel = 'VitrinaShopPhoto';
-    protected $brandTable = 'obj_shop_brand';
+    protected $sectionArticleModel = 'VitrinaArticleSection';
+    protected $sectionModel = 'VitrinaArticleSection';
+    protected $tagModel = 'VitrinaTag';
 
 	public static function model($className = __CLASS__)
     {
@@ -16,7 +14,7 @@ class VitrinaShop extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'object_shop';
+        return 'obj_article';
     }
     
 	public function scopes()
@@ -26,28 +24,10 @@ class VitrinaShop extends ExtendedActiveRecord
 		));
 	}
 
-    public function get_brandIds()
-    {
-        if ($this->__brandIds === null)
-        {
-            $this->__brandIds = array();
-            // todo: взять из базы
-        }
-    	return $this->__brandIds;
-    }
-
-    public function set_brandIds($value)
-    {
-    	$this->__brandIds = $value;
-    }
-
     public function relations()
     {
         $res = parent::relations();
         return array_merge($res, array(
-			'photos' => array(self::HAS_MANY, $this->photoModel, 'shop', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
-        	'collections' => array(self::HAS_MANY, $this->collectionModel, 'shop'),
-        	'addresses' => array(self::HAS_MANY, $this->addressModel, 'shop'),
         ));
     }
 
@@ -55,20 +35,37 @@ class VitrinaShop extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
-        	array('name', 'required', 'message' => 'Укажите название магазина'),
-        	array('text', 'required', 'message' => 'Укажите наличие скидок, опишите качество товара и другие приемущества вашего магазина перед другими. Все то, что должно привлекать покупателя'),
-        	array('name, logo, site, _brandIds, text', 'safe', 'on' => 'admin'),
+        	array('title', 'required', 'message' => 'Укажите заголовок'),
+        	array('text', 'required', 'message' => 'Напишите что-нибудь'),
+            array('img', 'ImageValidator'),
+        	array('title, date, img, announce, source, source_link, text', 'safe', 'on' => 'admin'),
 		));
+    }
+
+    public function ImageValidator($attribute, $params) {
+    }
+
+    public function manyToManyRelations ()
+    {
+        $res = parent::manyToManyRelations();
+        return array_merge($res, array(
+            'articleSections' => array($this->sectionArticleModel, 'obj_article_rubric', 'obj_id', 'prop_id'),
+            'sections' => array($this->sectionModel, 'obj_article_tag1', 'obj_id', 'prop_id'),
+            'tags' => array($this->tagModel, 'obj_article_tag2', 'obj_id', 'prop_id'),
+        ));
     }
 
     public function attributeLabels()
     {
         $res = parent::rules();
         return array_merge($res, array(
-        	'name' => 'Название',
-        	'logo' => 'Логотип',
-        	'site' => 'Сайт',
-        	'text' => 'Описание',
+        	'title' => 'Заголовок',
+            'date' => 'Дата новости',
+            'img' => 'Изображение',
+            'announce' => 'Анонс',
+            'source' => 'Источник',
+            'source_link' => 'Ссылка на источник',
+            'text' => 'Текст',
         ));
     }
 
@@ -106,39 +103,7 @@ class VitrinaShop extends ExtendedActiveRecord
     
 	protected function afterDelete()
 	{
-		if ($this->collections)
-		{
-			foreach ($this->collections as $item)
-				$item->delete();
-		}
-		
-        if ($this->photos)
-        {
-            foreach ($this->photos as $item)
-                $item->delete();
-        }
-
-        if ($this->addresses)
-        {
-            foreach ($this->addresses as $item)
-                $item->delete();
-        }
-
 		parent::afterDelete();
-	}
-
-	/*
-	 * возвращает отображаемые на сайте очереди
-	 */
-	public function getVisibleCollections ()
-	{
-		if ($this->__visibleCollections === null)
-		{
-			$this->__visibleCollections = array();
-			$modelName = $this->collectionModel;
-			$this->__visibleCollections = $modelName::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
-		}
-		return $this->__visibleCollections;
 	}
 
 }

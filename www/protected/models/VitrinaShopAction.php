@@ -1,13 +1,10 @@
 <?php
-class VitrinaArticle extends ExtendedActiveRecord
+class VitrinaShopAction extends ExtendedActiveRecord
 {
 	protected $__visibleCollections = null; // отображаемые на сайте коллекции
-    protected $__brandIds = null;
 
-    protected $sectionArticleModel = 'VitrinaArticleSection';
-    protected $sectionModel = 'VitrinaArticleSection';
-    protected $tagModel = 'VitrinaTag';
-    protected $brandTable = 'obj_shop_brand';
+    protected $shopModel = 'VitrinaShop';
+    protected $sectionModel = 'VitrinaActionSection';
 
 	public static function model($className = __CLASS__)
     {
@@ -16,7 +13,7 @@ class VitrinaArticle extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_article';
+        return 'obj_action';
     }
     
 	public function scopes()
@@ -30,6 +27,7 @@ class VitrinaArticle extends ExtendedActiveRecord
     {
         $res = parent::relations();
         return array_merge($res, array(
+            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop'),
         ));
     }
 
@@ -39,30 +37,32 @@ class VitrinaArticle extends ExtendedActiveRecord
         return array_merge($res, array(
         	array('title', 'required', 'message' => 'Укажите заголовок'),
         	array('text', 'required', 'message' => 'Напишите что-нибудь'),
-        	array('title, date, img, announce, source, source_link, text', 'safe', 'on' => 'admin'),
+            array('img', 'ImageValidator'),
+        	array('title, date, date_end, img, announce, shop, text', 'safe', 'on' => 'admin'),
 		));
+    }
+
+    public function ImageValidator($attribute, $params) {
     }
 
     public function manyToManyRelations ()
     {
         $res = parent::manyToManyRelations();
         return array_merge($res, array(
-            'articleSections' => array($this->sectionArticleModel, 'obj_article_rubric', 'obj_id', 'prop_id'),
-            'sections' => array($this->sectionModel, 'obj_article_tag1', 'obj_id', 'prop_id'),
-            'tags' => array($this->tagModel, 'obj_article_tag2', 'obj_id', 'prop_id'),
+            'sections' => array($this->sectionModel, 'obj_action_action_rubrics', 'obj_id', 'prop_id'),
         ));
     }
 
     public function attributeLabels()
     {
-        $res = parent::rules();
+        $res = parent::attributeLabels();
         return array_merge($res, array(
         	'title' => 'Заголовок',
-            'date' => 'Дата новости',
+            'date' => 'Дата начала мероприятия',
+            'date_end' => 'Дата окончания мероприятия',
             'img' => 'Изображение',
             'announce' => 'Анонс',
-            'source' => 'Источник',
-            'source_link' => 'Ссылка на источник',
+            'shop' => 'Магазин',
             'text' => 'Текст',
         ));
     }

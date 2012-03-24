@@ -1,5 +1,5 @@
 <?php
-abstract class VitrinaSection extends VitrinaSectionItemBase
+abstract class VitrinaArticleSection extends VitrinaSectionItemBase
 {
 	public static function model($className = __CLASS__)
     {
@@ -8,7 +8,7 @@ abstract class VitrinaSection extends VitrinaSectionItemBase
     
     public function tableName()
     {
-        return 'tag_rubrics';
+        return 'tag_articles';
     }
     
 }

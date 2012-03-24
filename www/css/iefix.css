@@ -1,0 +1,4 @@
+.mp-actions { margin-left: -10px; padding: 10px 0;  }
+.mp-actions li { background: url(../images/structure/iefix_sh_bg.png); padding: 0 25px 5px; margin-right: 0; position: relative; width: expression("200px"); }
+.mp-actions li .ie-before { position: absolute; top: -20px; left: 0; width: 180px; height: 20px; background: url(../images/structure/iefix_sh_top.png); display: block; }
+.mp-actions li .ie-after { position: absolute; bottom: -20px; left: 0; width: 180px; height: 20px; background: url(../images/structure/iefix_sh_bot.png); display: block; }

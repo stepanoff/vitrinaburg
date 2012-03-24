@@ -1,60 +1,92 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
-<?php 
-//$cs=Yii::app()->clientScript;
-//$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery_lib.js', CClientScript::POS_HEAD);
-//$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery_ui.js', CClientScript::POS_HEAD);
-//$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD);
-//$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/multiselect.js', CClientScript::POS_HEAD);
-//$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/common.js', CClientScript::POS_HEAD);
-?>
-	<!-- link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/multiselect.css" / -->
-
-	<title><?php echo $this->pageTitle; ?></title>
+  <meta charset="utf-8">
+  <title><?php echo $this->pageTitle; ?></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/base.css">
+  <!--[if lt IE 10]>
+  <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie9fix.css" rel="stylesheet" />
+  <![endif]-->
+  <!--[if lt IE 9]>
+    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/normalize.ie.css" rel="stylesheet" />
+    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/iefix.css" rel="stylesheet" />
+  <![endif]-->
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.7.1.min.js"></script>
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.jcarousel.min.js"></script>
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/funcs.js"></script>
 </head>
-
 <body>
-<div id="body_container" align="center">
-<table id="body" align="center" cellpadding="0" cellspacing="0" width="1018">
-	<tr>
-		<td class="body_left" rowspan="2">&nbsp;</td>
-		<td class="main_content">
-		<div class="main_container">
-			<div id="header">
-				<h1><a href="/"><?php echo CHtml::encode(Yii::app()->name); ?></a></h1>
-			</div>
-			<div id="header_hr"></div>
-			<div id="content">
-				<?php echo $content; ?>
-			</div>
-		</div>
-		</td>
-		<td class="right_content" rowspan="2">
-		<div class="right_container">
-		</div>
-		</td>
-		<td class="body_right" rowspan="2">&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="main_content align_bottom">
-			<div id="footer">
-				<div class="footer_hr"></div>
-				<div class="footer_links">
-				</div>
-				<div class="footer_text">
-					©<?php echo CHtml::encode(Yii::app()->name); ?>, 2012
-				</div>
-			</div><!-- footer -->
-		</td>
-	</tr>
-</table>
-</div>
+  <div id="wrapper">
+    <div id="header">
+      <div class="base-width">
+        <div class="top-banner"><a href="#"><img src="/images/must_be_deleted/top_banner.jpg" width="728" height="90" alt=""></a></div>
+        <div class="auth-box">
+          <div class="social">
+            войти через:
+            <a class="auth-vk" href="#" title="вконтакте">вконтакте</a>
+            <a class="auth-fb" href="#" title="facebook">facebook</a>
+            <a class="auth-tw" href="#" title="twitter">twitter</a>
+            <a class="auth-gg" href="#" title="google+">google+</a>
+          </div>
+          <a href="#">войти на сайт</a><br>
+          <a href="#">зарегистрироваться</a>
+        </div>
+        <a href="#"><img class="logo" src="/images/logo.png" width="275" height="47" alt="VitrinaBurg.ru"></a>
+      </div>
+    </div>
+    <div id="main-menu" class="gradient1">
+      <div class="base-width">
+        <form class="search-form" action="/">
+          <fieldset>
+            <table>
+              <tr>
+                <td class="label"><label for="keywords">Поиск</label></td>
+                <td class="inputs">
+                  <div>
+                    <input type="text" name="keywords" id="keywords">
+                    <input class="gradient2" type="submit" value="Искать">
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+        </form>
+        <ul>
+          <li><a href="#">Магазины</a></li>
+          <li><a href="#">Для женщин</a></li>
+          <li><a href="#">Для мужчин</a></li>
+          <li><a href="#">Для детей</a></li>
+          <li><a href="#">Обувь</a></li>
+          <li><a href="#">Акции</a></li>
+          <li><a href="#">Создать стиль</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- content -->
+    <?php echo $content; ?>
+    <!-- // content -->
+  </div>
+  <div id="footer" class="gradient1">
+    <div class="base-width">
+      <div class="counters">
+        <a href="#"><img src="/images/must_be_deleted/counter.png" width="31" height="31" alt=""></a>
+      </div>
+      <div class="nav">
+        <a href="#" class="people-link">72 пользователя он-лайн</a>
+        <a href="#" class="people-link">250 гостей</a>
+        <ul>
+          <li><a href="#">О проекте</a></li>
+          <li><a href="#">Размещение рекламы</a></li>
+          <li><a href="#">Добавить магазин</a></li>
+        </ul>
+      </div>
+      <div class="about">
+        Витринабург - сайт об одежде в магазинах Екатеринбурга<br>
+        Размещение рекламы и сотрудничество: (343) 345-93-27, <a href="mailto:adv@vitrinaburg.ru">adv@vitrinaburg.ru</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

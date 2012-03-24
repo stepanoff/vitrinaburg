@@ -1,7 +1,7 @@
 <?php
-class VitrinaShopPhoto extends ExtendedActiveRecord
+class VitrinaCollectionShopPhoto extends ExtendedActiveRecord
 {
-    protected $shopModel = 'VitrinaShop';
+    protected $collectionModel = 'VitrinaShopCollection';
 
 	public static function model($className = __CLASS__)
     {
@@ -10,7 +10,7 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'object_shopphoto';
+        return 'obj_shopcollectphoto';
     }
     
 	public function scopes()
@@ -24,7 +24,7 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     {
         $res = parent::relations();
         return array_merge($res, array(
-			'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop'),
+			'collection' => array(self::BELONGS_TO, $this->collectionModel, 'shopcollect'),
         ));
     }
 
@@ -32,8 +32,9 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
+            array('shopcollect', 'required', 'message' => 'Укажите коллекцию'),
         	array('src', 'ImageValidator'),
-        	array('name, src, shop, order', 'safe', 'on' => 'admin'),
+        	array('name, src, shopcollect, announce, cost, cost_old, useInWidget, order', 'safe', 'on' => 'admin'),
 		));
     }
 
@@ -42,11 +43,15 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
 
     public function attributeLabels()
     {
-        $res = parent::rules();
+        $res = parent::attributeLabels();
         return array_merge($res, array(
-        	'name' => 'Подпись',
+        	'name' => 'Название товара',
+            'announce' => 'Краткое описание',
         	'src' => 'Изображение',
-        	'shop' => 'Магазин',
+            'cost' => 'Стоимость, руб.',
+            'cost_old' => 'Старая стоимость, руб. (в случае скидки)',
+            'useInWidget' => 'Использовать в виджете',
+        	'shopcollect' => 'Коллекция',
         	'order' => 'Порядковый номер',
         ));
     }

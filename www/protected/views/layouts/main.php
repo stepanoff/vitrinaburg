@@ -6,6 +6,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/base.css">
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/base_1.css">
   <!--[if lt IE 10]>
   <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie9fix.css" rel="stylesheet" />
   <![endif]-->
@@ -33,7 +34,7 @@
           <a href="#">войти на сайт</a><br>
           <a href="#">зарегистрироваться</a>
         </div>
-        <a href="#"><img class="logo" src="/images/logo.png" width="275" height="47" alt="VitrinaBurg.ru"></a>
+        <a href="/"><img class="logo" src="/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
       </div>
     </div>
     <div id="main-menu" class="gradient1">
@@ -54,13 +55,23 @@
           </fieldset>
         </form>
         <ul>
-          <li><a href="#">Магазины</a></li>
-          <li><a href="#">Для женщин</a></li>
-          <li><a href="#">Для мужчин</a></li>
-          <li><a href="#">Для детей</a></li>
-          <li><a href="#">Обувь</a></li>
-          <li><a href="#">Акции</a></li>
-          <li><a href="#">Создать стиль</a></li>
+        <?
+        $items = array (
+            array ('link' => array('/vitrinaShop/index'), 'caption' => 'Магазины', 'regexp' => false),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>311), 'caption' => 'Для женщин', 'regexp' => false),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>313), 'caption' => 'Для мужчин', 'regexp' => false),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>314), 'caption' => 'Для детей', 'regexp' => false),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>315), 'caption' => 'Обувь', 'regexp' => false),
+            array ('link' => array('/vitrinaAction/index'), 'caption' => 'Акции', 'regexp' => false),
+            array ('link' => array('/vitrinaWidget/create'), 'caption' => 'Создать стиль', 'regexp' => false),
+        );
+        foreach ($items as $item)
+        {
+            echo '<li>';
+            echo CHtml::link($item['caption'], $item['link'], array());
+            echo '</li>';
+        }
+        ?>
         </ul>
       </div>
     </div>

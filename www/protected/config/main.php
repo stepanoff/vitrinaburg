@@ -40,6 +40,9 @@ $mainConfig = array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.*',
+        'application.extensions.VExtension.*',
+        'application.extensions.VExtension.helpers.*',
+        'application.extensions.VExtension.models.*',
 //        'application.extensions.eoauth.*',
 //        'application.extensions.eoauth.lib.*',
 //        'application.extensions.lightopenid.*',
@@ -79,6 +82,11 @@ $mainConfig = array(
 				),
 			),
 		),
+        'fileManager' => array(
+            'class' => 'VFileManager',
+            'filesPath' => $params['filesPath'],
+            'filesUrl' => $params['filesUrl'],
+        ),
         /*
         'loid' => array(
             'class' => 'ext.lightopenid.loid',

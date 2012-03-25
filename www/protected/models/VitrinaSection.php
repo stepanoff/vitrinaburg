@@ -1,5 +1,5 @@
 <?php
-abstract class VitrinaSection extends VitrinaSectionItemBase
+class VitrinaSection extends VitrinaSectionItemBase
 {
 	public static function model($className = __CLASS__)
     {

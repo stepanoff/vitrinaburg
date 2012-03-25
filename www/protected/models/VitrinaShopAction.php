@@ -20,14 +20,30 @@ class VitrinaShopAction extends ExtendedActiveRecord
 	{
         $res = parent::scopes();
         return array_merge($res, array(
+            'orderDefault' => array(
+                'order' => 't.created DESC',
+            ),
 		));
 	}
+
+    public function onSite()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.visible = '.self::VISIBLE_ON.' AND t.status > '.self::STATUS_NEW,
+            'with' => array(
+                'shop'=>array(
+                    'scopes'=>array('onSite')
+                )
+            )
+        ));
+        return $this;
+    }
 
     public function relations()
     {
         $res = parent::relations();
         return array_merge($res, array(
-            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop'),
+            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
         ));
     }
 

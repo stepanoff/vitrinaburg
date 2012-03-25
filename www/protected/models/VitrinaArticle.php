@@ -24,6 +24,22 @@ class VitrinaArticle extends ExtendedActiveRecord
 		));
 	}
 
+    public function onSite($alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.visible = '.self::VISIBLE_ON,
+        ));
+        return $this;
+    }
+
+    public function orderDefault($alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>$alias.'.date DESC',
+        ));
+        return $this;
+    }
+
     public function relations()
     {
         $res = parent::relations();

@@ -1,13 +1,17 @@
 <?php
 class ExtendedActiveRecord extends CActiveRecord
 {
-	const STATUS_HIDDEN = 0;
-	const STATUS_SIMPLE = 10;
-	const STATUS_ON_MAIN = 20;
-	const STATUS_ON_LIST = 30;
-	const STATUS_ON_MAIN_ON_LIST = 40;
+    const VISIBLE_OFF = 0;
+    const VISIBLE_ON = 1;
+
+	const STATUS_NEW = 0;
+	const STATUS_MODER = 10;
+	const STATUS_UPDATED = 20;
+	const STATUS_ACEPTED = 30;
+	const STATUS_DECLARED = 40;
 	
     protected $_statusBefore;
+    protected $_tmpStorage = array(); // массив для хранения временных данных вместо кеша
 
 	public static function model($className = __CLASS__)
     {
@@ -17,30 +21,13 @@ class ExtendedActiveRecord extends CActiveRecord
     public static function statusTypes ()
     {
     	return array (
-			self::STATUS_HIDDEN => 'скрыта',
-			self::STATUS_SIMPLE => 'показывать',
-			self::STATUS_ON_MAIN => 'показывать на главной',
-			self::STATUS_ON_LIST => 'показывать над списком',
-			self::STATUS_ON_MAIN_ON_LIST => 'показывать на главной и над списком',
+			self::STATUS_NEW => 'скрыта',
+			self::STATUS_MODER => 'показывать',
+			self::STATUS_UPDATED => 'показывать на главной',
+			self::STATUS_ACEPTED => 'показывать над списком',
+			self::STATUS_DECLARED => 'показывать на главной и над списком',
 		);
     }
-
-	public function scopes()
-	{
-		return array(
-			'onSite' => array(
-				'condition'=>'t.status > '.self::STATUS_HIDDEN,
-			),
-			'orderDefault' => array (
-				'order' => 'name ASC',
-			),
-		);
-	}
-
-	public function isOnSite ()
-	{
-		return $this->status > self::STATUS_HIDDEN;
-	}
 
 	public function byStatus($status)
 	{
@@ -59,6 +46,14 @@ class ExtendedActiveRecord extends CActiveRecord
 		));
 		return $this;
 	}
+
+    public function byLimit($limit)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'limit' => $limit,
+        ));
+        return $this;
+    }
 
     public function manyToManyRelations ()
     {

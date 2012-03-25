@@ -26,6 +26,19 @@ class VitrinaShop extends ExtendedActiveRecord
 		));
 	}
 
+    public function onSite($alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.visible = '.self::VISIBLE_ON.' AND '.$alias.'.status > '.self::STATUS_NEW,
+        ));
+        return $this;
+    }
+
+    public function shopOnSite()
+    {
+        return $this->onSite('shop');
+    }
+
     public function manyToManyRelations ()
     {
         $res = parent::manyToManyRelations();

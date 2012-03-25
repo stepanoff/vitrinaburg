@@ -9,6 +9,10 @@ $yiiDebug = (!empty($localConfig) && isset($localConfig['yiiDebug'])) ? $localCo
 
 $config=dirname(__FILE__).'/protected/config/main.php';
 
+$ezComponentsBase = dirname(__FILE__).'/../lib/ezcomponents-2009.2.1/Base/src/base.php';
+require_once($ezComponentsBase);
+spl_autoload_register(array('ezcBase', 'autoload'));
+
 define('ROOT_PATH', dirname(__FILE__));
 define('BASE_PATH', dirname(__FILE__). DS . '..');
 define('FILES_PATH', dirname(__FILE__). DS . 'files');

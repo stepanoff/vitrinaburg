@@ -1,5 +1,5 @@
 <?php
-class VitrinaCollectionShopPhoto extends ExtendedActiveRecord
+class VitrinaShopCollectionPhoto extends ExtendedActiveRecord
 {
     protected $collectionModel = 'VitrinaShopCollection';
 
@@ -20,11 +20,45 @@ class VitrinaCollectionShopPhoto extends ExtendedActiveRecord
 		));
 	}
 
+    public function onSite()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.status > '.self::STATUS_NEW,
+            'with' => array(
+                'collection'=>array(
+                    'scopes'=>array('collectionOnSite'),
+                    'alias' => 'collection',
+                )
+            )
+        ));
+        return $this;
+    }
+
+    public function orderCreated()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'t.created DESC',
+        ));
+        return $this;
+    }
+
+    public function byDate($date)
+    {
+        $time = DateUtils::toTimeStamp($date);
+        $fromDate = DateUtils::toMysql($time, false).' 00:00:00';
+        $toDate = DateUtils::toMysql($time, false).' 23:59:59';
+
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.created >= "'.$fromDate.'" AND t.created <= "'.$toDate.'"',
+        ));
+        return $this;
+    }
+
     public function relations()
     {
         $res = parent::relations();
         return array_merge($res, array(
-			'collection' => array(self::BELONGS_TO, $this->collectionModel, 'shopcollect'),
+			'collection' => array(self::BELONGS_TO, $this->collectionModel, 'shopcollect', 'joinType'=>'INNER JOIN'),
         ));
     }
 

@@ -25,12 +25,31 @@ class VitrinaShopCollection extends ExtendedActiveRecord
 		));
 	}
 
+    public function onSite($alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.visible = '.self::VISIBLE_ON.' AND '.$alias.'.status > '.self::STATUS_NEW.' AND '.$alias.'.actual > "'.DateUtils::toMysql(time()).'"',
+            'with' => array(
+                'shop'=>array(
+                    'scopes'=>array('shopOnSite'),
+                    'alias' => 'shop',
+                ),
+            ),
+        ));
+        return $this;
+    }
+
+    public function collectionOnSite()
+    {
+        return $this->onSite('collection');
+    }
+
     public function relations()
     {
         $res = parent::relations();
         return array_merge($res, array(
 			'photos' => array(self::HAS_MANY, $this->photoModel, 'shopcollect', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
-            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop'),
+            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
         ));
     }
 

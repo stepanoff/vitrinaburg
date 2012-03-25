@@ -20,6 +20,22 @@ class VitrinaUserSet extends ExtendedActiveRecord
 		));
 	}
 
+    public function onSite()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.status > '.self::STATUS_NEW,
+        ));
+        return $this;
+    }
+
+    public function orderDefault()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'t.created DESC',
+        ));
+        return $this;
+    }
+
     public function manyToManyRelations ()
     {
         $res = parent::manyToManyRelations();

@@ -33,11 +33,14 @@ class DateUtils
 	}
 
 	// В mySQL формат
-	public static function toMysql($date)
+	public static function toMysql($date, $hours = true)
 	{
 		if (strstr('-', $date) )
 			return $date;
-		return Yii::app()->dateFormatter->format('y-M-d H:m:s', $date);
+        if ($hours)
+    		return Yii::app()->dateFormatter->format('y-M-d H:m:s', $date);
+        else
+    		return Yii::app()->dateFormatter->format('y-M-d', $date);
 	}
 	
 	// Из mySQL формата

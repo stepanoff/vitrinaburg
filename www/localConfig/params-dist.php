@@ -11,6 +11,8 @@ return array(
 
     'cronLogsPath' => '', // обсолютный путь для хранения lock-файлов крона
 	'phpPath' => '', // Path to php
+    'filesPath' => '', // путь к хранилищу файлов
+    'filesUrl' => '', // урл для доступа к файлам через браузер
 
     /* email */
     'adminEmail' => 'stenlex@gmail.com', // куда слать ошибки

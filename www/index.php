@@ -21,7 +21,6 @@ define('LIB_PATH', dirname(__FILE__). DS . '..' . DS . 'lib');
 defined('YII_DEBUG') or define('YII_DEBUG', $yiiDebug);
 defined('YII_DEBUG_LOG') or define('YII_DEBUG_LOG', $yiiDebug);
 
-
 require_once($yii);
 require(dirname(__FILE__) . '/protected/components/ExtendedWebApplication.php');
 Yii::createApplication('ExtendedWebApplication', $config)->run();

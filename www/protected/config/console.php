@@ -10,7 +10,7 @@ if (file_exists($localConfigFile))
 	$localConfig = require($localConfigFile);
 else
 	die('local config doesn`t exists at '.$localConfigFile."\n");
-$params = array_replace_recursive ($localDistConfig, $localConfig);
+$params = array_merge ($localDistConfig, $localConfig);
 $emptyKeys = array();
 foreach ($params as $k=>$v)
 {

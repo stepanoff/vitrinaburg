@@ -89,7 +89,7 @@ class MailHelper
 		{
 			foreach ($message['files'] as $file)
 			{
-				$fileData = array_replace_recursive (array(
+				$fileData = array_merge (array(
 					'name' => 'attachment',
  					'path' => '',
 					'encoding' => 'base64',

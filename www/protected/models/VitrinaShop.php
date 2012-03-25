@@ -146,7 +146,7 @@ class VitrinaShop extends ExtendedActiveRecord
 		{
 			$this->__visibleCollections = array();
 			$modelName = $this->collectionModel;
-			$this->__visibleCollections = $modelName::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
+			$this->__visibleCollections = VitrinaShopCollection::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
 		}
 		return $this->__visibleCollections;
 	}

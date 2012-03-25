@@ -5,24 +5,24 @@
   <title><?php echo $this->pageTitle; ?></title>
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/base.css">
-  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/base_1.css">
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/base.css">
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/base_1.css">
   <!--[if lt IE 10]>
-  <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie9fix.css" rel="stylesheet" />
+  <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/ie9fix.css" rel="stylesheet" />
   <![endif]-->
   <!--[if lt IE 9]>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/normalize.ie.css" rel="stylesheet" />
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/iefix.css" rel="stylesheet" />
+    <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/normalize.ie.css" rel="stylesheet" />
+    <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/iefix.css" rel="stylesheet" />
   <![endif]-->
-  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.7.1.min.js"></script>
-  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.jcarousel.min.js"></script>
-  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/funcs.js"></script>
+  <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
+  <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery.jcarousel.min.js"></script>
+  <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/funcs.js"></script>
 </head>
 <body>
   <div id="wrapper">
     <div id="header">
       <div class="base-width">
-        <div class="top-banner"><a href="#"><img src="/images/must_be_deleted/top_banner.jpg" width="728" height="90" alt=""></a></div>
+        <div class="top-banner"><a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/top_banner.jpg" width="728" height="90" alt=""></a></div>
         <div class="auth-box">
           <div class="social">
             войти через:
@@ -34,7 +34,7 @@
           <a href="#">войти на сайт</a><br>
           <a href="#">зарегистрироваться</a>
         </div>
-        <a href="/"><img class="logo" src="/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
+        <a href="/"><img class="logo" src="<?php echo Yii::app()->request->staticUrl; ?>/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
       </div>
     </div>
     <div id="main-menu" class="gradient1">
@@ -82,7 +82,7 @@
   <div id="footer" class="gradient1">
     <div class="base-width">
       <div class="counters">
-        <a href="#"><img src="/images/must_be_deleted/counter.png" width="31" height="31" alt=""></a>
+        <a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/counter.png" width="31" height="31" alt=""></a>
       </div>
       <div class="nav">
         <a href="#" class="people-link">72 пользователя он-лайн</a>

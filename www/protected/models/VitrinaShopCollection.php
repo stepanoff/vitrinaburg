@@ -138,8 +138,7 @@ class VitrinaShopCollection extends ExtendedActiveRecord
 		if ($this->__visiblePhotos === null)
 		{
 			$this->__visiblePhotos = array();
-			$modelName = $this->photoModel;
-			$this->__visiblePhotos = $modelName::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
+			$this->__visiblePhotos = VitrinaShopCollectionPhoto::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
 		}
 		return $this->__visiblePhotos;
 	}

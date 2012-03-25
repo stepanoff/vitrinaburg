@@ -9,7 +9,7 @@ class SiteController extends Controller
         $answers = array(); // послдение ответы на форуме
 
         $actions = VitrinaShopAction::model()->onSite()->orderDefault()->byLimit(4)->findAll();
-        $todayActions = 5;
+        $todayActions = 0;
 
         $articles = VitrinaArticle::model()->onSite()->orderDefault()->byLimit(3)->findAll();
 

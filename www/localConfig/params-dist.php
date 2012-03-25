@@ -13,6 +13,7 @@ return array(
 	'phpPath' => '', // Path to php
     'filesPath' => '', // путь к хранилищу файлов
     'filesUrl' => '', // урл для доступа к файлам через браузер
+    'staticUrl' => '', // урл до статики
 
     /* email */
     'adminEmail' => 'stenlex@gmail.com', // куда слать ошибки

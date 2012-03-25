@@ -23,7 +23,7 @@ class VitrinaUserSet extends ExtendedActiveRecord
     public function onSite()
     {
         $this->getDbCriteria()->mergeWith(array(
-            'condition'=>'t.status > '.self::STATUS_NEW,
+            'condition'=>'t.visible = '.self::VISIBLE_ON,
         ));
         return $this;
     }

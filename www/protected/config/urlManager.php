@@ -18,8 +18,8 @@ return array(
         '/shop'=>'vitrinaShop/index',
         '/shop/<id:([0-9]+)>'=>'vitrinaShop/show',
 
-        '/myStyle/showSet/<id:([0-9]+)>'=>'vitrinaWidget/show',
-        '/myStyle/' => 'vitrinaWidget/create',
+        '/mystyle/showSet/<id:([0-9]+)>'=>'vitrinaWidget/show',
+        '/mystyle/' => 'vitrinaWidget/create',
 
         '/<action:([a-zA-Z0-9_]+)>'=>'site/<action>',
 	),

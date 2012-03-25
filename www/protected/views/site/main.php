@@ -140,7 +140,7 @@
           </div>
         </div>
         <div class="c-right-col">
-          <div class="right-banner"><a href="#"><img src="/images/must_be_deleted/right_banner.jpg" width="240" height="400" alt=""></a></div>
+          <div class="right-banner"><a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/right_banner.jpg" width="240" height="400" alt=""></a></div>
             <?php
             if ($articles)
             {
@@ -160,7 +160,7 @@
                 echo '</ul>';
             }
             ?>
-          <div class="vk"><img src="/images/must_be_deleted/vk.jpg" width="260" height="306" alt=""></div>
+          <div class="vk"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/vk.jpg" width="260" height="306" alt=""></div>
         </div>
       </div>
     </div>

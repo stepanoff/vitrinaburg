@@ -10,7 +10,7 @@ if (file_exists($localConfigFile))
 	$localConfig = require($localConfigFile);
 else
 	die('local config doesn`t exists at '.$localConfigFile."\n");
-$params = array_replace_recursive ($localDistConfig, $localConfig);
+$params = array_merge ($localDistConfig, $localConfig);
 $emptyKeys = array();
 foreach ($params as $k=>$v)
 {
@@ -26,7 +26,7 @@ if (sizeof($emptyKeys))
 */
 
 $mainConfig = array(
-	'basePath'=>dirname(__FILE__).DS.'..',
+	'basePath'=>$params['basePath'],
 	'runtimePath' => dirname(__FILE__).DS.'..'.DS.'..'.DS.'..'.DS.'data',
 	'name'=>$params['appName'],
 	'language' => 'ru',
@@ -86,6 +86,10 @@ $mainConfig = array(
             'class' => 'VFileManager',
             'filesPath' => $params['filesPath'],
             'filesUrl' => $params['filesUrl'],
+        ),
+        'request' => array(
+            'class' => 'ExtendedRequestComponent',
+            'staticUrl' => $params['staticUrl'],
         ),
         /*
         'loid' => array(

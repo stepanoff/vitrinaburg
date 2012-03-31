@@ -39,6 +39,11 @@ class VitrinaShopCollection extends ExtendedActiveRecord
         return $this;
     }
 
+    public function bySections($sectionIds, $alias = 't')
+    {
+        return $this->byRelationIds('sections', $sectionIds, $alias);
+    }
+
     public function collectionOnSite()
     {
         return $this->onSite('collection');

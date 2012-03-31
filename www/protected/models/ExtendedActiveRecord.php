@@ -49,6 +49,19 @@ class ExtendedActiveRecord extends CActiveRecord
 		return $this;
 	}
 
+    public function byRelationIds($relation, $ids, $alias='t')
+    {
+        $ids = is_array($ids) ? $ids : array($ids);
+        $relations = $this->manyToManyRelations();
+        $relation = isset($relations[$relation]) ? $relations[$relation] : false;
+        if (!$relation)
+            return $this;
+        $this->getDbCriteria()->mergeWith(array(
+            'join' => 'INNER JOIN `'.$relation[1].'` `sections` ON `'.$alias.'`.`id` = `sections`.`'.$relation[2].'` AND `sections`.`'.$relation[3].'` IN ("'.implode('", "', $ids).'")',
+        ));
+        return $this;
+    }
+
     public function byLimit($limit)
     {
         $this->getDbCriteria()->mergeWith(array(
@@ -120,5 +133,89 @@ class ExtendedActiveRecord extends CActiveRecord
 	{
 		parent::afterDelete();
 	}
+
+    public function relationIds ($relationName)
+    {
+        $res = array();
+        $relations = $this->manyToManyRelations();
+        $relation = isset($relations[$relationName]) ? $relations[$relationName] : false;
+        if (!$relation)
+            return $res;
+        $class = $relation[0];
+        $model = new $class;
+        $criteria = new CDbCriteria();
+        $criteria->order = '`id` ASC';
+        $relationRows = Yii::app()->db->commandBuilder->createFindCommand($model->tableName(), $criteria)->queryAll();
+        foreach ($relationRows as $row)
+        {
+            $res[] = $row['id'];
+        }
+        return $res;
+    }
+
+
+    /*
+     * возвращает кол-во моделей для каждой вариации scope и элемента из списка id
+     */
+    public function relationCountersByScope ($scope, $ids, $addScopes = false, $useCache = false)
+    {
+        return $this->relationCounters (false, $addScopes, $scope, $ids, $useCache);
+    }
+
+    /*
+     * возвращает кол-во моделей для каждого элемента отношения MANY_MANY (см. manyToManyRelations)
+     */
+    public function relationCounters ($relationName, $scopes, $relationScope = false, $ids = false, $useCache = false)
+    {
+        $res = array();
+        $relations = $this->manyToManyRelations();
+        $relation = isset($relations[$relationName]) ? $relations[$relationName] : false;
+        if (!$relation && (!$relationScope || !$ids) )
+            return $res;
+
+        $key = get_class($this).'_relationCounters_'.$relationScope.serialize($ids);
+        if ($scopes)
+        {
+            foreach ($scopes as $k => $scope)
+            {
+                $key .= '_'.is_array($scope) ? $k.serialize($scope) : $scope;
+            }
+        }
+        $key = md5($key);
+
+        // todo: прикрутить кеш
+        if (!$useCache)
+        {
+            if (!$ids && $relation)
+                $ids = $this->relationIds($relationName);
+            elseif  (!$ids)
+                $ids = array();
+
+            foreach ($ids as $id)
+            {
+                $modelName = get_class($this);
+                $model = new $modelName;
+
+                if ($scopes)
+                {
+                    foreach ($scopes as $k => $scope)
+                    {
+                        $scopeName = is_array($scope) ? $k : $scope;
+                        $args = is_array($scope) ? $scope : array();
+
+                        $model = call_user_func_array(array($model, $scopeName), $args);
+                    }
+                }
+                if ($relationScope === false)
+                    $model->byRelationIds($relationName, $id);
+                else
+                    $model = call_user_func_array(array($model, $relationScope), array($id));
+                $res[$id] = $model->count();
+            }
+
+        }
+        return $res;
+
+    }
 
 }

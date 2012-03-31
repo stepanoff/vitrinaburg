@@ -1,40 +1,64 @@
 <?php
-class SiteController extends Controller
+class VitrinaCollectionController extends Controller
 {
+    const ON_PAGE = 20;
+
     public $layout='column1';
 
-    public function actionIndex()
+    public function actionSection()
     {
-        $photosInSections = array(); // фото за последние сутки по рубрикам
-        $answers = array(); // послдение ответы на форуме
+        $sectionId = isset($_GET['sectionId']) ? (int) $_GET['sectionId'] : false;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-        $actions = VitrinaShopAction::model()->onSite()->orderDefault()->byLimit(4)->findAll();
-        $todayActions = 0;
+        $model = new VitrinaShopCollectionPhoto;
+        $countModel = new VitrinaShopCollectionPhoto;
 
-        $articles = VitrinaArticle::model()->onSite()->orderDefault()->byLimit(3)->findAll();
+        if ($sectionId)
+        {
+            $model->bySections($sectionId);
+            $countModel->bySections($sectionId);
+            // todo:
+            $selectedSecions = array();
+        }
 
-        $todayPhotos = VitrinaShopCollectionPhoto::model()->onSite()->byDate(time())->findAll();
-        $photos = VitrinaShopCollectionPhoto::model()->onSite()->orderCreated()->byLimit(100)->findAll();
-        shuffle($photos);
+        $itemsTotal = $countModel->count();
+        $pages = new CPagination($itemsTotal);
+        $pages->setCurrentPage( ($page-1) );
+        $pages->pageSize = self::ON_PAGE;
 
-        $sets = VitrinaUserSet::model()->onSite()->orderDefault()->byLimit(10)->findAll();
+        $model->getDbCriteria()->mergeWith(array(
+            'limit' => self::ON_PAGE,
+            'offset' => ($page-1)*self::ON_PAGE,
+        ));
 
-        $sectionsClass = new VitrinaSection;
-        $sections = $sectionsClass->getStructure(2);
+        $items = $model->orderRand()->findAll();
 
-        // берем фото добавленные за полследние сутки
+        $model = new VitrinaShopCollection;
+        $sectionIds = $model->relationIds('sections');
 
-        $this->render('main', array(
-            'actions' => $actions,
-            'todayActions' => $todayActions,
-            'sections' => $sections,
-            'photos' => $photos,
-            'todayPhotos' => $todayPhotos,
-            'photosInSections' => $photosInSections,
-            'actions' => $actions,
-            'articles' => $articles,
-            'sets' => $sets,
-            'answers' => $answers,
+        $model = new VitrinaShopCollectionPhoto;
+        $counters = $model->relationCountersByScope ('bySections', $sectionIds);
+
+        /*
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			$listPart = $this->renderPartial($this->__templates['list'], array('list' => $list, 'pages' => $pages), true);
+
+			$this->setAjaxData('list', $listPart);
+			//$this->setAjaxData ('eval', 'AjaxCallback();');
+		}
+		else
+		{
+			$this->render('banki.views.banki.admin.sub.list', array('list' => $list, 'pages' => $pages, 'template' => $this->__templates['list'], 'bank'=>$bank));
+		}
+        */
+
+
+        $this->render('section', array(
+            'items' => $items,
+            'sectionId' => $sectionId,
+            'counters' => $counters,
+            'pages' => $pages,
         ));
     }
 

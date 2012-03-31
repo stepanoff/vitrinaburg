@@ -34,10 +34,32 @@ class VitrinaShopCollectionPhoto extends ExtendedActiveRecord
         return $this;
     }
 
+    public function bySections($sectionIds)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.status > '.self::STATUS_NEW,
+            'with' => array(
+                'collection'=>array(
+                    'scopes'=>array('collectionOnSite', 'bySections' => array($sectionIds, 'collection') ),
+                    'alias' => 'collection',
+                )
+            )
+        ));
+        return $this;
+    }
+
     public function orderCreated()
     {
         $this->getDbCriteria()->mergeWith(array(
             'order'=>'t.created DESC',
+        ));
+        return $this;
+    }
+
+    public function orderRand($rand = 100)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'RAND('.($rand ? $rand : '').')',
         ));
         return $this;
     }

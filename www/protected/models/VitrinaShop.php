@@ -34,6 +34,22 @@ class VitrinaShop extends ExtendedActiveRecord
         return $this;
     }
 
+    public function onTop ($alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.priority_amount > 0',
+        ));
+        return $this;
+    }
+
+    public function orderRand()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'RAND()',
+        ));
+        return $this;
+    }
+
     public function shopOnSite()
     {
         return $this->onSite('shop');

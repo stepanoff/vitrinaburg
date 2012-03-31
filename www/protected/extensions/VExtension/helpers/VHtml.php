@@ -30,5 +30,111 @@ class VHtml
 
 		return CHtml::image($thumb->getSiteUrl(),'',$htmlOptions);
     }
+
+    public static function thumbSrc ($src, $sizes = false, $scaleMethod = false)
+    {
+        $sizes = is_array($sizes) ? $sizes : array();
+        $w = isset($sizes[0]) && $sizes[0] ? $sizes[0] : false;
+        $h = isset($sizes[1]) && $sizes[1] ? $sizes[1] : false;
+        $scaleMethod = $scaleMethod !== false ? $scaleMethod : self::SCALE_EXACT;
+
+        $image = Yii::app()->fileManager->getImage($src);
+
+        if (!$image)
+            return '';
+
+        $thumb = $image->getThumb($w, $h, $scaleMethod);
+
+        if (!$thumb)
+            return '';
+
+        return $thumb->getSiteUrl();
+    }
+
+	public static function sumInterval ($min_entity, $max_entity = null, $currency = null, $format=array(
+        'from'  => 'от ',
+        'to'    => 'до ',
+        'sum_prefix' => '<span style="white-space: nowrap;">',
+        'sum_postfix' => '</span>',
+        'prefix' => '<span>',
+        'postfix' => '</span>',
+        'middle' => ' &mdash; ',
+        'currency_words' => array ('i' => array('рубль', 'рубля', 'рублей'),  'r' => array('рубля', 'рублей', 'рублей')),
+    )){
+		$types =$format['currency_words']['r'];
+		$types_i = $format['currency_words']['i'];
+
+		$t_cur_min = '';
+		$t_cur_min_i = '';
+		$t_cur_max = '';
+		$t_cur_max_i = '';
+		if ($currency && $min_entity)
+		{
+			$t = $types[$currency];
+			$t_cur_min = ' '.self::plural ($min_entity, $t);
+			$t_i = $types_i[$currency];
+			$t_cur_min_i = ' '.self::plural ($min_entity, $t_i);
+		}
+		if ($currency && $max_entity)
+		{
+			$t = $types[$currency];
+			$t_cur_max = ' '.self::plural ($max_entity, $t);
+			$t_i = $types_i[$currency];
+			$t_cur_max_i = ' '.self::plural ($max_entity, $t_i);
+		}
+
+		if ($min_entity==$max_entity && $min_entity && $max_entity)
+		{
+			$res = $format['sum_prefix'].number_format($min_entity,0,',',' ').$format['sum_postfix'].' '.$t_cur_min_i;
+		}
+		elseif ($max_entity && $min_entity)
+		{
+			$res = $format['from'].$format['sum_prefix'].number_format($min_entity,0,',',' ').$format['sum_postfix'].$format['middle'].$format['to'].$format['sum_prefix'].number_format($max_entity,0,',',' ').$format['sum_postfix'].$t_cur_max;
+		}
+		elseif ($max_entity)
+		{
+			$res = $format['to'].$format['sum_prefix'].number_format($max_entity,0,',',' ').$format['sum_postfix'].$t_cur_max;
+		}
+		elseif ($min_entity)
+		{
+			$res = $format['from'].$format['sum_prefix'].number_format($min_entity,0,',',' ').$format['sum_postfix'].$t_cur_min;
+		} else {
+		    return '';
+        }
+
+        return $format['prefix'] . $res . $format['postfix'];
+	}
+
+	public static function sum ($sum = null, $currency = null, $format=array(
+        'sum_prefix' => '<span style="white-space: nowrap;">',
+        'sum_postfix' => '</span>',
+        'prefix' => '<span>',
+        'postfix' => '</span>',
+        'currency_format' => array('рубль', 'рубля', 'рублей')
+    )){
+		$types = $format['currency_format'];
+
+        $t_cur = '';
+		if ($currency)
+		{
+			$t_cur = ' '.self::plural ($sum, $types);
+		}
+		$res = $format['sum_prefix'].number_format($sum,0,',',' ').$format['sum_postfix'].$t_cur;
+
+        return $format['prefix'] . $res . $format['postfix'];
+	}
+
+    public static function plural($n, $format)
+    {
+        $c1 = $format[0];
+        $c2 = $format[1];
+        if(!isset($format[2]))
+            $c3 = $c2;
+        else
+            $c3 = $format[2];
+
+        return $n % 10 == 1 && $n % 100 !=11 ? $c1 : ($n % 10 >= 2 && $n % 10 <=4 && ($n % 100 < 10 || $n % 100 >= 20) ? $c2 : $c3);
+    }
+
 }
 ?>

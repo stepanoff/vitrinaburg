@@ -118,4 +118,65 @@ abstract class VitrinaSectionItemBase extends ExtendedActiveRecord
         return $this->_structure;
     }
 
+
+	public function getParents ($ids, $min_level=false, $idsIndexSkip=true, $array = false)
+	{
+        $ids = is_array($ids) ? $ids : array($ids);
+		$res = array();
+
+		foreach ($ids as $id)
+		{
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('id = :id');
+            $criteria->params = array(
+                ':id' => $id
+            );
+            $node = Yii::app()->db->commandBuilder->createFindCommand($this->tableName(), $criteria)->queryRow();
+
+			if (!$node)
+				continue;
+
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('`left` < :left AND `right` > :right');
+            $criteria->params = array(
+                ':left' => $node['left'],
+                ':right' => $node['right'],
+            );
+            if ($min_level)
+            {
+                $criteria->addCondition('`level` >= :minLevel');
+                $criteria->params = array(
+                    ':minLevel' => $min_level,
+                );
+            }
+            $criteria->order = '`level` ASC, `position` ASC';
+            $rows = Yii::app()->db->commandBuilder->createFindCommand($this->tableName(), $criteria)->queryAll();
+
+
+			if (sizeof($rows) )
+			{
+				foreach ($rows as $row)
+				{
+					if ($idsIndexSkip)
+					{
+						if ($array)
+							$res[$id][] = (int)$row['id'];
+						else
+							$res[] = (int)$row['id'];
+					}
+					else
+					{
+						if ($array)
+							$res[$id][(int)$row['id']] = $row;
+						else
+							$res[(int)$row['id']] = $row;
+					}
+				}
+			}
+		}
+		if ($idsIndexSkip && !$array)
+			return array_unique($res);
+		return $res;
+	}
+
 }

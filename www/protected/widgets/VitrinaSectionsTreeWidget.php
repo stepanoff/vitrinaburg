@@ -1,6 +1,7 @@
 <?php
 class VitrinaSectionsTreeWidget extends CWidget {
 
+    public $selectedSections = null; // selected nodes
     public $selectedSection = null; // selected node
     public $modelName = 'VitrinaSection'; // class name that contains tree nodes
     public $route = array('/vitrinaCollection/section/');
@@ -22,11 +23,23 @@ class VitrinaSectionsTreeWidget extends CWidget {
     public function run() {
 		parent::run();
 
-        if ($this->selectedSection)
+        $selectedSections = array();
+        if ($this->selectedSection || $this->selectedSections)
         {
-            $selectedSections = $this->model->getParents($this->selectedSection);
-            $selectedSections[] = $this->selectedSection;
+            $ids = $this->selectedSections ? $this->selectedSections : array($this->selectedSection);
+            foreach ($ids as $id)
+            {
+                $tmp = $this->model->getParents($id);
+                if (count($tmp) > count($selectedSections))
+                {
+                    $selectedSections = $tmp;
+                    $selectedSections[] = $id;
+                    $this->selectedSection = $id;
+                }
+            }
         }
+
+        $selectedSections = array_unique($selectedSections);
 
 		$this->render('sectionsTree', array(
 			'structure' => $this->structure,

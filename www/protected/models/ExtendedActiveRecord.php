@@ -49,6 +49,9 @@ class ExtendedActiveRecord extends CActiveRecord
 		return $this;
 	}
 
+    /*
+     * скоп для поиска по связям MANY_MANY
+     */
     public function byRelationIds($relation, $ids, $alias='t')
     {
         $ids = is_array($ids) ? $ids : array($ids);
@@ -134,6 +137,31 @@ class ExtendedActiveRecord extends CActiveRecord
 		parent::afterDelete();
 	}
 
+    /*
+     * список id из реляционной таблицы, связанных с этой моделью
+     */
+    public function getRelatedIds ($relationName)
+    {
+        $res = array();
+        $relations = $this->manyToManyRelations();
+        $relation = isset($relations[$relationName]) ? $relations[$relationName] : false;
+        if (!$relation)
+            return $res;
+        $criteria = new CDbCriteria();
+        $criteria->select = $relation[3].' as `id`';
+        $criteria->addInCondition($relation[2], array($this->id));
+        $relationRows = Yii::app()->db->commandBuilder->createFindCommand($relation[1], $criteria)->queryAll();
+        foreach ($relationRows as $row)
+        {
+            $res[] = $row['id'];
+        }
+        return $res;
+    }
+
+
+    /*
+     * список абсолютно всех id из реляционной таблицы
+     */
     public function relationIds ($relationName)
     {
         $res = array();
@@ -155,7 +183,8 @@ class ExtendedActiveRecord extends CActiveRecord
 
 
     /*
-     * возвращает кол-во моделей для каждой вариации scope и элемента из списка id
+     * возвращает кол-во моделей для каждой вариации scope и элемента из списка ids
+     * каждый элемент из списка поочередно передается в указанный $scope
      */
     public function relationCountersByScope ($scope, $ids, $addScopes = false, $useCache = false)
     {

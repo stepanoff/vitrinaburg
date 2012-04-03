@@ -17,8 +17,6 @@ class VitrinaCollectionController extends Controller
         {
             $model->bySections($sectionId);
             $countModel->bySections($sectionId);
-            // todo:
-            $selectedSecions = array();
         }
 
         $itemsTotal = $countModel->count();
@@ -59,6 +57,53 @@ class VitrinaCollectionController extends Controller
             'sectionId' => $sectionId,
             'counters' => $counters,
             'pages' => $pages,
+        ));
+    }
+
+    public function actionShow()
+    {
+        $id = isset($_GET['collectionId']) ? (int) $_GET['collectionId'] : false;
+        $photoId = isset($_GET['photoId']) ? (int) $_GET['photoId'] : false;
+        if (!$id)
+            throw new CHttpException(404);
+
+        $collection = VitrinaShopCollection::model()->findByPk($id);
+        if (!$collection)
+            throw new CHttpException(404);
+
+        $photo = false;
+        if ($photoId)
+            $photo = VitrinaShopCollectionPhoto::model()->findByPk($photoId);
+        if (!$photo || $photo->shopcollect != $id)
+            $photo = false;
+
+        /*
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			$listPart = $this->renderPartial($this->__templates['list'], array('list' => $list, 'pages' => $pages), true);
+
+			$this->setAjaxData('list', $listPart);
+			//$this->setAjaxData ('eval', 'AjaxCallback();');
+		}
+		else
+		{
+			$this->render('banki.views.banki.admin.sub.list', array('list' => $list, 'pages' => $pages, 'template' => $this->__templates['list'], 'bank'=>$bank));
+		}
+        */
+
+        $selectedSections = $collection->getRelatedIds('sections');
+
+        $model = new VitrinaShopCollection;
+        $sectionIds = $model->relationIds('sections');
+
+        $model = new VitrinaShopCollectionPhoto;
+        $counters = $model->relationCountersByScope ('bySections', $sectionIds);
+
+        $this->render('collection', array(
+            'collection' => $collection,
+            'selectedSections' => $selectedSections,
+            'counters' => $counters,
+            'photo' => $photo,
         ));
     }
 

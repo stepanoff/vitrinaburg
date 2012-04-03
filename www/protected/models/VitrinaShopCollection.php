@@ -55,6 +55,7 @@ class VitrinaShopCollection extends ExtendedActiveRecord
         return array_merge($res, array(
 			'photos' => array(self::HAS_MANY, $this->photoModel, 'shopcollect', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
             'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
+            'shopObj' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
         ));
     }
 

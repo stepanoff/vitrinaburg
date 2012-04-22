@@ -1,5 +1,5 @@
 <?php
-class VitrinaSeoPage extends CActiveRecord
+class VitrinaCb extends CActiveRecord
 {
 	public static function model($className = __CLASS__)
     {
@@ -8,7 +8,7 @@ class VitrinaSeoPage extends CActiveRecord
     
     public function tableName()
     {
-        return 'seo_pages';
+        return 'obj_cb';
     }
     
 	public function scopes()
@@ -25,11 +25,11 @@ class VitrinaSeoPage extends CActiveRecord
         ));
     }
 
-    public function byUrl($url)
+    public function byName($name)
     {
         $this->getDbCriteria()->mergeWith(array(
-            'condition'=>'t.path = :url',
-            'params' => array(':url' => trim($url, '/')),
+            'condition'=>'t.name = :name',
+            'params' => array(':name' => $name),
         ));
         return $this;
     }

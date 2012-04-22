@@ -15,13 +15,17 @@ return array(
         '/action'=>'vitrinaAction/index',
         '/action/<id:([0-9]+)>'=>'vitrinaAction/action',
 
-        '/shop'=>'vitrinaShop/index',
+        '/shop/mall<mallId:([0-9]+)>'=>'vitrinaShop/index',
         '/shop/<id:([0-9]+)>'=>'vitrinaShop/show',
+        '/shop'=>'vitrinaShop/index',
+
+        '/mall'=>'vitrinaMall/index',
+        '/mall/<id:([0-9]+)>'=>'vitrinaMall/show',
 
         '/mystyle/showSet/<id:([0-9]+)>'=>'vitrinaWidget/show',
         '/mystyle/' => 'vitrinaWidget/create',
 
-        '/<action:([a-zA-Z0-9_]+)>'=>'site/<action>',
+        '/<staticPage:([a-zA-Z0-9_]+)>'=>'staticPage/show',
 	),
 );
 ?>

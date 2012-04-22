@@ -15,6 +15,14 @@ class VitrinaCollectionController extends Controller
 
         if ($sectionId)
         {
+            $section = VitrinaSection::model()->findByPk($sectionId);
+            if (!$section)
+            {
+                throw new CHttpException(404, 'Страница не найдена');
+            }
+            $parents = $section->getParents($section->id, 2);
+            if($parents)
+                $this->setData('rootSectionUri', CHtml::normalizeUrl(array('/vitrinaCollection/section', 'sectionId'=>$parents[0])));
             $model->bySections($sectionId);
             $countModel->bySections($sectionId);
         }
@@ -92,6 +100,10 @@ class VitrinaCollectionController extends Controller
         */
 
         $selectedSections = $collection->getRelatedIds('sections');
+        $section = new VitrinaSection;
+        $parents = $section->getParents($selectedSections, 2);
+        if($parents)
+            $this->setData('rootSectionUri', CHtml::normalizeUrl(array('/vitrinaCollection/section', 'sectionId'=>$parents[0])));
 
         $model = new VitrinaShopCollection;
         $sectionIds = $model->relationIds('sections');

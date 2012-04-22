@@ -32,9 +32,18 @@ class VitrinaShopAction extends ExtendedActiveRecord
             'condition'=>'t.visible = '.self::VISIBLE_ON.' AND t.status > '.self::STATUS_NEW,
             'with' => array(
                 'shop'=>array(
-                    'scopes'=>array('onSite')
+                    'scopes'=>array('shopOnSite'),
+                    'alias' => 'shop',
                 )
             )
+        ));
+        return $this;
+    }
+
+    public function byActual()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.visible = '.self::VISIBLE_ON.' AND t.status > '.self::STATUS_NEW.' AND `date_end` >= "'.date('Y-m-d G:i:s').'"',
         ));
         return $this;
     }

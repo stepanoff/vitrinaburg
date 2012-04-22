@@ -1,11 +1,6 @@
     <div id="inner-page">
       <div class="base-width clearfix">
         <div class="main-col">
-          <div class="page-path">
-            <a href="#">Главная страница</a>
-            <a href="#">Для женщин</a>
-            <a href="#">Верхняя одежда</a>
-          </div>
           <h2><?php if ($photo) { echo '<span class="more-link-"><a href="#">Cмотреть все фото</a> ('.count($collection->photos).')</span> ';} ?><?php echo $collection->name; ?></h2>
             <?php
             if ($collection->photos)
@@ -22,6 +17,8 @@
             }
             ?>
             <?php
+            $firstPhoto = $collection->photos ? array_slice($collection->photos, 0, 1) : false;
+            $photo = $photo ? $photo : ($collection->photos ? $firstPhoto[0] : false);
             if ($photo)
             {
                 ?>
@@ -51,19 +48,41 @@
                 <p>Магазин: <?php echo CHtml::link($collection->shopObj->name, array('/vitrinaShop/show/', 'id'=>$collection->shopObj->id), array()); ?>
                   <?php
                   $tmp = array();
-                  //$addresses = $collection->shopObj->addresses;
-                  if (0 && $addresses)
+                  $addresses = $collection->shopObj->addresses;
+                  if ($addresses)
                   {
+                      echo '<br/>';
                       foreach ($collection->shopObj->addresses as $address) {
-                            $tmp[] = $address->address.' (<a href="#">на карте</a>)';
+                            $tmp[] = VitrinaHtmlHelper::formatAddress($address);
                       }
-                      echo implode('<br>', $tmp);
+                      echo implode('<br/>', $tmp);
                   }
                   ?>
-                <div class="po-phone-box">
-                  Уточните наличие по телефону:
-                  <b><a href="#">показать телефон</a></b>
-                </div>
+                  <?php
+                  $addresses = $collection->shopObj->addresses;
+                  if ($addresses)
+                  {
+                      $phones = false;
+                      $tmp = array();
+                      foreach ($addresses as $address) {
+                            if (!$address->phone)
+                                continue;
+                            $tmp[] = $address->phone;
+                      }
+                      $phones = implode(', ', $tmp);
+
+                      if ($phones)
+                      {
+                      ?>
+                      <div class="po-phone-box">
+                        Уточните наличие по телефону:
+                        <div><b><a href="#" class="showPhone">показать телефон</a></b></div>
+                        <div style="display: none;" class="shopPhone"><b><?php echo nl2br($phones); ?></b></div>
+                      </div>
+                      <?
+                      }
+                  }
+                  ?>
                 <div class="po-shop">
                     <?php
                     if ($collection->shopObj->logo)
@@ -142,3 +161,21 @@
         </div>
       </div>
     </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".po-phone-box a").click(function(){
+            container = $(this).closest("div");
+            phoneContainer = $(this).closest(".po-phone-box").find(".shopPhone");
+            container.hide();
+            phoneContainer.show();
+            return false;
+        });
+
+        $("a.showMap").click(function(){
+            return false;
+        });
+
+
+    });
+</script>

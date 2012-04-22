@@ -2,11 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <link rel="shortcut icon" href="/favicon.gif" />
   <title><?php echo $this->pageTitle; ?></title>
-  <meta name="description" content="">
+  <meta name="description" content="<?php echo CHtml::encode($this->pageDescription); ?>">
   <meta name="author" content="">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/base.css">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/base_1.css">
+    <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/old.css">
+    <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/jquery_ui/jquery-ui-1.8.1.custom.css" />
   <!--[if lt IE 10]>
   <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/ie9fix.css" rel="stylesheet" />
   <![endif]-->
@@ -14,25 +17,31 @@
     <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/normalize.ie.css" rel="stylesheet" />
     <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/iefix.css" rel="stylesheet" />
   <![endif]-->
+  <script src="http://api-maps.yandex.ru/1.1/index.xml?key=<?php echo Yii::app()->params['yandexMapsKey']; ?>" type="text/javascript"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-ui-1.8.1.custom.min.js"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery.jcarousel.min.js"></script>
+    <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/maps.js"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/funcs.js"></script>
 </head>
 <body>
   <div id="wrapper">
     <div id="header">
       <div class="base-width">
-        <div class="top-banner"><a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/top_banner.jpg" width="728" height="90" alt=""></a></div>
+        <div class="top-banner">
+            <?php $this->renderPartial('application.views.blocks.banner_top', array()); ?>
+        </div>
         <div class="auth-box">
+            <div class="social"></div>
+            <!-- войти через:
           <div class="social">
-            войти через:
             <a class="auth-vk" href="#" title="вконтакте">вконтакте</a>
             <a class="auth-fb" href="#" title="facebook">facebook</a>
             <a class="auth-tw" href="#" title="twitter">twitter</a>
             <a class="auth-gg" href="#" title="google+">google+</a>
           </div>
           <a href="#">войти на сайт</a><br>
-          <a href="#">зарегистрироваться</a>
+          <a href="#">зарегистрироваться</a> -->
         </div>
         <a href="/"><img class="logo" src="<?php echo Yii::app()->request->staticUrl; ?>/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
       </div>
@@ -55,22 +64,8 @@
           </fieldset>
         </form>
         <ul>
-        <?
-        $items = array (
-            array ('link' => array('/vitrinaShop/index'), 'caption' => 'Магазины', 'regexp' => false),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>311), 'caption' => 'Для женщин', 'regexp' => false),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>313), 'caption' => 'Для мужчин', 'regexp' => false),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>314), 'caption' => 'Для детей', 'regexp' => false),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>315), 'caption' => 'Обувь', 'regexp' => false),
-            array ('link' => array('/vitrinaAction/index'), 'caption' => 'Акции', 'regexp' => false),
-            array ('link' => array('/vitrinaWidget/create'), 'caption' => 'Создать стиль', 'regexp' => false),
-        );
-        foreach ($items as $item)
-        {
-            echo '<li>';
-            echo CHtml::link($item['caption'], $item['link'], array());
-            echo '</li>';
-        }
+        <?php
+        $this->widget('VitrinaMenuWidget', array('uri' => $this->getData('rootSectionUri')));
         ?>
         </ul>
       </div>
@@ -82,16 +77,24 @@
   <div id="footer" class="gradient1">
     <div class="base-width">
       <div class="counters">
-        <a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/counter.png" width="31" height="31" alt=""></a>
+           <?php $this->renderPartial('application.views.blocks.counters', array()); ?>
       </div>
       <div class="nav">
-        <a href="#" class="people-link">72 пользователя он-лайн</a>
-        <a href="#" class="people-link">250 гостей</a>
-        <ul>
-          <li><a href="#">О проекте</a></li>
-          <li><a href="#">Размещение рекламы</a></li>
-          <li><a href="#">Добавить магазин</a></li>
-        </ul>
+        <!--a href="#" class="people-link">72 пользователя он-лайн</a>
+        <a href="#" class="people-link">250 гостей</a-->
+        <?
+        $links = array (
+            array ('label' => 'О проекте', 'route' => array ('/staticPage/show', 'staticPage' => 'about')),
+            array ('label' => 'Размещение рекламы', 'route' => array ('/staticPage/show', 'staticPage' => 'adv')),
+            array ('label' => 'Добавить магазин', 'route' => array ('/staticPage/show', 'staticPage' => 'register')),
+        );
+        echo '<ul>';
+        foreach ($links as $link)
+        {
+            echo '<li>'.CHtml::link($link['label'], $link['route']).'</li>';
+        }
+        echo '</ul>';
+        ?>
       </div>
       <div class="about">
         Витринабург - сайт об одежде в магазинах Екатеринбурга<br>
@@ -100,4 +103,9 @@
     </div>
   </div>
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".showMap").easy_map();
+});
+</script>
 </html>

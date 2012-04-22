@@ -1,8 +1,6 @@
 <?php
-class VitrinaShopPhoto extends ExtendedActiveRecord
+class VitrinaSeoPage extends CActiveRecord
 {
-    protected $shopModel = 'VitrinaShop';
-
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -10,7 +8,7 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_shopphoto';
+        return 'seo_pages';
     }
     
 	public function scopes()
@@ -24,16 +22,23 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     {
         $res = parent::relations();
         return array_merge($res, array(
-			'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop'),
         ));
+    }
+
+    public function byUrl($url)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.path = :url',
+            'params' => array(':url' => trim($url, '/')),
+        ));
+        return $this;
     }
 
     public function rules()
     {
         $res = parent::rules();
         return array_merge($res, array(
-        	array('src', 'ImageValidator'),
-        	array('name, src, shop, order', 'safe', 'on' => 'admin'),
+        	array('path, title, description, text', 'safe', 'on' => 'admin'),
 		));
     }
 
@@ -44,10 +49,10 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
     {
         $res = parent::attributeLabels();
         return array_merge($res, array(
-        	'name' => 'Подпись',
-        	'src' => 'Изображение',
-        	'shop' => 'Магазин',
-        	'order' => 'Порядковый номер',
+        	'path' => 'Урл',
+        	'title' => 'Мкта-тег title',
+        	'description' => 'Мета-тег description',
+        	'text' => 'Сео-текст',
         ));
     }
 
@@ -68,18 +73,8 @@ class VitrinaShopPhoto extends ExtendedActiveRecord
 
     protected function afterSave()
     {
-		$this->convertImages();
     	return parent::afterSave();
     }
-    
-	/**
-	 * Конвертирует необходимые изображения
-	 * @return void
-	 */
-	private function convertImages()
-	{
-
-	}
     
 	protected function afterDelete()
 	{

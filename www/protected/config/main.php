@@ -91,6 +91,10 @@ $mainConfig = array(
             'class' => 'ExtendedRequestComponent',
             'staticUrl' => $params['staticUrl'],
         ),
+        'assetManager' => array(
+            'class' => 'CAssetManager',
+            'basePath' => dirname(__FILE__).DS.'..'.DS.'..'.DS.'assets',
+        ),
         /*
         'loid' => array(
             'class' => 'ext.lightopenid.loid',

@@ -1,10 +1,8 @@
 <?php
-class VitrinaShopAction extends ExtendedActiveRecord
+class VitrinaShopAddress extends ExtendedActiveRecord
 {
-	protected $__visibleCollections = null; // отображаемые на сайте коллекции
-
     protected $shopModel = 'VitrinaShop';
-    protected $sectionModel = 'VitrinaActionSection';
+    protected $mallModel = 'VitrinaMall';
 
 	public static function model($className = __CLASS__)
     {
@@ -13,7 +11,7 @@ class VitrinaShopAction extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_action';
+        return 'obj_shopaddress';
     }
     
 	public function scopes()
@@ -21,29 +19,40 @@ class VitrinaShopAction extends ExtendedActiveRecord
         $res = parent::scopes();
         return array_merge($res, array(
             'orderDefault' => array(
-                'order' => 't.created DESC',
+                'order' => 't.address ASC',
             ),
 		));
 	}
 
-    public function onSite()
+    public function onSite($alias = 't')
     {
         $this->getDbCriteria()->mergeWith(array(
-            'condition'=>'t.visible = '.self::VISIBLE_ON.' AND t.status > '.self::STATUS_NEW,
-            'with' => array(
-                'shop'=>array(
-                    'scopes'=>array('onSite')
-                )
-            )
+            'condition'=>$alias.'.visible = '.self::VISIBLE_ON,
         ));
         return $this;
     }
+
+    public function addressOnSite()
+    {
+        return $this->onSite('address');
+    }
+
+    public function byMall($mallId, $alias='t')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.`mall` = :mallId',
+            'params'=>array(':mallId' => $mallId),
+        ));
+        return $this;
+    }
+
 
     public function relations()
     {
         $res = parent::relations();
         return array_merge($res, array(
-            'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
+            'shopObj' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
+            'mallObj' => array(self::BELONGS_TO, $this->mallModel, 'mall', 'joinType'=>'INNER JOIN'),
         ));
     }
 
@@ -51,35 +60,20 @@ class VitrinaShopAction extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
-        	array('title', 'required', 'message' => 'Укажите заголовок'),
-        	array('text', 'required', 'message' => 'Напишите что-нибудь'),
-            array('img', 'ImageValidator'),
-        	array('title, date, date_end, img, announce, shop, text', 'safe', 'on' => 'admin'),
+        	array('address', 'required', 'message' => 'Укажите адрес'),
+        	array('address, mall, shop, worktime, phone', 'safe', 'on' => 'admin'),
 		));
-    }
-
-    public function ImageValidator($attribute, $params) {
-    }
-
-    public function manyToManyRelations ()
-    {
-        $res = parent::manyToManyRelations();
-        return array_merge($res, array(
-            'sections' => array($this->sectionModel, 'obj_action_action_rubrics', 'obj_id', 'prop_id'),
-        ));
     }
 
     public function attributeLabels()
     {
         $res = parent::attributeLabels();
         return array_merge($res, array(
-        	'title' => 'Заголовок',
-            'date' => 'Дата начала мероприятия',
-            'date_end' => 'Дата окончания мероприятия',
-            'img' => 'Изображение',
-            'announce' => 'Анонс',
+        	'address' => 'Адрес',
+            'mall' => 'Торговый центр',
             'shop' => 'Магазин',
-            'text' => 'Текст',
+            'worktime' => 'Время работы',
+            'phone' => 'Телефон',
         ));
     }
 
@@ -102,18 +96,8 @@ class VitrinaShopAction extends ExtendedActiveRecord
 
     protected function afterSave()
     {
-		$this->convertImages();
     	return parent::afterSave();
     }
-    
-	/**
-	 * Конвертирует необходимые изображения
-	 * @return void
-	 */
-	private function convertImages()
-	{
-
-	}
     
 	protected function afterDelete()
 	{

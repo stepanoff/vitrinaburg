@@ -11,7 +11,10 @@ if ($structure)
         $opened = in_array($mainNode['id'], $selected) ? true : false;
         $class = $opened ? 'cm-l1 opened-' : 'cm-l1';
         echo '<li class="'.$class.'">';
-        echo CHtml::link($mainNode['name'], ($route+array( $routeIndex => $mainNode['id'] )), array('class'=>'cm-l1'));
+        if ($mainNode['id'])
+            echo CHtml::link($mainNode['name'], ($route+array( $routeIndex => $mainNode['id'] )), array('class'=>'cm-l1'));
+        else
+            echo CHtml::link($mainNode['name'], ($route), array('class'=>'cm-l1'));
         if ($total)
             echo  ' <small class="cm-l1">('.$total.')</small>';
         // дети

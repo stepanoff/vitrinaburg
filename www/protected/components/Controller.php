@@ -5,5 +5,29 @@
  */
 class Controller extends CController
 {
-	
+    protected $data = array();
+    public $pageDescription = '';
+
+    public function getData($key)
+    {
+        if (isset($this->data[$key]))
+            return $this->data[$key];
+        return false;
+    }
+
+	public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+
+    public function beforeRender($view)
+    {
+        $seoPage = VitrinaSeoPage::model()->byUrl(Yii::app()->request->requestUri)->find();
+        if ($seoPage)
+        {
+            $this->pageTitle = $seoPage->title;
+            $this->pageDescription = $seoPage->description;
+        }
+        return parent::beforeRender($view);
+    }
 }

@@ -2,10 +2,12 @@
 class VitrinaShop extends ExtendedActiveRecord
 {
 	protected $__visibleCollections = null; // отображаемые на сайте коллекции
+    protected $__actualActions = null; // отображаемые на сайте акции
 
     protected $collectionModel = 'VitrinaShopCollection';
     protected $addressModel = 'VitrinaShopAddress';
     protected $photoModel = 'VitrinaShopPhoto';
+    protected $actionModel = 'VitrinaShopAction';
     protected $brandModel = 'VitrinaShopPhoto';
     protected $brandTable = 'obj_shop_brand';
 
@@ -50,6 +52,27 @@ class VitrinaShop extends ExtendedActiveRecord
         return $this;
     }
 
+    public function orderName()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'t.`name` ASC',
+        ));
+        return $this;
+    }
+
+    public function byMall($mallId)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'with' => array(
+                'addresses'=>array(
+                'scopes'=>array('addressOnSite', 'byMall' => array($mallId, 'address') ),
+                'alias' => 'address',
+                )
+            )
+        ));
+        return $this;
+    }
+
     public function shopOnSite()
     {
         return $this->onSite('shop');
@@ -69,7 +92,7 @@ class VitrinaShop extends ExtendedActiveRecord
         return array_merge($res, array(
 			'photos' => array(self::HAS_MANY, $this->photoModel, 'shop', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
         	'collections' => array(self::HAS_MANY, $this->collectionModel, 'shop'),
-        	'addresses' => array(self::HAS_MANY, $this->addressModel, 'shop'),
+        	'addresses' => array(self::HAS_MANY, $this->addressModel, 'shop', 'joinType'=>'INNER JOIN'),
         ));
     }
 
@@ -162,9 +185,22 @@ class VitrinaShop extends ExtendedActiveRecord
 		{
 			$this->__visibleCollections = array();
 			$modelName = $this->collectionModel;
-			$this->__visibleCollections = VitrinaShopCollection::model()->onSite()->byObjectId($this->id)->orderDefault()->findAll();
+			$this->__visibleCollections = VitrinaShopCollection::model()->onSite()->byObjectId('shop', $this->id)->orderDefault()->findAll();
 		}
 		return $this->__visibleCollections;
+	}
+
+	/*
+	 * возвращает отображаемые на сайте акции
+	 */
+	public function getActualActions ()
+	{
+		if ($this->__actualActions === null)
+		{
+			$this->__actualActions = array();
+			$this->__actualActions = VitrinaShopAction::model()->byActual()->byObjectId('shop', $this->id)->orderDefault()->findAll();
+		}
+		return $this->__actualActions;
 	}
 
 }

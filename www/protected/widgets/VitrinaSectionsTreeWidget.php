@@ -8,38 +8,45 @@ class VitrinaSectionsTreeWidget extends CWidget {
     public $routeIndex = 'sectionId';
     public $showNotEmpty = false; // show only not empty sections (according to counters)
     public $counters = array(); // counters in
+    public $structure = null; // node structure with selected nodes
 
-    protected $structure = null;
     protected $model = null;
 
 	public function init() {
 		parent::init();
 
-        $class = $this->modelName;
-        $this->model = new $class;
-        $this->structure = $this->model->getStructure(2);
 	}
 	
     public function run() {
 		parent::run();
 
         $selectedSections = array();
-        if ($this->selectedSection || $this->selectedSections)
+        
+        if ($this->structure === null)
         {
-            $ids = $this->selectedSections ? $this->selectedSections : array($this->selectedSection);
-            foreach ($ids as $id)
+            $class = $this->modelName;
+            $this->model = new $class;
+            $this->structure = $this->model->getStructure(2);
+
+            $selectedSections = array();
+            if ($this->selectedSection || $this->selectedSections)
             {
-                $tmp = $this->model->getParents($id);
-                if (count($tmp) > count($selectedSections))
+                $ids = $this->selectedSections ? $this->selectedSections : array($this->selectedSection);
+                foreach ($ids as $id)
                 {
-                    $selectedSections = $tmp;
-                    $selectedSections[] = $id;
-                    $this->selectedSection = $id;
+                    $tmp = $this->model->getParents($id);
+                    if (count($tmp) > count($selectedSections))
+                    {
+                        $selectedSections = $tmp;
+                        $selectedSections[] = $id;
+                        $this->selectedSection = $id;
+                    }
                 }
             }
+            $selectedSections = array_unique($selectedSections);
         }
-
-        $selectedSections = array_unique($selectedSections);
+        else
+            $selectedSections = is_array($this->selectedSections) ? $this->selectedSections : array();
 
 		$this->render('sectionsTree', array(
 			'structure' => $this->structure,

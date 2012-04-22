@@ -1,5 +1,5 @@
 <?php
-abstract class VitrinaSectionItemBase extends ExtendedActiveRecord
+abstract class VitrinaSectionItemBase extends CActiveRecord
 {
     protected $_structure;
 
@@ -145,9 +145,9 @@ abstract class VitrinaSectionItemBase extends ExtendedActiveRecord
             if ($min_level)
             {
                 $criteria->addCondition('`level` >= :minLevel');
-                $criteria->params = array(
+                $criteria->params = array_merge($criteria->params, array(
                     ':minLevel' => $min_level,
-                );
+                ));
             }
             $criteria->order = '`level` ASC, `position` ASC';
             $rows = Yii::app()->db->commandBuilder->createFindCommand($this->tableName(), $criteria)->queryAll();

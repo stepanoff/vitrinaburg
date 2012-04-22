@@ -1,10 +1,20 @@
 <?php
-class VitrinaCrumbsWidget extends CWidget {
+class VitrinaCbWidget extends CWidget {
+
+    public $name;
 
     public function run() {
 		parent::run();
 
-		$this->render('crumbs', array(
+        if (!$this->name)
+            return;
+
+        $cb = VitrinaCb::model()->byName($this->name)->find();
+        if (!$cb)
+            return;
+
+		$this->render('cb', array(
+            'item' => $cb,
 		));
     }
 

@@ -100,7 +100,7 @@ class DateUtils
 	}
 	
 	// Прикольно форатирует mySQL дату
-    public static function _date($datetime = false, $todayFormat = true, $time = true)
+    public static function _date($datetime = false, $todayFormat = true, $time = false)
     {
     	if( $datetime == false )
     		$datetime = date('Y-m-d H:i:s');

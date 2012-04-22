@@ -40,6 +40,15 @@ class ExtendedActiveRecord extends CActiveRecord
 		return $this;
 	}
 	
+    public function byObjectId($attr, $attrId)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'t.'.$attr.' = :'.$attr.'Id',
+            'params'=>array(':'.$attr.'Id' => $attrId),
+        ));
+        return $this;
+    }
+
 	public function byNotInStatus($status)
 	{
 		$status = is_array($status) ? $status : array($status);

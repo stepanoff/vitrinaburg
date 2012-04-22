@@ -55,8 +55,12 @@
                 'selectedSection' => $sectionId,
             ));
         ?>
-          <div class="left-banner"><img src="images/must_be_deleted/right_banner.jpg" width="240" height="400" alt=""></div>
-          <div class="vk"><img src="images/must_be_deleted/vk2.jpg" width="240" height="229" alt=""></div>
+          <div class="left-banner">
+              <?php $this->renderPartial('application.views.blocks.banner_left', array()); ?>
+          </div>
+          <div class="vk">
+              <?php $this->renderPartial('application.views.blocks.social', array()); ?>
+          </div>
         </div>
       </div>
     </div>

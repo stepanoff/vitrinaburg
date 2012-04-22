@@ -39,6 +39,15 @@ class VitrinaShopCollection extends ExtendedActiveRecord
         return $this;
     }
 
+    public function orderDefault()
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'order'=>'t.`updated` DESC',
+        ));
+        return $this;
+    }
+
+
     public function bySections($sectionIds, $alias = 't')
     {
         return $this->byRelationIds('sections', $sectionIds, $alias);
@@ -54,6 +63,7 @@ class VitrinaShopCollection extends ExtendedActiveRecord
         $res = parent::relations();
         return array_merge($res, array(
 			'photos' => array(self::HAS_MANY, $this->photoModel, 'shopcollect', 'order' => 'p.order', 'alias' => 'p', 'index'=>'id'),
+            'photoTotal' => array(self::STAT, $this->photoModel, 'shopcollect'),
             'shop' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
             'shopObj' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
         ));

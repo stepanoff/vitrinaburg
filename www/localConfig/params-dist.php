@@ -15,6 +15,8 @@ return array(
     'filesUrl' => '', // урл для доступа к файлам через браузер
     'staticUrl' => '', // урл до статики
 
+    'yandexMapsKey' => 'ANoq1UwBAAAAV_mwUwIAndBPjX2mFzYxnnfrwPBRnnA_kPYAAAAAAAAAAABSxYjGqzFJWpnfiX2RcIqn_kcg1w==',
+
     /* email */
     'adminEmail' => 'stenlex@gmail.com', // куда слать ошибки
     'senderEmail' => 'mailer@auth.localhost', // от кого слать ошибки

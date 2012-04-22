@@ -1,9 +1,6 @@
 <?php
-class VitrinaShopAddress extends ExtendedActiveRecord
+class VitrinaMall extends ExtendedActiveRecord
 {
-    protected $shopModel = 'VitrinaShop';
-    protected $mallModel = 'VitrinaMall';
-
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -11,7 +8,7 @@ class VitrinaShopAddress extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_shopaddress';
+        return 'obj_mall';
     }
     
 	public function scopes()
@@ -19,7 +16,7 @@ class VitrinaShopAddress extends ExtendedActiveRecord
         $res = parent::scopes();
         return array_merge($res, array(
             'orderDefault' => array(
-                'order' => 't.address ASC',
+                'order' => 't.name ASC',
             ),
 		));
 	}
@@ -36,8 +33,6 @@ class VitrinaShopAddress extends ExtendedActiveRecord
     {
         $res = parent::relations();
         return array_merge($res, array(
-            'shopObj' => array(self::BELONGS_TO, $this->shopModel, 'shop', 'joinType'=>'INNER JOIN'),
-            'mallObj' => array(self::BELONGS_TO, $this->mallModel, 'mall', 'joinType'=>'INNER JOIN'),
         ));
     }
 
@@ -45,8 +40,9 @@ class VitrinaShopAddress extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
+            array('name', 'required', 'message' => 'Укажите название'),
         	array('address', 'required', 'message' => 'Укажите адрес'),
-        	array('address, mall, shop, worktime, phone', 'safe', 'on' => 'admin'),
+        	array('name, logo, address, text, worktime', 'safe', 'on' => 'admin'),
 		));
     }
 
@@ -55,10 +51,10 @@ class VitrinaShopAddress extends ExtendedActiveRecord
         $res = parent::attributeLabels();
         return array_merge($res, array(
         	'address' => 'Адрес',
-            'mall' => 'Торговый центр',
-            'shop' => 'Магазин',
+            'name' => 'Название',
+            'logo' => 'Изображение',
             'worktime' => 'Время работы',
-            'phone' => 'Телефон',
+            'text' => 'Описание',
         ));
     }
 

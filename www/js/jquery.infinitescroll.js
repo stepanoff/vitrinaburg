@@ -25,6 +25,8 @@
 			finished: undefined,
 			finishedMsg: "<em>Congratulations, you've reached the end of the internet.</em>",
 			img: "http://www.infinite-scroll.com/loading.gif",
+            img_width: "20",
+            img_height: "20",
 			msg: null,
 			msgText: "<em>Loading the next set of posts...</em>",
 			selector: null,
@@ -125,7 +127,7 @@
             opts.path = this._determinepath(path);
 
             // Define loading.msg
-            opts.loading.msg = $('<div id="infscr-loading"><img alt="Loading..." src="' + opts.loading.img + '" /><div>' + opts.loading.msgText + '</div></div>');
+            opts.loading.msg = $('<div id="infscr-loading"><img  style="width:' + opts.loading.img_width + 'px; height:' + opts.loading.img_height + 'px;" alt="Loading..." src="' + opts.loading.img + '" /><div>' + opts.loading.msgText + '</div></div>');
 
             // Preload loading.img
             (new Image()).src = opts.loading.img;

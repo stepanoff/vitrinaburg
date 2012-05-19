@@ -8,7 +8,7 @@ $(document).ready(function() {
   });
   $(".mp-collections").jcarousel();
   $(".mp-collections").parents(".jcarousel-container").addClass("mp-collections-jcarousel");
-  $(".gallery").jcarousel();
+//  $(".gallery").jcarousel();
   $(".gallery").parents(".jcarousel-container").addClass("gallery-jcarousel");
 
   if($.browser.msie && $.browser.version < 9) {

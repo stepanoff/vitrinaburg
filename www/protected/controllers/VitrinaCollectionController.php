@@ -21,6 +21,8 @@ class VitrinaCollectionController extends Controller
                 throw new CHttpException(404, 'Страница не найдена');
             }
             $parents = $section->getParents($section->id, 2);
+            if (!$parents)
+                $parents = array($section->id);
             if($parents)
                 $this->setData('rootSectionUri', CHtml::normalizeUrl(array('/vitrinaCollection/section', 'sectionId'=>$parents[0])));
             $model->bySections($sectionId);
@@ -58,6 +60,10 @@ class VitrinaCollectionController extends Controller
 			$this->render('banki.views.banki.admin.sub.list', array('list' => $list, 'pages' => $pages, 'template' => $this->__templates['list'], 'bank'=>$bank));
 		}
         */
+        if ($sectionId)
+            $this->setPageTitle($section->name.' &mdash; одежда в Екатеринбурге, ассортимент магазинов с ценами и фото &mdash; '.Yii::app()->params['siteName']);
+        else
+            $this->setPageTitle('Одежда в Екатеринбурге, модные бренды и ассортимент магазинов с ценами и фото &mdash; Витринабург, Магазины в Екатеринбурге &mdash; '.Yii::app()->params['siteName']);
 
 
         $this->render('section', array(
@@ -85,6 +91,20 @@ class VitrinaCollectionController extends Controller
         if (!$photo || $photo->shopcollect != $id)
             $photo = false;
 
+        $index = 0;
+        $i = 0;
+        if ($photo && $collection->photos)
+        {
+            foreach ($collection->photos as $_photo)
+            {
+                if ($photo->id == $_photo->id)
+                {
+                    $index = $i;
+                    break;
+                }
+                $i++;
+            }
+        }
         /*
 		if (Yii::app()->request->isAjaxRequest)
 		{
@@ -111,11 +131,18 @@ class VitrinaCollectionController extends Controller
         $model = new VitrinaShopCollectionPhoto;
         $counters = $model->relationCountersByScope ('bySections', $sectionIds);
 
+        if ($photo && !empty($photo->name))
+            $pageTitle = $photo->name.' из коллекции &laquo;'.$collection->name.'&raquo; магазина &laquo;'.$collection->shopObj->name.'&raquo; в Екатеринбурге  &mdash; '.Yii::app()->params['siteName'];
+        else
+            $pageTitle = 'Фото коллекции &laquo;'.$collection->name.'&raquo; магазина &laquo;'.$collection->shopObj->name.'&raquo; &mdash; ассортимент модных магазинов Екатеринбурга с фото и ценами. &mdash; '.Yii::app()->params['siteName'];
+        $this->setPageTitle($pageTitle);
+
         $this->render('collection', array(
             'collection' => $collection,
             'selectedSections' => $selectedSections,
             'counters' => $counters,
             'photo' => $photo,
+            'index' => $index,
         ));
     }
 

@@ -1,5 +1,3 @@
-    <div id="inner-page">
-      <div class="base-width clearfix">
         <div class="main-col">
 
     <div class="shop">
@@ -87,7 +85,7 @@
                     foreach ($row->photos as $_photo)
                     {
                         echo '<li>';
-                        $imageTag = VHtml::thumb($_photo->src, array(72, 100), VHtml::SCALE_EXACT, array('title'=>$_photo->name, 'alt'=>$_photo->name));
+                        $imageTag = VHtml::thumb($_photo->src, array(72, 100), VHtml::SCALE_SMALLER_SIDE, array('title'=>$_photo->name, 'alt'=>$_photo->name));
                         echo CHtml::link($imageTag, array('/vitrinaCollection/show/', 'collectionId'=>$row->id,'photoId'=>$_photo->id), array());
                         echo '</li>';
                         $i++;
@@ -100,7 +98,7 @@
         echo '</div>';
     }
     ?>
-
+            <div id="pageDescriptionFooter"></div>
         </div>
           <div class="left-col">
               <?php
@@ -116,8 +114,6 @@
                 <?php $this->renderPartial('application.views.blocks.social', array()); ?>
             </div>
           </div>
-      </div>
-    </div>
 
 <script type="text/javascript">
     $(document).ready(function(){

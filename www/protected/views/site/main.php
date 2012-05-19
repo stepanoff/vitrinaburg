@@ -1,5 +1,3 @@
-    <div id="main-page">
-      <div class="base-width clearfix">
         <div class="c-main-col">
           <div class="cmc-pad">
             <?php
@@ -112,35 +110,32 @@
                 <small>Все образы формируются пользователями из каталога товаров</small>
               </div>
               <div class="mpbs-col-2">
-                <h2 class="mp-red">Последние ответы на форуме</h2>
-                <ul class="mp-last-forum">
-                  <li>
-                    <a href="#">Мода на головные уборы в сезоне</a>
-                    <small>последний комментарий: 15 октября, 14:23 от <a href="#" class="red">Маняша</a></small>
-                  </li>
-                  <li>
-                    <a href="#">Модные тенденции на новый год</a>
-                    <small>последний комментарий: 15 октября, 14:23 от <a href="#" class="red">Антон Козлов</a></small>
-                  </li>
-                  <li>
-                    <a href="#">Сочетание красного с зелёным. Кто колхозник, а кто стиляга.</a>
-                    <small>последний комментарий: 15 октября, 14:23 от <a href="#" class="red">Васька Келя</a></small>
-                  </li>
-                  <li>
-                    <a href="#">Модный тренд на причёски в 2012 году: все будут лысыми.</a>
-                    <small>последний комментарий: 15 октября, 14:23 от <a href="#" class="red">Петрович</a></small>
-                  </li>
-                  <li>
-                    <a href="#">Сочетание красного с зелёным. Кто колхозник, а кто стиляга.</a>
-                    <small>последний комментарий: 15 октября, 14:23 от <a href="#" class="red">Васька Келя</a></small>
-                  </li>
-                </ul>
+              <?php
+              if ($answers)
+              {
+                  echo '<h2 class="mp-red">Последние ответы на форуме</h2>';
+                  echo '<ul class="mp-last-forum">';
+                  foreach ($answers as $answer)
+                  {
+                      echo '<li>';
+                      echo CHtml::link($answer['discussion']['title'], array('/vitrinaForum/discussion/', 'id'=>$answer['discussion']['id']));
+                      echo '<small>последний комментарий: '.DateUtils::_date($answer['date']).' от '.
+                        CHtml::link($answer['user']['username'], array('/vitrinaForum/user/', 'id'=>$answer['user']['id']), array('class'=>'red')).
+                        '</small>';
+                      echo '</li>';
+                  }
+                  echo '</ul>';
+              }
+              ?>
               </div>
             </div>
           </div>
+          <div id="pageDescriptionFooter"></div>
         </div>
         <div class="c-right-col">
-          <div class="right-banner"><a href="#"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/right_banner.jpg" width="240" height="400" alt=""></a></div>
+          <div class="right-banner">
+              <?php $this->renderPartial('application.views.blocks.banner_right', array()); ?>
+          </div>
             <?php
             if ($articles)
             {
@@ -160,7 +155,7 @@
                 echo '</ul>';
             }
             ?>
-          <div class="vk"><img src="<?php echo Yii::app()->request->staticUrl; ?>/images/must_be_deleted/vk.jpg" width="260" height="306" alt=""></div>
+          <div class="vk">
+              <?php $this->renderPartial('application.views.blocks.social', array()); ?>
+          </div>
         </div>
-      </div>
-    </div>

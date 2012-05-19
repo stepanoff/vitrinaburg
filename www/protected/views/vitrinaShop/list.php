@@ -1,5 +1,3 @@
-    <div id="inner-page">
-      <div class="base-width clearfix">
         <div class="main-col">
             <?php
                 $this->widget('application.widgets.VitrinaTopLogosWidget', array(
@@ -72,6 +70,7 @@
           }
           ?>
         </div>
+            <div id="pageDescriptionFooter"></div>
         </div>
         <div class="left-col">
             <?php
@@ -87,5 +86,3 @@
               <?php $this->renderPartial('application.views.blocks.social', array()); ?>
           </div>
         </div>
-      </div>
-    </div>

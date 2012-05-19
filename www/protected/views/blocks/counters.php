@@ -6,7 +6,7 @@ escape(document.referrer)+((typeof(screen)=="undefined")?"":
 screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 ";"+Math.random()+
 "' alt='' title='LiveInternet' "+
-"border='0' width='31' height='31'><\/a>")
+"border='0' width='31' height='31'><\/a>");
 //--></script><!--/LiveInternet-->
 
 <!-- Yandex.Metrika counter -->

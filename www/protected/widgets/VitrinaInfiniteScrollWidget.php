@@ -21,6 +21,8 @@ $(document).ready(function(){
     loading: {
 			finishedMsg: \'<div class="more-"><a href="#" class="gradient1">'.$this->finishedMsg.'</a></div>\',
 			img: "/img/loading.gif",
+			img_width: "220",
+			img_height: "19",
 			msgText: \'<div class="more-"><a href="#" class="gradient1">'.$this->msgText.'</a></div>\',
 		},
   }

@@ -25,6 +25,9 @@ return array(
         '/mystyle/showSet/<id:([0-9]+)>'=>'vitrinaWidget/show',
         '/mystyle/' => 'vitrinaWidget/create',
 
+        '/forum/discussion/<id:([0-9]+)>' => 'vitrinaForum/discussion',
+        '/user/profile/<id:([0-9]+)>' => 'vitrinaForum/user',
+
         '/<staticPage:([a-zA-Z0-9_]+)>'=>'staticPage/show',
 	),
 );

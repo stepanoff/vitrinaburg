@@ -43,11 +43,11 @@ $mainConfig = array(
         'application.extensions.VExtension.*',
         'application.extensions.VExtension.helpers.*',
         'application.extensions.VExtension.models.*',
-//        'application.extensions.eoauth.*',
-//        'application.extensions.eoauth.lib.*',
-//        'application.extensions.lightopenid.*',
-//        'application.extensions.eauth.*',
-//        'application.extensions.eauth.services.*',
+        'application.extensions.eoauth.*',
+        'application.extensions.eoauth.lib.*',
+        'application.extensions.lightopenid.*',
+        'application.extensions.eauth.*',
+        'application.extensions.eauth.services.*',
 //        'application.extensions.gporauth.*',
 //        'application.extensions.gporauth.custom_services.*',
 //        'application.extensions.gporauth.models.*',
@@ -95,26 +95,26 @@ $mainConfig = array(
             'class' => 'CAssetManager',
             'basePath' => dirname(__FILE__).DS.'..'.DS.'..'.DS.'assets',
         ),
-        /*
         'loid' => array(
             'class' => 'ext.lightopenid.loid',
         ),
 		'eauth' => require(dirname(__FILE__).'/eauth.php'),
+        /*
 		'clientScript'=>array(
 			'class'=>'application.components.ExtendedClientScript',
 			'combineFiles'=>false,
 			'compressCss'=>false,
 			'compressJs'=>false,
 		),
+        */
 		'user'=>array(
-			'class'=>'application.extensions.gporauth.GporAuthUser',
+			'class'=>'application.extensions.VExtension.VUserComponent',
 			'allowAutoLogin'=>true,
-            'dbDriver'=> $params['dbDriver'] == 'redis' ? 'RedisGporAuthDbDriver' : 'MysqlGporAuthDbDriver',
+            'dbDriver'=> 'VMysqlAuthDbDriver',
 //			'loginUrl'=>null,
 			'identityCookie'=>array('domain'=>'.'.$params['domain']),
 //            'visitorTTL' => 183 * 24*60*60,
 		),
-        */
         'urlManager'=>require(dirname(__FILE__).'/urlManager.php'),
         
         'cache' => array(

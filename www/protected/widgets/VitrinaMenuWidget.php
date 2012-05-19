@@ -8,10 +8,10 @@ class VitrinaMenuWidget extends CWidget {
 
         $items = array (
             array ('link' => array('/vitrinaShop/index'), 'caption' => 'Магазины', 'regexp' =>  '/shop*'),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>311), 'caption' => 'Для женщин', 'regexp' => '/coll/cat311*'),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>313), 'caption' => 'Для мужчин', 'regexp' => '/coll/cat316*'),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>314), 'caption' => 'Для детей', 'regexp' => '/coll/cat314*'),
-            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>315), 'caption' => 'Обувь', 'regexp' => '/coll/cat315*'),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>311), 'caption' => 'Для женщин', 'regexp' => '/coll/cat311.*'),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>313), 'caption' => 'Для мужчин', 'regexp' => '/coll/cat313.*'),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>314), 'caption' => 'Для детей', 'regexp' => '/coll/cat314.*'),
+            array ('link' => array('/vitrinaCollection/section', 'sectionId'=>315), 'caption' => 'Обувь', 'regexp' => '/coll/cat315.*'),
             array ('link' => array('/vitrinaAction/index'), 'caption' => 'Акции', 'regexp' => '/action*'),
             array ('link' => array('/vitrinaWidget/create'), 'caption' => 'Создать стиль', 'regexp' => '/mystyle*'),
         );

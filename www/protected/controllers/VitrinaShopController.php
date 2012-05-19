@@ -61,6 +61,8 @@ class VitrinaShopController extends Controller
         $mallsStructure = $this->getMallsStructure();
         $counters = $this->getMallsCounters(array_keys($mallsStructure[0]['children']));
 
+        $this->setPageTitle('Магазин &laquo;'.$shop->name.'&raquo; &mdash; фото коллекций с ценами, адреса магазинов, фото. Модные магазины Екатеринбурга &mdash; '.Yii::app()->params['siteName']);
+
         $this->render('shop', array(
             'item' => $shop,
             'counters' => $counters,

@@ -7,6 +7,8 @@ class Controller extends CController
 {
     protected $data = array();
     public $pageDescription = '';
+    public $seoText = '';
+    public $mainPage = false;
 
     public function getData($key)
     {
@@ -27,6 +29,7 @@ class Controller extends CController
         {
             $this->pageTitle = $seoPage->title;
             $this->pageDescription = $seoPage->description;
+            $this->seoText = $seoPage->text;
         }
         return parent::beforeRender($view);
     }

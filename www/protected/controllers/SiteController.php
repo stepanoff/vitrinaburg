@@ -5,6 +5,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        $this->setPageTitle('Одежда в Екатеринбурге, модные бренды и ассортимент магазинов с ценами и фото &mdash; Витринабург, Магазины в Екатеринбурге &mdash; '.Yii::app()->params['siteName']);
+
         $photosInSections = array(); // фото за последние сутки по рубрикам
         $answers = array(); // послдение ответы на форуме
 
@@ -21,6 +23,37 @@ class SiteController extends Controller
 
         $sectionsClass = new VitrinaSection;
         $sections = $sectionsClass->getStructure(2);
+
+        $criteria = new CDbCriteria(array(
+            'order' => '`date` DESC',
+            'limit' => '5',
+        ));
+        $answers = Yii::app()->db->commandBuilder->createFindCommand('forum_comments', $criteria)->queryAll();
+        foreach ($answers as $k => $answer)
+        {
+            $answer['discussion'] = false;
+
+            $criteria = new CDbCriteria(array());
+            $criteria->addCondition('id = :id');
+            $criteria->params = array(
+                ':id' => $answer['forum_discussion_id']
+            );
+            $discussion = Yii::app()->db->commandBuilder->createFindCommand('forum_discussions', $criteria)->queryRow();
+            if ($discussion)
+            {
+                $answer['discussion'] = $discussion;
+                $answer['user'] = false;
+                $criteria = new CDbCriteria(array());
+                $criteria->addCondition('id = :id');
+                $criteria->params = array(
+                    ':id' =>$answer['user_id']
+                );
+                $user = Yii::app()->db->commandBuilder->createFindCommand('users', $criteria)->queryRow();
+                if ($user)
+                    $answer['user'] = $user;
+            }
+            $answers[$k] = $answer;
+        }
 
         // берем фото добавленные за полследние сутки
 

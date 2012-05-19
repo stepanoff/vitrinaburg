@@ -27,8 +27,9 @@ class VHtml
         $htmlOptions = is_array($htmlOptions) ? $htmlOptions : array();
         $htmlOptions['width'] = $thumb->getWidth();
         $htmlOptions['height'] = $thumb->getHeight();
+        $alt = isset($htmlOptions['alt']) ? $htmlOptions['alt'] : '';
 
-		return CHtml::image($thumb->getSiteUrl(),'',$htmlOptions);
+		return CHtml::image($thumb->getSiteUrl(),$alt,$htmlOptions);
     }
 
     public static function thumbSrc ($src, $sizes = false, $scaleMethod = false)
@@ -114,6 +115,9 @@ class VHtml
     )){
 		$types = $format['currency_format'];
 
+        if (!$sum)
+            return '';
+
         $t_cur = '';
 		if ($currency)
 		{
@@ -123,6 +127,18 @@ class VHtml
 
         return $format['prefix'] . $res . $format['postfix'];
 	}
+
+    public static function formattedSum ($sum = null, $currency = null){
+        $format = array(
+        'sum_prefix' => '',
+        'sum_postfix' => '',
+        'prefix' => '',
+        'postfix' => '',
+        'currency_format' => array('рубль', 'рубля', 'рублей')
+        );
+
+        return self::sum($sum, $currency, $format);
+    }
 
     public static function plural($n, $format)
     {

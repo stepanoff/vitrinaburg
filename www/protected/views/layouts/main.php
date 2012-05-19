@@ -48,7 +48,7 @@
     </div>
     <div id="main-menu" class="gradient1">
       <div class="base-width">
-        <form class="search-form" action="/">
+        <!-- form class="search-form" action="/">
           <fieldset>
             <table>
               <tr>
@@ -62,7 +62,7 @@
               </tr>
             </table>
           </fieldset>
-        </form>
+        </form -->
         <ul>
         <?php
         $this->widget('VitrinaMenuWidget', array('uri' => $this->getData('rootSectionUri')));
@@ -70,14 +70,50 @@
         </ul>
       </div>
     </div>
+
     <!-- content -->
-    <?php echo $content; ?>
+      <div id="<?php echo $this->mainPage ? 'main-page' : 'inner-page'; ?>">
+          <div class="base-width clearfix">
+              <div id="pageDescription">
+              <?
+              if ($this->seoText)
+              {
+                  echo $this->seoText;
+              }
+              ?>
+              </div>
+              <script type="text/javascript">
+              $("#pageDescription").hide();
+              </script>
+              <script type="text/javascript">
+              $(document).ready(function() {
+                  $('#pageDescription').appendTo("#pageDescriptionFooter").show();
+              });
+              </script>
+
+            <?php echo $content; ?>
+            </div>
+      </div>
     <!-- // content -->
   </div>
+  <script type="text/javascript">
+      <?php
+      $counters = $this->renderPartial('application.views.blocks.counters', array(), true);
+      ?>
+       var counters = <?php echo CJSON::encode($counters); ?>;
+       function reloadCounters ()
+       {
+           $('#counters').html('');
+           $(document).bind('beforedocwrite', function(event, data) {
+               data.target = $('#counters');
+           });
+           document.write(counters);
+       }
+  </script>
   <div id="footer" class="gradient1">
     <div class="base-width">
-      <div class="counters">
-           <?php $this->renderPartial('application.views.blocks.counters', array()); ?>
+      <div class="counters" id="counters">
+           <?php echo $counters; ?>
       </div>
       <div class="nav">
         <!--a href="#" class="people-link">72 пользователя он-лайн</a>

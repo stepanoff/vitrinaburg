@@ -3,16 +3,6 @@ return array(
 			'class' => 'ext.gporauth.GporAuth',
 			'popup' => true, // Использовать всплывающее окно вместо перенаправления на сайт провайдера
 			'services' => array( // Вы можете настроить список провайдеров и переопределить их классы
-                '66' => array(
-                    'class' => 'CustomOldGporService',
-                    'client_id' => $params['66']['client_id'],
-                    'client_secret' => $params['66']['client_secret'],
-                    'name' => '66',
-                    'providerOptions' => array(
-                            'authorize' => 'http://www.66.ru/mod/auth_backend/auth_backend_login.php',
-                            'refresh_info' => 'http://www.66.ru/mod/auth_backend/get_info.php',
-                        ),
-                ),
                 /*
 				'google' => array(
 					'class' => 'GoogleOpenIDService',

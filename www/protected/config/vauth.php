@@ -1,6 +1,6 @@
 <?php
 return array(
-			'class' => 'ext.gporauth.GporAuth',
+			'class' => 'ext.VExtension.VAuth',
 			'popup' => true, // Использовать всплывающее окно вместо перенаправления на сайт провайдера
 			'services' => array( // Вы можете настроить список провайдеров и переопределить их классы
                 /*

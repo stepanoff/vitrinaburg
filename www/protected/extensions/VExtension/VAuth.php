@@ -1,19 +1,19 @@
 <?php
-/**
- * GporAuth class file.
- *
- * @author stepanoff <stenlex@gmail.com>
- */
-
-/**
- * The GporAuth class provides simple authentication via OpenID and OAuth providers.
- * @package application.extensions.eauth
- */
-class GporAuth extends EAuth {
+class VAuth extends EAuth {
 
     protected $_fullServices = null;
 
-	
+    public $userRoute = 'vitrinaForum/user';
+    public $templatePath = 'ext.VExtension.views.auth';
+
+    public function init()
+    {
+        Yii::import('ext.VExtension.models.auth.*');
+        Yii::import('ext.VExtension.models.auth.services.*');
+        return parent::init();
+    }
+
+
 	public function getServices() {
 		//if (Yii::app()->hasComponent('cache'))
 		//	$services = Yii::app()->cache->get('EAuth.services');
@@ -59,8 +59,8 @@ class GporAuth extends EAuth {
 
 
 	public function redirect($url, $jsRedirect = true) {
-		require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'GporAuthRedirectWidget.php';
-		$widget = Yii::app()->getWidgetFactory()->createWidget($this, 'GporAuthRedirectWidget', array(
+		require_once dirname(__FILE__). DIRECTORY_SEPARATOR . 'widgets' . DIRECTORY_SEPARATOR . 'auth' . DIRECTORY_SEPARATOR . 'VAuthRedirectWidget.php';
+		$widget = Yii::app()->getWidgetFactory()->createWidget($this, 'VAuthRedirectWidget', array(
 			'url' => $url,
 			'redirect' => $jsRedirect,
 		));
@@ -77,8 +77,8 @@ class GporAuth extends EAuth {
     }
 
 	public function renderWidget($properties = array()) {
-		require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'GporAuthWidget.php';
-		$widget = Yii::app()->getWidgetFactory()->createWidget($this, 'GporAuthWidget', $properties);
+		require_once dirname(__FILE__).DIRECTORY_SEPARATOR . 'widgets' . DIRECTORY_SEPARATOR . 'auth' . DIRECTORY_SEPARATOR . 'VAuthWidget.php';
+		$widget = Yii::app()->getWidgetFactory()->createWidget($this, 'VAuthWidget', $properties);
 		$widget->init();
 		$widget->run();
 	}
@@ -94,9 +94,14 @@ class GporAuth extends EAuth {
         return $this->getBaseTemplatePath ().'service_item';
     }
 
-    protected function getBaseTemplatePath ()
+    public function getBaseTemplatePath ()
     {
-        return 'ext.gporauth.views.services.';
+        return $this->templatePath.'.';
+    }
+
+    public function getUserRoute ()
+    {
+        return $this->userRoute;
     }
 
 }

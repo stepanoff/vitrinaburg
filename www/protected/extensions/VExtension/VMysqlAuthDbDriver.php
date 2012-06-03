@@ -42,6 +42,7 @@ class VMysqlAuthDbDriver implements IVAuthDbDriver
     {
         $className = $this->userModel;
         $user = new $className;
+        unset($data['id']);
         $user->setAttributes($data);
         $user->updated = date ('Y-m-d G:i:s');
         if ($user->save())

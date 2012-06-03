@@ -8,6 +8,7 @@ return array(
     'yiiDebug' => true, // YII debug
 
     'domain' => '',
+    'sessionPrefix' => '', // префикс для данных сессии
 
     'cronLogsPath' => '', // обсолютный путь для хранения lock-файлов крона
 	'phpPath' => '', // Path to php

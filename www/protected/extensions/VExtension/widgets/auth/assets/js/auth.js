@@ -1,20 +1,18 @@
-/**
- * GporAuth widget internal
- */
-if ((typeof GporAuth == "undefined") || !GporAuth) {
-	// инициализация объекта GporAuth
-    var GporAuth = {
+if ((typeof Vauth == "undefined") || !Vauth) {
+	// инициализация объекта Vauth
+    var Vauth = {
         'ajax': true,
         'hash': '',
         'iframe': false,
         'popup': false,
         'redirectUrl' : false,
         'returnUrl' : false,
-        'loaded' : false
+        'loaded' : false,
+        'pageUrl' : false
     };
 }
 
-GporAuth.hashParser = function () {
+Vauth.hashParser = function () {
 	var func, param;
 	try {
 		var hash = window.location.hash.substr(1);
@@ -22,27 +20,28 @@ GporAuth.hashParser = function () {
 		// набор якорь, функция для обработки нажатий по ссылкам
 		var callbacks = [
 		    ['token:', 'getToken'],
+            ['reload:', 'reloadPage'],
             ['cancel:', 'authCanceled']
 		];
 		// если хеш новый
-		if (hash != GporAuth.hash) {
+		if (hash != Vauth.hash) {
 			for (var k=0; k<commands.length; k++) {
 				// вызов нужного callback в зависимости от переданного якоря
 				for (var i=0; i<callbacks.length; i++) {
 					func = callbacks[i][1];
 					param = commands[k].substr(callbacks[i][0].length);
 
-					if (commands[k].indexOf(callbacks[i][0])===0) {2
-						GporAuth[func](param);
+					if (commands[k].indexOf(callbacks[i][0])===0) {
+						Vauth[func](param);
 					}
 				}
 			}
-			GporAuth.hash = hash;
+			Vauth.hash = hash;
 		}
 	} catch (e) {}
 }
 
-GporAuth.getToken = function (token) {
+Vauth.getToken = function (token) {
     this.hash = token;
     this.redirectUrl += (this.redirectUrl.indexOf('?') >= 0 ? '&' : '?') + 'auth_token=' + encodeURIComponent(token) + '&returnUrl=' + encodeURIComponent(this.returnUrl);
     if (!this.iframe)
@@ -51,16 +50,27 @@ GporAuth.getToken = function (token) {
         parent.location.href = this.redirectUrl;
 }
 
-GporAuth.authCanceled = function (service) {
+Vauth.reloadPage = function (result) {
+    if (!result)
+        return;
+    if (!this.iframe)
+        window.location.href = this.pageUrl;
+    else
+        parent.location.href = this.pageUrl;
+}
+
+Vauth.authCanceled = function (service) {
     if (service)
         alert('service '+service+' canceled');
     return false;
 }
 
-GporAuth.init = function (options) {
+Vauth.init = function (options) {
     for (i in options)
         this[i] = options[i];
     this.loaded = false;
+    if (this.pageUrl == false)
+        this.pageUrl = window.location.href;
     if (this.iframe && !this.redirectUrl)
     {
         alert ('redirectUrl not found. Initalization failed');
@@ -69,7 +79,7 @@ GporAuth.init = function (options) {
     return true;
 }
 
-hashChangeTimer = setInterval(GporAuth.hashParser, 500);
+hashChangeTimer = setInterval(Vauth.hashParser, 500);
 
 jQuery(function($) {
     var popup;

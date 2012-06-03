@@ -4,6 +4,12 @@ return array(
 	'showScriptName'=>false,
     'urlSuffix' => '/',
 	'rules'=>array(
+        '/test' => 'site/userMigration',
+
+        '/login' => 'site/login',
+        '/register' => 'site/register',
+        '/logout' => 'site/logout',
+
         '/coll/cat<sectionId:([0-9]+)>'=>'vitrinaCollection/section/',
         '/coll/<collectionId:([0-9]+)>/<photoId:([0-9]+)>'=>'vitrinaCollection/show',
         '/coll/<collectionId:([0-9]+)>'=>'vitrinaCollection/show/',
@@ -25,7 +31,8 @@ return array(
         '/mystyle/showSet/<id:([0-9]+)>'=>'vitrinaWidget/show',
         '/mystyle/' => 'vitrinaWidget/create',
 
-        '/forum/discussion/<id:([0-9]+)>' => 'vitrinaForum/discussion',
+        '/forum' => 'VForum/VForum/index',
+        '/forum/discussion/<id:([0-9]+)>' => 'VForum/VForum/discussion',
         '/user/profile/<id:([0-9]+)>' => 'vitrinaForum/user',
 
         '/<staticPage:([a-zA-Z0-9_]+)>'=>'staticPage/show',

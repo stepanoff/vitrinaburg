@@ -169,7 +169,7 @@ a.cm-l1:hover { color: #c93360; text-decoration: underline; }
 .more- { margin: 0 0 15px; background: #e6e6e6; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 .more- a { display: inline-block; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; color: #fff !important; text-decoration: none !important; text-transform: uppercase; padding: 7px 25px; }
 
-#inner-page h2 { margin: 0 0 15px; font: normal 27px georgia, "times new roman"; color: #000; }
+h2 { margin: 0 0 15px; font: normal 27px georgia, "times new roman"; color: #000; }
 #inner-page h2 .more-link- { float: right; margin-top: 13px; color: #999; font: normal 12px arial; }
 #inner-page h2 .more-link- a { color: #c4285c; text-decoration: underline; }
 #inner-page h2 .more-link- a:hover { color: #c4285c; text-decoration: none; }
@@ -246,6 +246,64 @@ a.cm-l1:hover { color: #c93360; text-decoration: underline; }
 .collections h3 span { white-space: nowrap; display: inline-block; padding: 5px 10px; margin-left: 15px; font: bold 11px arial; text-transform: uppercase; color: #fff; background: #7da75f; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; position: relative; top: -3px; }
 .collections h3 span a { color: #fff !important; text-decoration: none !important; float: left; margin: -7px -20px -20px -12px; display: block; padding: 5px 10px; border: 2px solid #fff; border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; }
 .collections h3 span b { margin-left: 25px; }
+
+.left-new { -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .2); box-shadow: 0 0 15px rgba(0, 0, 0, .2); margin: 0 0 25px; padding: 10px 15px; }
+#inner-page .left-new h2 { font: bold 14px arial; text-transform: uppercase; color: #9e9e9e; margin: 0 0 10px; }
+#inner-page .left-new ul { margin: 0 -20px 0 0; padding: 0; list-style: none; }
+#inner-page .left-new li { float: left; margin: 0 6px 6px 0; padding: 0; }
+#inner-page .left-new a { display: block; width: 102px; height: 142px; position: relative; }
+#inner-page .left-new a img { border: 1px solid transparent; display: block; }
+#inner-page .left-new a:hover img { border: 1px solid #c72e5e; }
+#inner-page .left-new span { display: block; position: absolute; right: 1px; bottom: 1px; background: #c5295c; color: #fff; padding: 2px 5px; font-size: 11px; }
+
+.forum h1 { font: normal 27px georgia; color: #000; margin: -5px 0 10px; }
+.forum .pages { font-size: 9px; }
+.forum .pages span { font-size: 12px; margin-right: 15px; }
+.forum .pages b { border-radius: 2px; -webkit-border-radius: 2px; display: inline-block; padding: 2px 5px; font-weight: normal; color: #fff; }
+.forum .pages a { border-radius: 3px; -webkit-border-radius: 3px; display: inline-block; padding: 1px 4px; border: 1px solid #ccc; text-decoration: none; }
+.forum .f-top-bar,
+.forum .f-bottom-bar,
+.forum .t-top-bar,
+.forum .t-bottom-bar { height: 26px; margin: 0 0 5px; }
+.forum .f-top-bar .pages,
+.forum .f-bottom-bar .pages { float: right; margin-top: 5px; }
+.forum .t-top-bar .pages,
+.forum .t-bottom-bar .pages { float: left; margin-top: 5px; }
+.forum .pages span { position: relative; top: 1px; }
+.forum .t-top-bar .pages span,
+.forum .t-bottom-bar .pages span { margin-right: 7px; }
+.forum a.f-button { border-radius: 4px; -webkit-border-radius: 4px; font: bold 14px arial; color: #fff; text-transform: uppercase; text-decoration: none; padding: 5px 15px; display: inline-block; }
+.forum .f-list-head { background: #ededed; border-bottom: 2px solid #e4e4e4; color: #9d9d9d; font-size: 11px; padding: 7px 0 2px; }
+.forum .cell-theme { display: inline-block; width: 505px; margin: 0 15px; vertical-align: middle; overflow: hidden; }
+.forum .cell-author { display: inline-block; width: 100px; margin-right: 15px; overflow: hidden; }
+.forum .cell-length { display: inline-block; width: 70px; overflow: hidden; }
+.forum .f-list-head .cell-theme,
+.forum .f-list-head .cell-author,
+.forum .f-list-head .cell-length { vertical-align: bottom; }
+.forum .f-list { margin: 0 0 5px; padding: 0; list-style: none; }
+.forum .f-list li { border-bottom: 2px solid #e4e4e4; padding: 10px 0; }
+.forum .f-list li .pages { display: inline-block; margin-left: 5px; position: relative; top: -2px; }
+.forum .f-list li small { display: block; padding-top: 2px; font-size: 11px; }
+.forum .f-list .cell-theme > a:first-child { font: normal 18px arial; }
+.forum .f-list .cell-theme > a:before { content: ""; position: absolute; background: url(../images/structure/bul.png); width: 8px; height: 8px; display: block; margin: 8px 0 0 -15px; }
+.forum .f-list .cell-theme small a,
+.forum .f-list .cell-author a { color: #c72e5e; }
+.forum .f-list .cell-author,
+.forum .f-list .cell-length { font-size: 11px; }
+.theme { -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .2); box-shadow: 0 0 15px rgba(0, 0, 0, .2); margin: 10px 0; }
+.message { border-top: 2px solid #e5e5e5; padding: 20px; }
+.message:first-child { border-top: none; }
+.message .author- { width: 120px; overflow: hidden; float: left; }
+.message .author- img { display: block; margin: 0 0 3px; }
+.message .author- a { color: #c72e5e; }
+.message .author- small { display: block; margin: 3px 0 0; color: #a8aba2; }
+.message .body- { margin-left: 140px; color: #000; font-size: 14px; line-height: 140%; }
+.message .body- p { margin: 0 0 15px; }
+.message .body- blockquote { margin: 0 0 15px; border-left: 2px solid #d1d2cd; padding: 2px 0 2px 20px; color: #afb0ac; font-size: 11px; line-height: 140%; }
+.message .actions- .links- { float: right; font-size: 12px; line-height: 20px; color: #afb0ac; }
+.message .actions- .links- a { color: #afb0ac; }
+.message .actions- .links- a:hover { color: #c72e5e; }
+.message .buttons- a { display: inline-block; border-radius: 4px; -webkit-border-radius: 4px; font: normal 10px arial; line-height: 22px; height: 20px; color: #fff; text-decoration: none; text-transform: uppercase; padding: 0 10px; }
 
 #footer { color: #fff; border-top: 5px solid #eee; border-bottom: 2px solid #fff; height: 60px; padding-top: 20px; max-width: 1134px; margin: 0 auto; line-height: 20px; }
 #footer .counters { float: left; margin-right: 20px; padding-top: 5px; }

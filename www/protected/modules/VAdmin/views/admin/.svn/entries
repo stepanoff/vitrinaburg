@@ -1,0 +1,52 @@
+9
+
+dir
+1331
+svn+ssh://d.66.ru/repos/toprabota/toprabota/trunk/www/protected/modules/admin/views/admin
+svn+ssh://d.66.ru/repos/toprabota
+
+
+
+2010-04-23T13:32:16.457770Z
+571
+stepanoff
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b55fe08a-d11a-df11-93e1-0014384e6a6b
+
+edit.php
+file
+
+
+
+
+2010-04-23T13:26:49.419000Z
+38b7f5db6b24ff2bb75b9975708fa961
+2010-04-23T13:32:16.457770Z
+571
+stepanoff
+
+list.php
+file
+
+
+
+
+2010-03-24T03:39:50.406000Z
+4f33deee240b5d311d235a691a85141a
+2010-03-23T12:46:09.961357Z
+133
+kiwi
+

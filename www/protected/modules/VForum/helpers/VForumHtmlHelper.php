@@ -1,9 +1,35 @@
 <?php
-class ArrayUtils
+class VForumHtmlHelper
 {
-	public function objectToArray($object)
+	public function pager ($totalItems = 1, $itemsPerPage = 10, $urlArr, $currentPage = false, $max = 3, $title = false)
 	{
-		// TO_DO
+        $totalPages = ceil($totalItems / $itemsPerPage);
+        if ($totalPages <=1)
+            return '';
+        $res = $title ? '<span>'.$title.'</span>' : '';
+        $res .= '<div class="pages">';
+        for ($i=1; $i<=$totalPages; $i++)
+        {
+            if ($i>$max && $i != $totalPages)
+                continue;
+
+            if ($i == $currentPage)
+                $res .= '<b class="gradient1">1</b>
+';
+            else
+            {
+                if ($i > 1)
+                    $urlArr['page'] = $i;
+                $res .= '
+'.CHtml::link($i, $urlArr);
+            }
+            if ($i == $max && $totalPages > $max+1)
+                $res .= '<em>...</em>
+';
+
+        }
+        $res .= '</div>';
+        return $res;
 	}
 }
 ?>

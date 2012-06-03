@@ -3,6 +3,10 @@ return array(
 			'class' => 'ext.VExtension.VAuth',
 			'popup' => true, // Использовать всплывающее окно вместо перенаправления на сайт провайдера
 			'services' => array( // Вы можете настроить список провайдеров и переопределить их классы
+                'inner' => array(
+                    'class' => 'CustomInnerService',
+                    'name' => 'inner',
+                ),
                 /*
 				'google' => array(
 					'class' => 'GoogleOpenIDService',

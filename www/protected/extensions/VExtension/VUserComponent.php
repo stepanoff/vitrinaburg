@@ -142,6 +142,9 @@ class VUserComponent extends CApplicationComponent implements IWebUser
         if (!$this->dbDriver)
             return false;
 
+        Yii::import('ext.VExtension.models.auth.*');
+        Yii::import('ext.VExtension.models.auth.services.*');
+
 		parent::init();
 
         $className = $this->dbDriver;
@@ -210,7 +213,9 @@ class VUserComponent extends CApplicationComponent implements IWebUser
             $this->_dbDriver->addToken($id, $token, $duration);
 
 			if($this->allowAutoLogin)
+            {
 				$this->saveToCookie(($duration + 60*60*24*self::COOKIE_DAYS));
+            }
 			elseif ($duration>0)
 				throw new CException(Yii::t('yii','{class}.allowAutoLogin must be set true in order to use cookie-based authentication.',
 					array('{class}'=>get_class($this))));
@@ -468,7 +473,7 @@ class VUserComponent extends CApplicationComponent implements IWebUser
         {
             $data = $this->_dbDriver->findByToken($cookie->value);
 
-			if(is_array($data) && isset($data['id'],$data['name'],$data['duration']))
+			if(is_array($data) && isset($data['id'],$data['username'],$data['duration']))
 			{
                 $states = array('__token'=>$cookie->value);
                 $duration = $data['duration'];
@@ -534,7 +539,7 @@ class VUserComponent extends CApplicationComponent implements IWebUser
 		$app->getRequest()->getCookies()->add($cookie->name,$cookie);
 	}
 
-    protected function generateToken ()
+    public function generateToken ()
     {
         if ($this->__token === null)
         {

@@ -1,5 +1,5 @@
 <?php
-class Token extends CActiveRecord {
+class VToken extends CActiveRecord {
 
     public static function model($className=__CLASS__)
     {
@@ -8,7 +8,7 @@ class Token extends CActiveRecord {
 
     public function tableName()
     {
-        return 'tokens';
+        return 'vtokens';
     }
 
 	protected function afterSave()

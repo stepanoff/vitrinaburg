@@ -18,7 +18,7 @@
     <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/iefix.css" rel="stylesheet" />
   <![endif]-->
   <script src="http://api-maps.yandex.ru/1.1/index.xml?key=<?php echo Yii::app()->params['yandexMapsKey']; ?>" type="text/javascript"></script>
-  <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
   <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-ui-1.8.1.custom.min.js"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery.jcarousel.min.js"></script>
     <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/maps.js"></script>
@@ -33,6 +33,9 @@
         </div>
         <div class="auth-box">
             <div class="social"></div>
+            <?php
+            //$this->widget('ext.VExtension.widgets.auth.VAuthWidget', array('action'=>'/site/login'));
+            ?>
             <!-- войти через:
           <div class="social">
             <a class="auth-vk" href="#" title="вконтакте">вконтакте</a>

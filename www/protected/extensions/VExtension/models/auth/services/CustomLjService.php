@@ -66,6 +66,6 @@ class CustomLjService extends EOpenIDService {
 
     public function getCustomTemplate()
     {
-        return 'ext.gporauth.views.services.lj';
+        return 'ext.VExtension.views.auth.lj';
     }
 }

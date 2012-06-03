@@ -1,5 +1,5 @@
 <?php
-class GporAuthForm extends CFormModel
+class VAuthForm extends CFormModel
 {
     public $login;
     

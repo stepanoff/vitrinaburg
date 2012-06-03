@@ -10,7 +10,7 @@ class VAuthWidget extends CWidget {
 	/**
 	 * @var string EAuth component name.
 	 */
-	public $component = 'eauth';
+	public $component = 'vauth';
 	
 	/**
 	 * @var array the services.
@@ -21,7 +21,7 @@ class VAuthWidget extends CWidget {
 	/**
 	 * @var boolean whether to use popup window for authorization dialog. Javascript required.
 	 */
-	public $popup = false;
+	public $popup = true;
 
     public $iframe = null;
 
@@ -41,7 +41,7 @@ class VAuthWidget extends CWidget {
 		
 		// EAuth component
 		$component = Yii::app()->{$this->component};
-		
+
 		// Some default properties from component configuration
 		if (!isset($this->services))
         {
@@ -90,7 +90,8 @@ class VAuthWidget extends CWidget {
             $serviceTemplates[$k] = $component->getServiceTemplate($k);
         }
 
-		$this->render('auth', array(
+        $component = Yii::app()->{$this->component};
+		$this->render($component->getBaseTemplatePath () . 'auth', array(
 			'id' => $this->getId(),
 			'services' => $this->services,
             'serviceTemplates' => $serviceTemplates,
@@ -129,7 +130,7 @@ class VAuthWidget extends CWidget {
 				$args = $service->getJsArguments();
 				$args['id'] = $service->getServiceName();
 				$js .= '$(".auth-service-'.$service->getServiceName().'").auth_service('.json_encode($args).');'."\n";
-                $js .= 'GporAuth.init('.json_encode($this->getJsOptions()).');'."\n";
+                $js .= 'Vauth.init('.json_encode($this->getJsOptions()).');'."\n";
 			}
 			$cs->registerScript('auth-services', $js, CClientScript::POS_READY);
 		}

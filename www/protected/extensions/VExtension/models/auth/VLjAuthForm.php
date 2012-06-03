@@ -1,5 +1,5 @@
 <?php
-class LjAuthForm extends CFormModel
+class VLjAuthForm extends CFormModel
 {
     public $login;
     

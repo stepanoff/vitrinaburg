@@ -1,5 +1,5 @@
 <?php
-class User extends CActiveRecord {
+class VUser extends CActiveRecord {
 
     public static function model($className=__CLASS__)
     {
@@ -8,7 +8,7 @@ class User extends CActiveRecord {
 
     public function tableName()
     {
-        return 'users';
+        return 'vusers';
     }
 
 	protected function afterSave()
@@ -30,6 +30,22 @@ class User extends CActiveRecord {
             'params'=>array(':service'=>$service, ':serviceId'=>$serviceId),
         ));
         return $this;
+    }
+
+    public function byLogin($login)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'login=:login',
+            'params'=>array(':login'=>$login),
+        ));
+        return $this;
+    }
+
+    public function getAvatar($size = 'medium')
+    {
+        if ($this->avatar)
+            return $this->avatar;
+        return '/images/must_be_deleted/user.jpg';
     }
 
 }

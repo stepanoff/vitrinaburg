@@ -1,8 +1,7 @@
 <?php
-    $form = $service->getForm();
-    $link = CHtml::normalizeUrl(array($action, 'service' => $name));
-    echo '<div class="custom-auth-service auth-service-'.$service->getServiceName().'">';
+    echo '<h2>Регистрация</h2>';
 ?>
+
 <form class="" method="post" enctype="multipart/form-data" action="<?php echo $link; ?>">
 <?php
     echo '<div>';
@@ -11,24 +10,24 @@
     echo '</div>';
 
     echo '<div>';
+    echo CHtml::activeLabel($form, 'username');
+    echo CHtml::activeTextField($form, 'username');
+    echo '</div>';
+
+
+    echo '<div>';
     echo CHtml::activeLabel($form, 'password');
     echo CHtml::activePasswordField($form, 'password');
     echo '</div>';
 
     echo '<div>';
-    echo CHtml::activeCheckbox($form, 'rememberMe');
-    echo CHtml::activeLabel($form, 'rememberMe');
+    echo CHtml::activeLabel($form, 'passwordAgain');
+    echo CHtml::activePasswordField($form, 'passwordAgain');
     echo '</div>';
 
     echo '<div>';
-    echo '<input type="submit" class="auth-service-submit" value="Войти" />';
+    echo '<input type="submit" class="auth-service-submit" value="Зарегистрироваться" />';
     echo '</div>';
     ?>
 </form>
 </div>
-<?php
-echo '<div class="auth-service-process auth-service-process-'.$service->getServiceName().'">';
-$html = '<div>Идет авторизация...</div>';
-$html .= '<span class="auth-title">'.$service->getServiceTitle().'</span>';
-echo '</div>';
-?>

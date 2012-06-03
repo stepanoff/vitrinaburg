@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" href="/favicon.gif" />
+  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-ui-1.8.1.custom.min.js"></script>
   <title><?php echo $this->pageTitle; ?></title>
   <meta name="description" content="<?php echo CHtml::encode($this->pageDescription); ?>">
   <meta name="author" content="">
@@ -18,8 +20,6 @@
     <link href="<?php echo Yii::app()->request->staticUrl; ?>/css/iefix.css" rel="stylesheet" />
   <![endif]-->
   <script src="http://api-maps.yandex.ru/1.1/index.xml?key=<?php echo Yii::app()->params['yandexMapsKey']; ?>" type="text/javascript"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-1.7.1.min.js"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery-ui-1.8.1.custom.min.js"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery.jcarousel.min.js"></script>
     <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/maps.js"></script>
   <script src="<?php echo Yii::app()->request->staticUrl; ?>/js/funcs.js"></script>
@@ -33,18 +33,14 @@
         </div>
         <div class="auth-box">
             <div class="social"></div>
-            <?php
-            //$this->widget('ext.VExtension.widgets.auth.VAuthWidget', array('action'=>'/site/login'));
-            ?>
-            <!-- войти через:
           <div class="social">
-            <a class="auth-vk" href="#" title="вконтакте">вконтакте</a>
-            <a class="auth-fb" href="#" title="facebook">facebook</a>
-            <a class="auth-tw" href="#" title="twitter">twitter</a>
-            <a class="auth-gg" href="#" title="google+">google+</a>
+            <a class="auth-vk" href="#" onclick="Vauth.launch('vkontakte');" title="вконтакте">вконтакте</a>
+            <a class="auth-fb" href="#" onclick="Vauth.launch('facebook');" title="facebook">facebook</a>
+            <a class="auth-tw" href="#" onclick="Vauth.launch('twitter');" title="twitter">twitter</a>
+            <!--a class="auth-gg" href="#" title="google+">google+</a-->
           </div>
-          <a href="#">войти на сайт</a><br>
-          <a href="#">зарегистрироваться</a> -->
+          <a href="#" onclick="Vauth.launch();">войти на сайт</a><br>
+          <!--a href="#">зарегистрироваться</a> -->
         </div>
         <a href="/"><img class="logo" src="<?php echo Yii::app()->request->staticUrl; ?>/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
       </div>
@@ -141,6 +137,9 @@
       </div>
     </div>
   </div>
+  <?php
+  $this->widget('ext.VExtension.widgets.auth.VAuthWidget', array('action'=>'/site/login'));
+  ?>
 </body>
 <script type="text/javascript">
 $(document).ready(function() {

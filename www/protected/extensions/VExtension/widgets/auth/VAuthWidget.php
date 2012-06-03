@@ -68,8 +68,8 @@ class VAuthWidget extends CWidget {
 		// Set the current route, if it is not set.
 		if (!isset($this->action))
 			$this->action = Yii::app()->urlManager->parseUrl(Yii::app()->request);
-        $this->width = $this->width ? $this->width : 600;
-        $this->height = $this->height ? $this->height : 400;
+        $this->width = $this->width ? $this->width : 400;
+        $this->height = $this->height ? $this->height : 320;
 	}
 	
 	/**
@@ -116,7 +116,7 @@ class VAuthWidget extends CWidget {
 	 */
 	protected function registerAssets() {
 		$cs = Yii::app()->clientScript;
-		$cs->registerCoreScript('jquery');
+		//$cs->registerCoreScript('jquery');
 
 		$assets_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'assets';
 		$url = Yii::app()->assetManager->publish($assets_path, false, -1, YII_DEBUG);
@@ -130,8 +130,8 @@ class VAuthWidget extends CWidget {
 				$args = $service->getJsArguments();
 				$args['id'] = $service->getServiceName();
 				$js .= '$(".auth-service-'.$service->getServiceName().'").auth_service('.json_encode($args).');'."\n";
-                $js .= 'Vauth.init('.json_encode($this->getJsOptions()).');'."\n";
 			}
+            $js .= 'Vauth.init('.json_encode($this->getJsOptions()).');'."\n";
 			$cs->registerScript('auth-services', $js, CClientScript::POS_READY);
 		}
 	}

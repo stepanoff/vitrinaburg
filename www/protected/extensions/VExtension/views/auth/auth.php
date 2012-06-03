@@ -1,4 +1,7 @@
-<div class="auth" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px;">
+<div class="auth-shadow">
+</div>
+<div class="auth" style="width: <?php echo $width;?>px;">
+    <h1>Войти на сайт</h1>
     <div class="auth-error"></div>
     <div class="auth-processs">
         <div class="auth-processs-content">

@@ -6,9 +6,11 @@ if ((typeof Vauth == "undefined") || !Vauth) {
         'iframe': false,
         'popup': false,
         'redirectUrl' : false,
-        'returnUrl' : false,
         'loaded' : false,
-        'pageUrl' : false
+        'pageUrl' : false,
+        'containerClass' : 'auth',
+        'shadowClass' : 'auth-shadow',
+        'serviceClass' : 'auth-service-'
     };
 }
 
@@ -19,7 +21,6 @@ Vauth.hashParser = function () {
 		var commands = hash.split(';');
 		// набор якорь, функция для обработки нажатий по ссылкам
 		var callbacks = [
-		    ['token:', 'getToken'],
             ['reload:', 'reloadPage'],
             ['cancel:', 'authCanceled']
 		];
@@ -39,15 +40,6 @@ Vauth.hashParser = function () {
 			Vauth.hash = hash;
 		}
 	} catch (e) {}
-}
-
-Vauth.getToken = function (token) {
-    this.hash = token;
-    this.redirectUrl += (this.redirectUrl.indexOf('?') >= 0 ? '&' : '?') + 'auth_token=' + encodeURIComponent(token) + '&returnUrl=' + encodeURIComponent(this.returnUrl);
-    if (!this.iframe)
-        window.location.href = this.redirectUrl;
-    else
-        parent.location.href = this.redirectUrl;
 }
 
 Vauth.reloadPage = function (result) {
@@ -75,8 +67,43 @@ Vauth.init = function (options) {
     {
         alert ('redirectUrl not found. Initalization failed');
     }
+
+    Vauth.addEvent(document, 'keydown', function(e) {
+        e = e || window.event;
+        if (e.keyCode == 27) {
+            Vauth.close();
+        }
+        return true;
+    });
+
     this.loaded = true;
     return true;
+}
+
+Vauth.launch = function (service) {
+    service = service ? service : false;
+    $("."+this.containerClass).show();
+    $("."+this.shadowClass).show();
+    if (service) {
+        $(".auth-service-"+service).find('a').trigger('click');
+    }
+    return false;
+}
+
+Vauth.close = function () {
+    $("."+this.containerClass).hide();
+    $("."+this.shadowClass).hide();
+    return false;
+}
+
+Vauth.addEvent = function (obj, type, fn){
+	if (obj.addEventListener){
+	      obj.addEventListener( type, fn, false);
+	} else if(obj.attachEvent) {
+	      obj.attachEvent( "on"+type, fn );
+	} else {
+	      obj["on"+type] = fn;
+	}
 }
 
 hashChangeTimer = setInterval(Vauth.hashParser, 500);
@@ -108,7 +135,7 @@ jQuery(function($) {
             {
                 var redirect_uri, url = redirect_uri = $(el).attr('href');
                 //url += (url.indexOf('?') >= 0 ? '&' : '?') + 'redirect_uri=' + encodeURIComponent(redirect_uri);
-                url += (url.indexOf('?') >= 0 ? '&' : '?') + '&js';
+                url += (url.indexOf('?') >= 0 ? '&' : '?') + 'js=1';
             }
 
             /*var remember = $(this).parents('.auth-services').parent().find('.auth-services-rememberme');

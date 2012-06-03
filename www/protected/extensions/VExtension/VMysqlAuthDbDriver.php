@@ -55,6 +55,7 @@ class VMysqlAuthDbDriver implements IVAuthDbDriver
         $user = CActiveRecord::model($this->userModel)->findByPk($id);
         if (!$user)
             return false;
+        unset($data['id']);
         $user->setAttributes($data);
         $user->updated = date ('Y-m-d G:i:s');
         if ($user->save())

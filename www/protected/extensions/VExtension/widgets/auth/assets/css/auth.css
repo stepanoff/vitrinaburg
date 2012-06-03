@@ -1,6 +1,27 @@
 /* Height hack for float wrappers */
+.auth-shadow {
+    position: fixed;
+    background-color: #000;
+    opacity: 0.6;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
 .auth {
-    position: relative;
+    position: fixed;
+    margin-left: -200px;
+    left: 50%;
+    background-color: #fff;
+    padding: 10px 20px 40px 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    top: 10em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
 }
 
 .services {
@@ -34,10 +55,6 @@
 }
 
 .auth-services {
-    overflow:auto;
-    position: relative;
-    height: 260px;
-    padding-top: 40px;
 }
 
 .auth-processs {
@@ -50,15 +67,12 @@
 
 .auth-error {
     overflow:auto;
-    position: absolute;
-    top: 0;
-    left: 0;
     display: none;
-    background-color: #ff0000;
-    color: #ffffff;
     font-weight: bold;
-    padding: 10px 20px;
-    z-index: 100;
+    padding: 10px 10px;
+    margin: 0 -10px 10px -10px;
+    background-color: #C5295C;
+    color: #fff;
 }
 
 .auth-service {
@@ -88,4 +102,25 @@
     display: block;
     margin-top: 0.4em;
     text-align: center;
+}
+
+/*
+form
+*/
+.auth-form-row {
+    clear: both;
+    margin-bottom: 10px;
+}
+
+.auth-form-row label {
+    width: 100px;
+    float: left;
+}
+
+.auth-form-row label.inline {
+    display: inline-block;
+}
+
+.auth-form-control {
+    padding-left: 110px;
 }

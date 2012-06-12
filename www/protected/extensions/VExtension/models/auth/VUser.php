@@ -1,6 +1,9 @@
 <?php
 class VUser extends CActiveRecord {
 
+    const GENDER_MALE = 'M';
+    const GENDER_FEMALE = 'F';
+
     public static function model($className=__CLASS__)
     {
         return parent::model($className);

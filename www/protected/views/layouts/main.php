@@ -1,3 +1,8 @@
+<?php
+$user = false;
+if (Yii::app()->user->id)
+    $user = Yii::app()->user->getInfo();
+?>
 <!doctype html>
 <html>
 <head>
@@ -32,15 +37,26 @@
             <?php $this->renderPartial('application.views.blocks.banner_top', array()); ?>
         </div>
         <div class="auth-box">
-            <div class="social"></div>
-          <div class="social">
-            <a class="auth-vk" href="#" onclick="Vauth.launch('vkontakte');" title="вконтакте">вконтакте</a>
-            <a class="auth-fb" href="#" onclick="Vauth.launch('facebook');" title="facebook">facebook</a>
-            <a class="auth-tw" href="#" onclick="Vauth.launch('twitter');" title="twitter">twitter</a>
-            <!--a class="auth-gg" href="#" title="google+">google+</a-->
-          </div>
-          <a href="#" onclick="Vauth.launch();">войти на сайт</a><br>
-          <!--a href="#">зарегистрироваться</a> -->
+        <?php
+        if ($user)
+        {
+            echo $user['username'];
+            echo '<a href="'.CHtml::normalizeUrl(array('/site/logout', 'returnUrl'=>Yii::app()->request->requestUri)).'">выйти</a>';
+        }
+        else
+        {
+            ?>
+            <div class="social">
+              <a class="auth-vk" href="#" onclick="Vauth.launch('vkontakte');" title="вконтакте">вконтакте</a>
+              <a class="auth-fb" href="#" onclick="Vauth.launch('facebook');" title="facebook">facebook</a>
+              <a class="auth-tw" href="#" onclick="Vauth.launch('twitter');" title="twitter">twitter</a>
+              <!--a class="auth-gg" href="#" title="google+">google+</a-->
+            </div>
+            <a href="#" onclick="Vauth.launch();">войти на сайт</a><br>
+            <!--a href="#">зарегистрироваться</a> -->
+            <?php
+        }
+        ?>
         </div>
         <a href="/"><img class="logo" src="<?php echo Yii::app()->request->staticUrl; ?>/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
       </div>
@@ -138,7 +154,8 @@
     </div>
   </div>
   <?php
-  $this->widget('ext.VExtension.widgets.auth.VAuthWidget', array('action'=>'/site/login'));
+  if (!$user)
+      $this->widget('ext.VExtension.widgets.auth.VAuthWidget', array('action'=>'/site/login'));
   ?>
 </body>
 <script type="text/javascript">

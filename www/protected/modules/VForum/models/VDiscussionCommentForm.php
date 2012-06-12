@@ -1,29 +1,42 @@
 <?php
-class VAuthForm extends CFormModel
+class VDiscussionCommentForm extends CFormModel
 {
-    public $login;
-    
-    public $password;
-    
-    public $rememberMe;
-    
+    public $text;
+    public $parentId;
+
     public function rules()
     {
         return array(
-        				array('rememberMe', 'numerical', 'integerOnly' => true ),
-        				array('login', 'required', 'message'=>'Укажите логин' ),
-        				array('password', 'required', 'message'=>'Укажите пароль' ),
-        				array('login, password, rememberMe', 'safe'),
+            array('text', 'required', 'message'=>'Напишите что-нибудь' ),
+            array('text, parentId', 'safe'),
 		);
     }
 
     public function attributeLabels()
     {
         return array(
-                        'login' => 'Логин',
-                        'password'  => 'Пароль',
-        				'rememberMe'   => 'Запонмить меня',
+                        'text' => 'Комментарий',
+                        'parentId' => 'Родительский комментарий',
                     );
     }
+
+    /*
+    public function getElements ()
+    {
+        return array (
+            'elements' => array (
+                'text' => array (
+                    'type' => 'textarea',
+                )
+            ),
+            'buttons' => array (
+                'send'		 => array(
+                    'type' => 'submit',
+                    'label'=> 'Отправить',
+                ),
+            ),
+        );
+    }
+    */
 }
 ?>

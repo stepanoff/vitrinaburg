@@ -4,22 +4,8 @@
           <div class="forum">
             <h1>Общение на <?php echo Yii::app()->params['siteName']; ?></h1>
             <div class="f-top-bar">
-              <div class="pages">
-                <span>Всего: 5311, показано с 1 по <?php echo count($discussions); ?></span>
-                <b class="gradient1">1</b>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-                <a href="#">8</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <em>...</em>
-                <a href="#">211</a>
-                <a href="#">212</a>
-              </div>
+              <?php $pager = VForumHtmlHelper::pager($total, $discussionOnPage, array('/VForum/VForum/index'), $page, 10, 'Всего: '.$total.', показано с '.($offset+1).' по '.($offset+count($discussions)) ); ?>
+              <?php echo $pager; ?>
               <a href="#" class="f-button gradient1">Создать тему</a>
             </div>
 
@@ -61,22 +47,7 @@
             ?>
 
             <div class="f-bottom-bar">
-              <div class="pages">
-                <span>Всего: 5311, показано с 1 по 40</span>
-                <b class="gradient1">1</b>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-                <a href="#">8</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <em>...</em>
-                <a href="#">211</a>
-                <a href="#">212</a>
-              </div>
+                <?php echo $pager; ?>
             </div>
           </div>
         </div>

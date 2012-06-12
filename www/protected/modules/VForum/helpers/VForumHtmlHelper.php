@@ -6,15 +6,16 @@ class VForumHtmlHelper
         $totalPages = ceil($totalItems / $itemsPerPage);
         if ($totalPages <=1)
             return '';
-        $res = $title ? '<span>'.$title.'</span>' : '';
+        $res = '';
         $res .= '<div class="pages">';
+        $res .= $title ? '<span>'.$title.'</span>' : '';
         for ($i=1; $i<=$totalPages; $i++)
         {
             if ($i>$max && $i != $totalPages)
                 continue;
 
             if ($i == $currentPage)
-                $res .= '<b class="gradient1">1</b>
+                $res .= ' <b class="gradient1">'.$i.'</b>
 ';
             else
             {
@@ -24,7 +25,7 @@ class VForumHtmlHelper
 '.CHtml::link($i, $urlArr);
             }
             if ($i == $max && $totalPages > $max+1)
-                $res .= '<em>...</em>
+                $res .= ' <em>...</em>
 ';
 
         }

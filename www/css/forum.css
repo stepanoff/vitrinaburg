@@ -1,0 +1,29 @@
+.comment-form {
+    border-top: 2px solid #E5E5E5;
+    padding: 20px;
+}
+
+.comment-form .form-row {
+    padding: 0 0 10px 0;
+}
+
+.comment-form .form-row label {
+    padding: 0 0 4px 0;
+    display: block;
+}
+
+.comment-form .form-row textarea {
+    width: 60%;
+    height: 120px;
+}
+
+.comment-form .form-row .input-submit {
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    display: inline-block;
+    font: 10px/22px arial;
+    height: 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+}

@@ -1,12 +1,25 @@
 <?php
 class VForumDiscussionComment extends VActiveRecord
 {
+    const TAG_QUOTE = 'quote';
+    const TAG_BOLD = 'b';
+    const TAG_ITALIC = 'b';
+
     protected $discussionModel = 'VForumDiscussion';
     protected $userModel = 'VUser';
 
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
+    }
+
+    public static function getTags ()
+    {
+        return array (
+            self::TAG_QUOTE => 'blockquote',
+            self::TAG_BOLD => 'b',
+            self::TAG_ITALIC => 'i',
+        );
     }
 
     public function tableName()
@@ -45,9 +58,34 @@ class VForumDiscussionComment extends VActiveRecord
         return $this;
     }
 
+    public function byIds ($ids, $alias = 't')
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>$alias.'.id IN ('.implode(',',$ids).')',
+        ));
+        return $this;
+    }
+
     public function getContent ()
     {
-        return '<p>'.$this->content.'</p>';
+        $content = nl2br($this->content);
+        foreach ($this->getTags() as $code => $tag)
+        {
+            $content = $this->replaceTag ($content, $code, $tag);
+        }
+        return '<p>'.$content.'</p>';
+    }
+
+    protected function replaceTag ($content, $code, $tag)
+    {
+        return str_replace(array('['.$code.']', '[/'.$code.']'), array('<'.$tag.'>', '</'.$tag.'>'), $content);
+    }
+
+    public function getQuoteText ()
+    {
+        $content = preg_replace('#\['.self::TAG_QUOTE.'\][^\@]*\[\/'.self::TAG_QUOTE.'\]\s*#', "\n...\n", $this->content);
+        $authorText = $this->user->username.' написал'.($this->user->gender == VUser::GENDER_FEMALE ? 'а' : '').': ';
+        return '['.self::TAG_QUOTE.']'.$authorText.strip_tags($content).'[/'.self::TAG_QUOTE.']'."\n";
     }
 
     public function relations()

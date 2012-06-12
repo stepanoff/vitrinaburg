@@ -1,10 +1,11 @@
+    <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/forum.css">
     <div id="inner-page">
       <div class="base-width clearfix">
         <div class="main-col">
-          <div class="forum">
+          <div class="forum" id="forum">
             <h1><?php echo $discussion->title; ?></h1>
                   <?php
-                  $pages = VForumHtmlHelper::pager($discussion->commentsTotal, $commentsOnPge, array('/VForum/VForum/discussion', 'id'=>$discussion->id), false, 10, 'Страницы' );
+                  $pages = VForumHtmlHelper::pager($discussion->commentsTotal, $commentsOnPge, array('/VForum/VForum/discussion', 'id'=>$discussion->id), $page, 10, 'Страницы' );
                   if ($pages)
                   {
                       echo '<div class="t-top-bar">';
@@ -13,34 +14,29 @@
                   }
                   ?>
             <div class="theme">
-
+                <div class="comments-container">
                 <?php
                 foreach ($comments as $comment)
                 {
-                    ?>
-                    <div class="message clearfix">
-                      <div class="author-">
-                          <?php
-                            $img = '<img src="'.$comment->user->getAvatar('medium').'" alt="'.$comment->user->username.'">';
-                            echo CHtml::link($img, array('/vitrinaForum/user', 'id'=>$comment->user->id));
-                          ?>
-                        <?php echo CHtml::link($comment->user->username, array('/vitrinaForum/user', 'id'=>$comment->user->id)); ?>
-                        <small><?php echo DateUtils::_date($comment->date); ?></small>
-                      </div>
-                      <div class="body-">
-                        <?php echo $comment->getContent(); ?>
-                        <div class="actions- clearfix">
-                          <div class="links-"><a class="js-forum-complaint" href="#">пожаловаться модератору</a></div>
-                          <div class="buttons-">
-                            <a href="#" class="js-forum-answer gradient1">Ответить</a>
-                            <a href="#" class="js-forum-quote gradient1">Цитировать</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <?php
+                    $view = $this->getModule()->getViewsAlias('blocks.comment');
+                    $this->renderPartial($view, array('comment' => $comment));
                 }
                 ?>
+                </div>
+
+                    <div class="comment-form">
+                        <form method="post" action="">
+                            <input type="hidden" name="<?php echo CHtml::activeName($commentForm, 'parentId'); ?>" value="">
+                            <div class="comment-form__title"></div>
+                            <div class="form-row">
+                                <label>Оставить комментарий</label>
+                                <textarea name="<?php echo CHtml::activeName($commentForm, 'text'); ?>"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <input type="submit" class="input-submit gradient1" name="send" value="Отправить"/>
+                            </div>
+                        </form>
+                    </div>
             </div>
 
                 <?php
@@ -88,3 +84,12 @@
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#forum").vforum_comments({
+            'userId' : <?php echo Yii::app()->user->id ? Yii::app()->user->id : 'false'; ?>,
+            'onAuthorize' : function () {Vauth.launch(); return false;}
+        });
+    });
+</script>

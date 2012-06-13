@@ -3,51 +3,28 @@
       <div class="base-width clearfix">
         <div class="main-col">
           <div class="forum" id="forum">
-            <h1><?php echo $discussion->title; ?></h1>
-                  <?php
-                  $pages = VForumHtmlHelper::pager($discussion->commentsTotal, $commentsOnPge, array('/VForum/VForum/discussion', 'id'=>$discussion->id), $page, 10, 'Страницы' );
-                  if ($pages)
-                  {
-                      echo '<div class="t-top-bar">';
-                      echo $pages;
-                      echo '</div>';
-                  }
-                  ?>
-            <div class="theme">
-                <div class="comments-container">
-                <?php
-                foreach ($comments as $comment)
-                {
-                    $view = $this->getModule()->getViewsAlias('blocks.comment');
-                    $this->renderPartial($view, array('comment' => $comment));
-                }
-                ?>
-                </div>
-
+            <h1>Создать новую тему</h1>
                     <div class="comment-form">
                         <form method="post" action="">
-                            <input type="hidden" name="<?php echo CHtml::activeName($commentForm, 'parentId'); ?>" value="">
-                            <div class="comment-form__title"></div>
-                            <div class="form-row<?php if ($commentForm->getError('text')) {echo ' error';} ?>">
-                                <label>Оставить комментарий</label>
-                                <div class="error-message"><?php echo $commentForm->getError('text'); ?></div>
-                                <textarea name="<?php echo CHtml::activeName($commentForm, 'text'); ?>"></textarea>
+
+                            <?php echo CHtml::activeHiddenField($form, 'forum_category_id'); ?>
+                            <div class="form-row<?php if ($form->getError('title')) {echo ' error';} ?>">
+                                <label>Заголовок темы</label>
+                                <div class="error-message"><?php echo $form->getError('title'); ?></div>
+                                <?php echo CHtml::activeTextField($form, 'title'); ?>
                             </div>
+
+                            <div class="form-row<?php if ($form->getError('text')) {echo ' error';} ?>">
+                                <label>Комментарий</label>
+                                <div class="error-message"><?php echo $form->getError('text'); ?></div>
+                                <?php echo CHtml::activeTextarea($form, 'text'); ?>
+                            </div>
+
                             <div class="form-row">
-                                <input type="submit" class="input-submit gradient1" name="send" value="Отправить"/>
+                                <input type="submit" class="input-submit gradient1" name="send" value="Создать"/>
                             </div>
                         </form>
                     </div>
-            </div>
-
-                <?php
-                  if ($pages)
-                  {
-                      echo '<div class="t-bottom-bar">';
-                      echo $pages;
-                      echo '</div>';
-                  }
-                ?>
           </div>
         </div>
         <div class="left-col">

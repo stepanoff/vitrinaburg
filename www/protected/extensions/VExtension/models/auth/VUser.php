@@ -48,7 +48,7 @@ class VUser extends CActiveRecord {
     {
         if ($this->avatar)
             return $this->avatar;
-        return '/images/must_be_deleted/user.jpg';
+        return Yii::app()->user->getDefaultAvatar($size, $this->gender);
     }
 
 }

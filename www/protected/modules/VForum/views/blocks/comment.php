@@ -3,9 +3,9 @@
                       <div class="author-">
                           <?php
                             $img = '<img src="'.$comment->user->getAvatar('medium').'" alt="'.$comment->user->username.'">';
-                            echo CHtml::link($img, array('/vitrinaForum/user', 'id'=>$comment->user->id));
+                            echo VHtml::userLink($comment->user, $img);
                           ?>
-                        <?php echo CHtml::link($comment->user->username, array('/vitrinaForum/user', 'id'=>$comment->user->id)); ?>
+                        <?php echo VHtml::userLink($comment->user); ?>
                         <small><?php echo DateUtils::_date($comment->date); ?></small>
                       </div>
                       <div class="body-">

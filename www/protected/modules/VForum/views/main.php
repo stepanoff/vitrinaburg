@@ -6,7 +6,7 @@
             <div class="f-top-bar">
               <?php $pager = VForumHtmlHelper::pager($total, $discussionOnPage, array('/VForum/VForum/index'), $page, 10, 'Всего: '.$total.', показано с '.($offset+1).' по '.($offset+count($discussions)) ); ?>
               <?php echo $pager; ?>
-              <a href="#" class="f-button gradient1">Создать тему</a>
+              <a href="<?php echo CHtml::normalizeUrl(array('/VForum/VForum/addDiscussion')); ?>" class="f-button gradient1">Создать тему</a>
             </div>
 
             <?php
@@ -31,11 +31,11 @@
                           if ($comments[$discussion->id])
                           {
                               $comment = $comments[$discussion->id];
-                              echo '<small>последний комментарий: '.DateUtils::_date($comment->date).' от '.CHtml::link($comment->user->username, array('/vitrinaForum/user', 'id'=>$comment->user->id)).'</small>';
+                              echo '<small>последний комментарий: '.DateUtils::_date($comment->date).' от '.VHtml::userLink($comment->user).'</small>';
                           }
                         ?>
                       </div>
-                      <div class="cell-author"><?php echo CHtml::link($discussion->user->username, array('/vitrinaForum/user', 'id'=>$discussion->user->id)); ?></div>
+                      <div class="cell-author"><?php echo VHtml::userLink($discussion->user); ?></div>
                       <div class="cell-length"><?php echo $discussion->commentsTotal; ?></div>
                     </li>
                     <?php

@@ -36,6 +36,7 @@
             var resetForm = function () {
                 commentTextarea.val("");
                 commentParentIdInput.val("");
+                removeErrors();
             }
 
             var answer = function (el) {
@@ -94,10 +95,7 @@
                         else
                             if (result.error)
                             {
-                                for (i in result.errors)
-                                {
-                                    
-                                }
+                                putErrors(result.errors);
                             }
                             else
                             {
@@ -107,6 +105,24 @@
                     });
                     return false;
             };
+
+            var putErrors = function(errors)
+            {
+                var input = false;
+                var row = false;
+                for (i in errors)
+                {
+                    input = commentForm.find(':input[name="'+i+'"]');
+                    row = input.closest(".form-row");
+                    row.addClass("error");
+                    row.find(".error-message").html(errors[i]);
+                }
+            }
+
+            var removeErrors = function()
+            {
+                commentForm.find(".form-row").removeClass("error");
+            }
 
             container.delegate("."+o.answerButtonClass, 'click', function(){
                 answer(this);

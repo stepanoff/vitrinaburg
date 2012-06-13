@@ -32,6 +32,7 @@ return array(
         '/mystyle/' => 'vitrinaWidget/create',
 
         '/forum' => 'VForum/VForum/index',
+        '/forum/addDiscussion' => 'VForum/VForum/addDiscussion',
         '/forum/discussion/<id:([0-9]+)>' => 'VForum/VForum/discussion',
         '/user/profile/<id:([0-9]+)>' => 'vitrinaForum/user',
 

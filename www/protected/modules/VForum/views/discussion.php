@@ -28,8 +28,9 @@
                         <form method="post" action="">
                             <input type="hidden" name="<?php echo CHtml::activeName($commentForm, 'parentId'); ?>" value="">
                             <div class="comment-form__title"></div>
-                            <div class="form-row">
+                            <div class="form-row<?php if ($commentForm->getError('text')) {echo ' error';} ?>">
                                 <label>Оставить комментарий</label>
+                                <div class="error-message"><?php echo $commentForm->getError('text'); ?></div>
                                 <textarea name="<?php echo CHtml::activeName($commentForm, 'text'); ?>"></textarea>
                             </div>
                             <div class="form-row">

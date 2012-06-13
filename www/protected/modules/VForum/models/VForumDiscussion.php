@@ -61,12 +61,12 @@ class VForumDiscussion extends VActiveRecord
         $res = parent::rules();
         return array_merge($res, array(
         	array('title', 'required', 'message' => 'Укажите название темы'),
-            array('content', 'required', 'message' => 'Напишите что-нибудь'),
-            array('cost', 'required', 'message' => 'Укажите стоимость', 'on' => VForumCategory::TYPE_ANNOUNCE),
-            array('photo', 'ImageValidator', 'on' => VForumCategory::TYPE_ANNOUNCE),
-        	array('title, date_created, user_id, cost, photo, forum_category_id, content', 'safe', 'on' => 'admin'),
-            array('title, date_created, user_id, forum_category_id, content', 'on' => VForumCategory::TYPE_ANNOUNCE.', '.VForumCategory::TYPE_DEFAULT),
-            array('cost, photo', 'on' => VForumCategory::TYPE_ANNOUNCE),
+            //array('content', 'required', 'message' => 'Напишите что-нибудь'),
+            //array('cost', 'required', 'message' => 'Укажите стоимость', 'on' => VForumCategory::TYPE_ANNOUNCE),
+            //array('photo', 'ImageValidator', 'on' => VForumCategory::TYPE_ANNOUNCE),
+        	array('title, date_created, user_id, cost, photo, forum_category_id', 'safe', 'on' => 'admin'),
+            array('title, date_created, user_id, forum_category_id', 'safe', 'on' => 'type'.VForumCategory::TYPE_ANNOUNCE.', '.'type'.VForumCategory::TYPE_DEFAULT),
+            array('cost, photo', 'safe', 'on' => 'type'.VForumCategory::TYPE_ANNOUNCE),
 		));
     }
 

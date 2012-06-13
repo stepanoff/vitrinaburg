@@ -1,16 +1,16 @@
 <?php
-class VDiscussionCommentForm extends CFormModel
+class VForumDiscussionForm extends CFormModel
 {
     public $text;
     public $title;
-    public $parentId;
+    public $forum_category_id;
 
     public function rules()
     {
         return array(
             array('title', 'required', 'message'=>'Укажите название темы' ),
             array('text', 'required', 'message'=>'Напишите что-нибудь' ),
-            array('text, parentId, title', 'safe'),
+            array('text, title, forum_category_id', 'safe'),
 		);
     }
 
@@ -19,7 +19,7 @@ class VDiscussionCommentForm extends CFormModel
         return array(
                         'title' => 'Тема',
                         'text' => 'Комментарий',
-                        'parentId' => 'Родительский комментарий',
+                        'forum_category_id' => 'Категория',
                     );
     }
 

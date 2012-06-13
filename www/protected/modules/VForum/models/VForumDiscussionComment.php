@@ -3,7 +3,7 @@ class VForumDiscussionComment extends VActiveRecord
 {
     const TAG_QUOTE = 'quote';
     const TAG_BOLD = 'b';
-    const TAG_ITALIC = 'b';
+    const TAG_ITALIC = 'i';
 
     protected $discussionModel = 'VForumDiscussion';
     protected $userModel = 'VUser';
@@ -84,7 +84,7 @@ class VForumDiscussionComment extends VActiveRecord
     public function getQuoteText ()
     {
         $content = preg_replace('#\['.self::TAG_QUOTE.'\][^\@]*\[\/'.self::TAG_QUOTE.'\]\s*#', "\n...\n", $this->content);
-        $authorText = $this->user->username.' написал'.($this->user->gender == VUser::GENDER_FEMALE ? 'а' : '').': ';
+        $authorText = '['.self::TAG_BOLD.']'.$this->user->username.' написал'.($this->user->gender == VUser::GENDER_FEMALE ? 'а' : '').':[/'.self::TAG_BOLD.'] ';
         return '['.self::TAG_QUOTE.']'.$authorText.strip_tags($content).'[/'.self::TAG_QUOTE.']'."\n";
     }
 

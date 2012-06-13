@@ -152,5 +152,11 @@ class VHtml
         return $n % 10 == 1 && $n % 100 !=11 ? $c1 : ($n % 10 >= 2 && $n % 10 <=4 && ($n % 100 < 10 || $n % 100 >= 20) ? $c2 : $c3);
     }
 
+    public function userLink ($user, $content = false)
+    {
+        $content = $content === false ? $user->username : $content;
+        return CHtml::link($content, array('/vitrinaForum/user', 'id'=>$user->id));
+    }
+
 }
 ?>

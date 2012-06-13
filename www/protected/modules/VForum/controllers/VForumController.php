@@ -161,7 +161,7 @@ LIMIT 1
                     $errors = array();
                     foreach ($commentForm->getErrors() as $attr => $_errors)
                     {
-                        $errors[$attr] = $_errors[0];
+                        $errors[CHtml::activeName($commentForm, $attr)] = $_errors[0];
                     }
 
                     echo CJSON::encode(array(
@@ -212,6 +212,71 @@ LIMIT 1
 
     public function actionAddDiscussion()
     {
+        $user = Yii::app()->user;
+
+        $form = new VForumDiscussionForm;
+        $form->forum_category_id = 1;
+        if (isset($_POST['VForumDiscussionForm']))
+        {
+            $form->setAttributes($_POST['VForumDiscussionForm']);
+            $error = true;
+            $comment = new VForumDiscussionComment;
+            if ($form->validate())
+            {
+                if (!Yii::app()->user->id)
+                {
+                    $form->addError('text', 'зайдите на сайт, чтобы создать тему');
+                }
+                else
+                {
+                    $discussion = new VForumDiscussion;
+                    $discussion->scenario = 'type'.VForumCategory::TYPE_DEFAULT;
+                    $discussion->title = $form->title;
+                    $discussion->forum_category_id = $form->forum_category_id;
+                    $discussion->date_created = time();
+                    $discussion->user_id = Yii::app()->user->id;
+                    if ($discussion->save())
+                    {
+                        $comment->user_id = Yii::app()->user->id;
+                        $comment->date = time();
+                        $comment->forum_discussion_id = $discussion->id;
+                        $comment->content = $form->text;
+                        if ($comment->save())
+                            $error = false;
+                    }
+                }
+            }
+
+            if (Yii::app()->request->isAjaxRequest)
+            {
+                if ($error)
+                {
+                    $errors = array();
+                    foreach ($form->getErrors() as $attr => $_errors)
+                    {
+                        $errors[CHtml::activeName($form, $attr)] = $_errors[0];
+                    }
+
+                    echo CJSON::encode(array(
+                        'error' => true,
+                        'errors' => $errors,
+                    ));
+                    die();
+                }
+                else
+                {
+                }
+            }
+
+            if (!$error)
+            {
+                $this->redirect(array('/VForum/VForum/discussion', 'id'=>$discussion->id));
+            }
+        }
+        $view = $this->getModule()->getViewsAlias('addDiscussion');
+        $this->render($view, array (
+            'form' => $form,
+        ));
     }
 
     public function actionAddComment()

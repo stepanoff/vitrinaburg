@@ -7,6 +7,21 @@ class VUserComponent extends CApplicationComponent implements IWebUser
 
     private $_isGuest = null;
 
+    public $defaultAvatars = array (
+        'M' => array (
+            'small' => '/images/logo.png',
+            'medium' => '/images/logo.png',
+        ),
+        'F' => array (
+            'small' => '/images/logo.png',
+            'medium' => '/images/logo.png',
+        ),
+        'default' => array (
+            'small' => '/images/logo.png',
+            'medium' => '/images/logo.png',
+        ),
+    );
+
 	/**
 	 * @var boolean whether to enable cookie-based login. Defaults to false.
 	 */
@@ -766,6 +781,15 @@ class VUserComponent extends CApplicationComponent implements IWebUser
     public function checkAccess($operation,$params=array())
     {
         return true;
+    }
+
+    public function getDefaultAvatar ($size, $gender = false)
+    {
+        $gender = $gender ? $gender : 'default';
+        $avatars = $this->defaultAvatars;
+        if (isset($avatars[$gender][$size]))
+            return $avatars[$gender][$size];
+        return $avatars['default']['medium'];
     }
 
 }

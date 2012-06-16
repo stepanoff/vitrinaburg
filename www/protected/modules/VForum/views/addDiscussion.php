@@ -1,29 +1,10 @@
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/forum.css">
     <div id="inner-page">
       <div class="base-width clearfix">
         <div class="main-col">
           <div class="forum" id="forum">
             <h1>Создать новую тему</h1>
                     <div class="comment-form">
-                        <form method="post" action="">
-
-                            <?php echo CHtml::activeHiddenField($form, 'forum_category_id'); ?>
-                            <div class="form-row<?php if ($form->getError('title')) {echo ' error';} ?>">
-                                <label>Заголовок темы</label>
-                                <div class="error-message"><?php echo $form->getError('title'); ?></div>
-                                <?php echo CHtml::activeTextField($form, 'title'); ?>
-                            </div>
-
-                            <div class="form-row<?php if ($form->getError('text')) {echo ' error';} ?>">
-                                <label>Комментарий</label>
-                                <div class="error-message"><?php echo $form->getError('text'); ?></div>
-                                <?php echo CHtml::activeTextarea($form, 'text'); ?>
-                            </div>
-
-                            <div class="form-row">
-                                <input type="submit" class="input-submit gradient1" name="send" value="Создать"/>
-                            </div>
-                        </form>
+                        <?php $this->widget('application.extensions.VExtension.widgets.VFormBuilderWidget', array('model'=>$form, 'elements'=>$form->getFormElements())); ?>
                     </div>
           </div>
         </div>

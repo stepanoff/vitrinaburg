@@ -23,4 +23,6 @@ defined('YII_DEBUG_LOG') or define('YII_DEBUG_LOG', $yiiDebug);
 
 require_once($yii);
 require(dirname(__FILE__) . '/protected/components/ExtendedWebApplication.php');
-Yii::createApplication('ExtendedWebApplication', $config)->run();
+$app = Yii::createApplication('ExtendedWebApplication', $config);
+Yii::app()->VExtension;
+$app->run();

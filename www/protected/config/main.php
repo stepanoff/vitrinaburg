@@ -40,9 +40,6 @@ $mainConfig = array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.*',
-        'ext.VExtension.*',
-        'ext.VExtension.helpers.*',
-        'ext.VExtension.models.*',
         'ext.eauth.*',
         'ext.eauth.services.*',
         'ext.eoauth.*',
@@ -94,23 +91,27 @@ $mainConfig = array(
         'loid' => array(
             'class' => 'ext.lightopenid.loid',
         ),
-		'vauth' => require(dirname(__FILE__).'/vauth.php'),
-        /*
-		'clientScript'=>array(
-			'class'=>'application.components.ExtendedClientScript',
-			'combineFiles'=>false,
-			'compressCss'=>false,
-			'compressJs'=>false,
-		),
-        */
-		'user'=>array(
-			'class'=>'application.extensions.VExtension.VUserComponent',
-			'allowAutoLogin'=>true,
-            'dbDriver'=> 'VMysqlAuthDbDriver',
-//			'loginUrl'=>null,
-			'identityCookie'=>array('domain'=>'.'.$params['domain']),
-//            'visitorTTL' => 183 * 24*60*60,
-		),
+        'VExtension' => array (
+            'class' => 'ext.VExtension.VExtensionComponent',
+            'components' => array (
+                'auth' => array (
+                    'name' => 'vauth',
+                    'options' => require(dirname(__FILE__).'/vauth.php'),
+                ),
+                'user' => array (
+                    'name' => 'user',
+                    'options' => array(
+                        'class'=>'application.extensions.VExtension.VUserComponent',
+                        'allowAutoLogin'=>true,
+                        'dbDriver'=> 'VMysqlAuthDbDriver',
+                        'identityCookie'=>array('domain'=>'.'.$params['domain']),
+                    )
+                ),
+            ),
+            'modules' => array (
+
+            ),
+        ),
         'urlManager'=>require(dirname(__FILE__).'/urlManager.php'),
         
         'cache' => array(
@@ -135,5 +136,4 @@ $mainConfig = array(
     'modules'=>require(dirname(__FILE__).'/modules.php'),
     
 );
-
 return $mainConfig;

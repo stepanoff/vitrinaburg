@@ -23,5 +23,29 @@ class VForumDiscussionForm extends CFormModel
                     );
     }
 
+    public function getFormElements ()
+    {
+        return array(
+            'elements' => array(
+                'forum_category_id' => array(
+                    'type' => 'hidden'
+                ),
+                'title' => array(
+                    'type' => 'text'
+                ),
+                'text' => array(
+                    'type' => 'textarea',
+                ),
+            ),
+            'buttons' => array (
+                'send'		 => array(
+                    'type' => 'submit',
+                    'label'=> 'Создать тему',
+                ),
+            ),
+        );
+
+    }
+
 }
 ?>

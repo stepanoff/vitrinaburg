@@ -283,11 +283,6 @@ class VUserComponent extends CApplicationComponent implements IWebUser
 	{
         if ($this->_isGuest === null)
         {
-            $this->_isGuest = true;
-            if ($this->allowAutoLogin)
-            {
-                $this->restoreFromCookie();
-            }
             $this->_isGuest = $this->getState('__id')===null || $this->getState('__token')===null;
         }
         return $this->_isGuest;
@@ -500,6 +495,7 @@ class VUserComponent extends CApplicationComponent implements IWebUser
                     if($this->beforeLogin($id,$states,true))
                     {
                         $this->changeIdentity($id,$name,$states);
+                        $this->_isGuest = false;
                         if($this->autoRenewCookie)
                         {
                             $cookie->expire=time()+$duration;

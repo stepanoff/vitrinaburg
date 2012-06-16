@@ -16,7 +16,7 @@ class VForumController extends Controller
         $discussionModel = new VForumDiscussion;
         $commentModel = new VForumDiscussionComment;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 40;
+        $limit = 20;
         $offset = ($page-1)*$limit;
 
         $discussions = array();

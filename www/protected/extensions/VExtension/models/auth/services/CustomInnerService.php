@@ -10,6 +10,7 @@ class CustomInnerService extends EAuthServiceBase implements IAuthService {
 
     public $formModelClass = 'VAuthForm';
     protected $_form;
+    protected $_rememberMe = false;
 	
 	protected $uid = null;
 
@@ -75,6 +76,7 @@ class CustomInnerService extends EAuthServiceBase implements IAuthService {
             {
                 if ($user->password && $user->password == $form->password)
                 {
+                    $this->_rememberMe = $form->rememberMe;
                     $info = $this->obtainUser($user);
                     $this->authenticated = true;
                 }
@@ -169,7 +171,8 @@ class CustomInnerService extends EAuthServiceBase implements IAuthService {
         $this->attributes['email'] = $user->email;
         if (Yii::app()->getComponent('user'))
         {
-            $this->setState('expires', self::EXPIRES_DAYS*60*60*24);
+            if ($this->_rememberMe)
+                $this->setState('expires', time()+self::EXPIRES_DAYS*60*60*24);
         }
         return true;
     }

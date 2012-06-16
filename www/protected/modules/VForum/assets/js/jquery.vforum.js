@@ -114,8 +114,8 @@
                 {
                     input = commentForm.find(':input[name="'+i+'"]');
                     row = input.closest(".form-row");
-                    row.addClass("error");
-                    row.find(".error-message").html(errors[i]);
+                    row.addClass('error');
+                    row.find(".form-row__error").html(errors[i]);
                 }
             }
 

@@ -6,7 +6,12 @@
             <div class="f-top-bar">
               <?php $pager = VForumHtmlHelper::pager($total, $discussionOnPage, array('/VForum/VForum/index'), $page, 10, 'Всего: '.$total.', показано с '.($offset+1).' по '.($offset+count($discussions)) ); ?>
               <?php echo $pager; ?>
-              <a href="<?php echo CHtml::normalizeUrl(array('/VForum/VForum/addDiscussion')); ?>" class="f-button gradient1">Создать тему</a>
+                <?php
+                $onclick = false;
+                if (!Yii::app()->user->id)
+                    $onclick = 'onclick="Vauth.launch(); return false;"';
+                ?>
+              <a href="<?php echo CHtml::normalizeUrl(array('/VForum/VForum/addDiscussion')); ?>" <?php echo $onclick; ?> class="f-button gradient1">Создать тему</a>
             </div>
 
             <?php

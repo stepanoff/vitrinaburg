@@ -1,4 +1,3 @@
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->staticUrl; ?>/css/forum.css">
     <div id="inner-page">
       <div class="base-width clearfix">
         <div class="main-col">
@@ -25,18 +24,7 @@
                 </div>
 
                     <div class="comment-form">
-                        <form method="post" action="">
-                            <input type="hidden" name="<?php echo CHtml::activeName($commentForm, 'parentId'); ?>" value="">
-                            <div class="comment-form__title"></div>
-                            <div class="form-row<?php if ($commentForm->getError('text')) {echo ' error';} ?>">
-                                <label>Оставить комментарий</label>
-                                <div class="error-message"><?php echo $commentForm->getError('text'); ?></div>
-                                <textarea name="<?php echo CHtml::activeName($commentForm, 'text'); ?>"></textarea>
-                            </div>
-                            <div class="form-row">
-                                <input type="submit" class="input-submit gradient1" name="send" value="Отправить"/>
-                            </div>
-                        </form>
+                        <?php $this->widget('application.extensions.VExtension.widgets.VFormBuilderWidget', array('model'=>$commentForm, 'elements'=>$commentForm->getFormElements())); ?>
                     </div>
             </div>
 
@@ -90,7 +78,7 @@
     $(document).ready(function(){
         $("#forum").vforum_comments({
             'userId' : <?php echo Yii::app()->user->id ? Yii::app()->user->id : 'false'; ?>,
-            'onAuthorize' : function () {Vauth.launch(); return false;}
+            'onAuthorize' : function () {Vauth.launch(); return false;},
         });
     });
 </script>

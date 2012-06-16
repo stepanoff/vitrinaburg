@@ -15,18 +15,23 @@ class VDiscussionCommentForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-                        'text' => 'Комментарий',
+                        'text' => 'Оставить комментарий',
                         'parentId' => 'Родительский комментарий',
                     );
     }
 
-    /*
-    public function getElements ()
+    public function getFormElements ()
     {
+        $widgetAlias = 'ext.VExtension.widgets.VBbCodeEditorWidget';
         return array (
             'elements' => array (
+                'parentId' => array (
+                    'type' => 'hidden',
+                )
+            ),
+            'elements' => array (
                 'text' => array (
-                    'type' => 'textarea',
+                    'type' => $widgetAlias,
                 )
             ),
             'buttons' => array (
@@ -37,6 +42,5 @@ class VDiscussionCommentForm extends CFormModel
             ),
         );
     }
-    */
 }
 ?>

@@ -1,41 +1,41 @@
-.comment-form {
+.v-form {
     border-top: 2px solid #E5E5E5;
     padding: 20px;
 }
 
-.comment-form .form-row {
+.v-form .form-row {
     padding: 0 0 10px 0;
 }
 
-.comment-form label {
+.v-form label {
     padding: 0 0 4px 0;
     display: block;
 }
 
-.comment-form .error-message {
-    display: none;
-}
-
-.comment-form textarea {
+.v-form textarea {
     width: 60%;
     height: 120px;
 }
 
-.comment-form .error textarea {
+.v-form .error textarea {
     border: 1px solid #C72E5E;
 }
 
-.comment-form .error input {
+.v-form .error input {
     border: 1px solid #C72E5E;
 }
 
-.comment-form .error .error-message {
+.v-form .error .form-row__error {
     display: block;
     padding: 4px 0;
     color: #C72E5E;
 }
 
-.comment-form .form-row .input-submit {
+.v-form .form-row__error {
+    display: none;
+}
+
+.v-form .buttons .input {
     border-radius: 4px 4px 4px 4px;
     color: #FFFFFF;
     display: inline-block;

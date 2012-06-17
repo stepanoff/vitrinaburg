@@ -25,4 +25,5 @@ require_once($yii);
 require(dirname(__FILE__) . '/protected/components/ExtendedWebApplication.php');
 $app = Yii::createApplication('ExtendedWebApplication', $config);
 Yii::app()->VExtension;
+Yii::app()->user;
 $app->run();

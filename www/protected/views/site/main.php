@@ -111,17 +111,17 @@
               </div>
               <div class="mpbs-col-2">
               <?php
-              if ($answers)
+              if ($discussions)
               {
-                  echo '<h2 class="mp-red">Последние ответы на форуме</h2>';
+                  echo '<h2 class="mp-red"><a href="'.CHtml::normalizeUrl(array('/VForum/VForum/index')).'">Последние ответы на форуме</a></h2>';
                   echo '<ul class="mp-last-forum">';
-                  foreach ($answers as $answer)
+                  foreach ($discussions as $discussion)
                   {
                       echo '<li>';
-                      echo CHtml::link($answer['discussion']['title'], array('/vitrinaForum/discussion/', 'id'=>$answer['discussion']['id']));
-                      echo '<small>последний комментарий: '.DateUtils::_date($answer['date']).' от '.
-                        CHtml::link($answer['user']['username'], array('/vitrinaForum/user/', 'id'=>$answer['user']['id']), array('class'=>'red')).
-                        '</small>';
+                      echo CHtml::link($discussion->title, array('/VForum/VForum/discussion', 'id'=>$discussion->id));
+                      $comment = isset($comments[$discussion->id]) ? $comments[$discussion->id] : false;
+                      if ($comment)
+                        echo '<small>последний комментарий: '.DateUtils::_date($comment->date).' от '.VHtml::userLink($comment->user, false, array('class'=>'red')).'</small>';
                       echo '</li>';
                   }
                   echo '</ul>';

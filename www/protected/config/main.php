@@ -93,6 +93,7 @@ $mainConfig = array(
         ),
         'VExtension' => array (
             'class' => 'ext.VExtension.VExtensionComponent',
+            'staticUrl' => $params['staticUrl'],
             'components' => array (
                 'auth' => array (
                     'name' => 'vauth',
@@ -105,6 +106,21 @@ $mainConfig = array(
                         'allowAutoLogin'=>true,
                         'dbDriver'=> 'VMysqlAuthDbDriver',
                         'identityCookie'=>array('domain'=>'.'.$params['domain']),
+                        'defaultAvatars' => array (
+                            'M' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            ),
+                            'F' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            ),
+                            'default' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            )
+                        ),
+
                     )
                 ),
             ),

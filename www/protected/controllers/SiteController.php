@@ -8,7 +8,6 @@ class SiteController extends Controller
         $this->setPageTitle('Одежда в Екатеринбурге, модные бренды и ассортимент магазинов с ценами и фото &mdash; Витринабург, Магазины в Екатеринбурге &mdash; '.Yii::app()->params['siteName']);
 
         $photosInSections = array(); // фото за последние сутки по рубрикам
-        $answers = array(); // послдение ответы на форуме
 
         $actions = VitrinaShopAction::model()->onSite()->orderDefault()->byLimit(4)->findAll();
         $todayActions = 0;
@@ -24,35 +23,52 @@ class SiteController extends Controller
         $sectionsClass = new VitrinaSection;
         $sections = $sectionsClass->getStructure(2);
 
-        $criteria = new CDbCriteria(array(
-            'order' => '`date` DESC',
-            'limit' => '5',
-        ));
-        $answers = Yii::app()->db->commandBuilder->createFindCommand('forum_comments', $criteria)->queryAll();
-        foreach ($answers as $k => $answer)
-        {
-            $answer['discussion'] = false;
+        /*
+         * Форумное общение
+         */
+        $m = Yii::app()->getModule('VForum');
+        $discussionModel = new VForumDiscussion;
+        $commentModel = new VForumDiscussionComment;
+        $discussions = array();
+        $comments = array();
 
-            $criteria = new CDbCriteria(array());
-            $criteria->addCondition('id = :id');
-            $criteria->params = array(
-                ':id' => $answer['forum_discussion_id']
-            );
-            $discussion = Yii::app()->db->commandBuilder->createFindCommand('forum_discussions', $criteria)->queryRow();
-            if ($discussion)
+        $sql = '
+SELECT DISTINCT (d.id), d.title, lc.id as `cid`, lc.date
+FROM (
+SELECT MAX( c.date ) AS `date` , c.id AS `id` , c.forum_discussion_id AS forum_discussion_id
+FROM `'.$commentModel->tableName().'` c
+GROUP BY c.forum_discussion_id
+) AS lc, `'.$discussionModel->tableName().'` d
+WHERE lc.forum_discussion_id = d.id
+ORDER BY lc.date DESC
+LIMIT 5';
+
+        $lastDiscussions = Yii::app()->db->commandBuilder->createSqlCommand($sql)->queryAll();
+
+        $dIds = array();
+        foreach ($lastDiscussions as $row)
+        {
+            $dIds[] = $row['id'];
+            $lc = VForumDiscussionComment::model()->byObjectId('forum_discussion_id', $row['id'])->orderLast()->find();
+            if ($lc && $lc->user)
+                $comments[$row['id']] = $lc;
+        }
+
+        if ($dIds)
+        {
+            $discussionsModels = VForumDiscussion::model()->byIds($dIds)->findAll();
+            $tmp = array ();
+            foreach ($discussionsModels as $discussion)
             {
-                $answer['discussion'] = $discussion;
-                $answer['user'] = false;
-                $criteria = new CDbCriteria(array());
-                $criteria->addCondition('id = :id');
-                $criteria->params = array(
-                    ':id' =>$answer['user_id']
-                );
-                $user = Yii::app()->db->commandBuilder->createFindCommand('users', $criteria)->queryRow();
-                if ($user)
-                    $answer['user'] = $user;
+                if (!$discussion->user)
+                    continue;
+                $tmp[$discussion->id] = $discussion;
             }
-            $answers[$k] = $answer;
+            foreach ($dIds as $dId)
+            {
+                if (isset($tmp[$dId]))
+                    $discussions[] = $tmp[$dId];
+            }
         }
 
         // берем фото добавленные за полследние сутки
@@ -67,7 +83,8 @@ class SiteController extends Controller
             'actions' => $actions,
             'articles' => $articles,
             'sets' => $sets,
-            'answers' => $answers,
+            'comments' => $comments,
+            'discussions' => $discussions,
         ));
     }
 

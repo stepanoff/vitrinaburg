@@ -106,13 +106,16 @@ class VHtml
         return $format['prefix'] . $res . $format['postfix'];
 	}
 
-	public static function sum ($sum = null, $currency = null, $format=array(
-        'sum_prefix' => '<span style="white-space: nowrap;">',
-        'sum_postfix' => '</span>',
-        'prefix' => '<span>',
-        'postfix' => '</span>',
-        'currency_format' => array('рубль', 'рубля', 'рублей')
-    )){
+	public static function sum ($sum = null, $currency = null, $format = array()){
+        $default=array(
+            'sum_prefix' => '<span style="white-space: nowrap;">',
+            'sum_postfix' => '</span>',
+            'prefix' => '<span>',
+            'postfix' => '</span>',
+            'currency_format' => array('рубль', 'рубля', 'рублей')
+        );
+        $format = array_merge($default, $format);
+
 		$types = $format['currency_format'];
 
         if (!$sum)
@@ -157,7 +160,7 @@ class VHtml
         $originService = Yii::app()->vauth->originService;
         $href = $user->getLink();
         if (!$content && $defaultClass)
-            $options['class'] = $defaultClass;
+            $options['class'] = isset($options['class']) ? $options['class'].' '.$defaultClass : $defaultClass;
         $content = $content === false ? $user->username : $content;
         if ($user->service != $originService)
         {

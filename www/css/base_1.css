@@ -24,6 +24,18 @@
 
 /*
 */
+.left-newColl { -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .2); box-shadow: 0 0 15px rgba(0, 0, 0, .2); margin: 0 0 25px; padding: 10px 15px; }
+#inner-page .left-newColl h2 { font: bold 14px arial; text-transform: uppercase; color: #9e9e9e; margin: 0 0 10px; }
+#inner-page .left-newColl ul { margin: 0 -20px 0 0; padding: 0; list-style: none; }
+#inner-page .left-newColl li { float: left; margin: 0 6px 6px 0; padding: 0; }
+#inner-page .left-newColl a { display: block; width: 102px; height: 142px; position: relative; width: 100px; height: 150px; overflow: hidden; border: 1px solid transparent; display: block; }
+#inner-page .left-newColl a img {}
+#inner-page .left-newColl a:hover { border: 1px solid #c72e5e; }
+#inner-page .left-newColl span.price { display: block; position: absolute; right: 0px; bottom: 0px; background: #c5295c; color: #fff; padding: 2px 5px; font-size: 11px; }
+
+
+/*
+*/
 .user-link {
 	background-image: url(../images/b-link-user-icons.png);
     background-position: right 15px;

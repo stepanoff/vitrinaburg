@@ -3,8 +3,14 @@ class VForumController extends Controller
 {
     const COMMENTS_ON_PAGE = 10;
 
+    public function pageTitlePostfix () {
+        return 'Общение на сайте '.Yii::app()->params['siteName'];
+    }
+
     public function init ()
     {
+        $this->crumbs[] = array('label' => 'Общение', 'link' => array('/VForum/VForum/index'));
+        $this->pageTitle = $this->pageTitlePostfix ();
         $res = parent::init();
         $this->layout = $this->getModule()->getLayout();
         return $res;
@@ -12,7 +18,6 @@ class VForumController extends Controller
 
     public function actionIndex()
     {
-        $user = Yii::app()->user;
         $discussionModel = new VForumDiscussion;
         $commentModel = new VForumDiscussionComment;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -50,11 +55,12 @@ LIMIT 1
             $total = 0;
 
         $dIds = array();
-        $cIds = array();
         foreach ($lastDiscussions as $row)
         {
             $dIds[] = $row['id'];
-            $cIds[] = $row['cid'];
+            $lc = VForumDiscussionComment::model()->byObjectId('forum_discussion_id', $row['id'])->orderLast()->find();
+            if ($lc && $lc->user)
+                $comments[$row['id']] = $lc;
         }
 
         if ($dIds)
@@ -62,23 +68,15 @@ LIMIT 1
             $discussionsModels = VForumDiscussion::model()->byIds($dIds)->findAll();
             $tmp = array ();
             foreach ($discussionsModels as $discussion)
+            {
+                if (!$discussion->user)
+                    continue;
                 $tmp[$discussion->id] = $discussion;
+            }
             foreach ($dIds as $dId)
             {
                 if (isset($tmp[$dId]))
                     $discussions[] = $tmp[$dId];
-            }
-        }
-        if ($cIds)
-        {
-            $commentModels = VForumDiscussionComment::model()->byIds($cIds)->findAll();
-            $tmp = array ();
-            foreach ($commentModels as $commentModel)
-                $tmp[$commentModel->id] = $commentModel;
-            foreach ($cIds as $cId)
-            {
-                if (isset($tmp[$cId]))
-                    $comments[$tmp[$cId]->forum_discussion_id] = $tmp[$cId];
             }
         }
 
@@ -96,12 +94,16 @@ LIMIT 1
 
     public function actionDiscussion()
     {
-        $user = Yii::app()->user;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $id = isset($_GET['id']) ? (int)$_GET['id'] : false;
         $discussion = VForumDiscussion::model()->findByPk($id);
         if (!$discussion)
             throw new CHttpException(404);
+        if (!$discussion->user)
+            throw new CHttpException(404);
+
+        $this->crumbs[] = array('label' => $discussion->title, 'link' => array('/VForum/VForum/discussion', 'id'=>$id));
+        $this->pageTitle = $discussion->title.' &mdash; '.$this->pageTitlePostfix ();
 
         $commentForm = new VDiscussionCommentForm;
         if (isset($_GET['replyTo']))
@@ -187,11 +189,17 @@ LIMIT 1
         }
 
         $comments = VForumDiscussionComment::model()->byObjectId('forum_discussion_id', $id)->byOffset(($page-1)*self::COMMENTS_ON_PAGE)->byLimit(self::COMMENTS_ON_PAGE)->orderDefault()->findAll();
+        $tmp = array ();
+        foreach ($comments as $comment)
+        {
+            if (!$comment->user)
+                continue;
+            $tmp[] = $comment;
+        }
+        $comments = $tmp;
 
         $cs = Yii::app()->clientScript;
-        $assets_path = dirname(__FILE__). DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR.'assets';
-        $url = Yii::app()->assetManager->publish($assets_path, false, -1, YII_DEBUG);
-        $cs->registerScriptFile($url.'/js/jquery.form.js', CClientScript::POS_HEAD);
+        $url = $this->getModule()->getAssetsUrl();
         $cs->registerScriptFile($url.'/js/jquery.vforum.js', CClientScript::POS_HEAD);
 
 
@@ -212,7 +220,8 @@ LIMIT 1
 
     public function actionAddDiscussion()
     {
-        $user = Yii::app()->user;
+        $this->crumbs[] = array('label' => 'Новая тема', 'link' => array('/VForum/VForum/addDiscussion', 'id'=>$id));
+        $this->pageTitle = 'Новая тема &mdash; '.$this->pageTitlePostfix ();
 
         $form = new VForumDiscussionForm;
         $form->forum_category_id = 1;

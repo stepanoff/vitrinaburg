@@ -9,6 +9,7 @@ class Controller extends CController
     public $pageDescription = '';
     public $seoText = '';
     public $mainPage = false;
+    public $crumbs = array();
 
     public function getData($key)
     {

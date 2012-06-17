@@ -11,7 +11,6 @@ $cs->registerScriptFile(Yii::app()->request->staticUrl.'js/common.js', CClientSc
 $cs->registerScriptFile(Yii::app()->request->staticUrl.'js/multiselect.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile(Yii::app()->request->staticUrl.'js/datepicker.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile(Yii::app()->request->staticUrl.'js/admin/common.js', CClientScript::POS_HEAD);
-$cs->registerScriptFile(Yii::app()->request->staticUrl.'js/jquery.form.js', CClientScript::POS_HEAD);
 
 $cs->registerCssFile(Yii::app()->request->staticUrl.'css/admin.css');
 ?>

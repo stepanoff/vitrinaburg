@@ -3,7 +3,6 @@ class VForumDiscussionComment extends VActiveRecord
 {
     const TAG_QUOTE = 'quote';
     const TAG_BOLD = 'b';
-    const TAG_ITALIC = 'i';
 
     protected $discussionModel = 'VForumDiscussion';
     protected $userModel = 'VUser';
@@ -11,15 +10,6 @@ class VForumDiscussionComment extends VActiveRecord
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
-    }
-
-    public static function getTags ()
-    {
-        return array (
-            self::TAG_QUOTE => 'blockquote',
-            self::TAG_BOLD => 'b',
-            self::TAG_ITALIC => 'i',
-        );
     }
 
     public function tableName()
@@ -66,14 +56,17 @@ class VForumDiscussionComment extends VActiveRecord
         return $this;
     }
 
-    public function getContent ()
+    public function getContent ($type=false)
     {
-        $content = nl2br($this->content);
-        foreach ($this->getTags() as $code => $tag)
-        {
-            $content = $this->replaceTag ($content, $code, $tag);
-        }
-        return '<p>'.$content.'</p>';
+        $content = $this->content;
+		$content = nl2br($content);
+
+        if($type == "email")
+			$content = VBbCodeHelper::parseForEmail($content);
+		else
+			$content = VBbCodeHelper::parse($content);
+
+        return $content;
     }
 
     protected function replaceTag ($content, $code, $tag)
@@ -138,6 +131,8 @@ class VForumDiscussionComment extends VActiveRecord
 	{
         if ($this->isNewRecord)
             $this->date = time();
+        $this->content = htmlspecialchars($this->content);
+        $this->content = VBbCodeHelper::parseLinksToBB($this->content);
 
 		return parent::beforeSave();
     }

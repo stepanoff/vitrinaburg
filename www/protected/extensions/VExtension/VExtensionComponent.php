@@ -23,7 +23,7 @@ class VExtensionComponent extends CComponent {
         }
 
         $this->assetsPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'assets';
-        $this->assetsUrl = Yii::app()->assetManager->publish($this->assetsPath, false, -1, YII_DEBUG);
+        $this->assetsUrl = Yii::app()->params['staticUrl'].Yii::app()->assetManager->publish($this->assetsPath, false, -1, YII_DEBUG);
     }
 
     public function getAssetsPath () {

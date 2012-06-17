@@ -16,6 +16,9 @@ return array(
     'filesUrl' => '', // урл для доступа к файлам через браузер
     'staticUrl' => '', // урл до статики
 
+    'redirectUrl' => '/go/',
+    'originAuthService' => 'inner', // имя сервиса авторизации для родных пользователей
+
     'yandexMapsKey' => 'ANoq1UwBAAAAV_mwUwIAndBPjX2mFzYxnnfrwPBRnnA_kPYAAAAAAAAAAABSxYjGqzFJWpnfiX2RcIqn_kcg1w==',
 
     /* email */

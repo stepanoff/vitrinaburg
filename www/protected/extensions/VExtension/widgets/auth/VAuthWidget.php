@@ -115,11 +115,10 @@ class VAuthWidget extends CWidget {
 	 * Register CSS and JS files.
 	 */
 	protected function registerAssets() {
-		$cs = Yii::app()->clientScript;
 		//$cs->registerCoreScript('jquery');
 
-		$assets_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'assets';
-		$url = Yii::app()->assetManager->publish($assets_path, false, -1, YII_DEBUG);
+        $cs = Yii::app()->clientScript;
+        $url = Yii::app()->VExtension->getAssetsUrl();
 		$cs->registerCssFile($url.'/css/auth.css');
         $cs->registerScriptFile($url.'/js/auth.js', CClientScript::POS_HEAD);
 

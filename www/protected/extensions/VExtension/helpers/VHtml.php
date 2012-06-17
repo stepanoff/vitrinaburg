@@ -152,11 +152,64 @@ class VHtml
         return $n % 10 == 1 && $n % 100 !=11 ? $c1 : ($n % 10 >= 2 && $n % 10 <=4 && ($n % 100 < 10 || $n % 100 >= 20) ? $c2 : $c3);
     }
 
-    public function userLink ($user, $content = false)
+    public function userLink ($user, $content = false, $options = array(), $defaultClass='user-link')
     {
+        $originService = Yii::app()->vauth->originService;
+        $href = $user->getLink();
+        if (!$content && $defaultClass)
+            $options['class'] = $defaultClass;
         $content = $content === false ? $user->username : $content;
-        return CHtml::link($content, array('/vitrinaForum/user', 'id'=>$user->id));
+        if ($user->service != $originService)
+        {
+            $options['target'] = '_blank';
+            $options['class'] = isset($options['class']) ? $options['class'].' '.$user->service : $user->service;
+        }
+        return CHtml::link($content, $href, $options);
     }
+
+    static public function shrink($text, $length, $tail = '…')
+    {
+        if( mb_strlen($text) > $length )
+        {
+            $whiteSpacePosition = mb_strpos($text, ' ', $length) - 1;
+
+            if( $whiteSpacePosition > 0 )
+            {
+                $chars = count_chars(mb_substr($text, 0, ($whiteSpacePosition + 1)), 1);
+                if ( isset($chars[ord('<')]) && isset($chars[ord('>')]) && ($chars[ord('<')] > $chars[ord('>')]) )
+                {
+                    $whiteSpacePosition = mb_strpos($text, '>', $whiteSpacePosition) - 1;
+                }
+                $text = mb_substr($text, 0, ($whiteSpacePosition + 1));
+            }
+
+            // close unclosed html tags
+            if( preg_match_all('|<([a-zA-Z]+)|', $text, $aBuffer) )
+            {
+                if( !empty($aBuffer[1]) )
+                {
+                    preg_match_all('|</([a-zA-Z]+)>|', $text, $aBuffer2);
+
+                    if( count($aBuffer[1]) != count($aBuffer2[1]) )
+                    {
+                        foreach( $aBuffer[1] as $index => $tag )
+                        {
+                            if( empty($aBuffer2[1][$index]) || $aBuffer2[1][$index] != $tag)
+                            {
+                                $text .= '</'.$tag.'>';
+                            }
+                        }
+                    }
+                }
+            }
+
+            $text .= $tail;
+        }
+
+        return $text;
+    }
+
+
 
 }
 ?>

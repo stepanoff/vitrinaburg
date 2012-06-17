@@ -1,7 +1,7 @@
 <?php
 $user = false;
 if (Yii::app()->user->id)
-    $user = Yii::app()->user->getInfo();
+    $user = Yii::app()->user->getUser();
 ?>
 <!doctype html>
 <html>
@@ -40,7 +40,7 @@ if (Yii::app()->user->id)
         <?php
         if ($user)
         {
-            echo $user['username'];
+            echo '<div>'.VHtml::userLink($user).'</div>';
             echo '<a href="'.CHtml::normalizeUrl(array('/site/logout', 'returnUrl'=>Yii::app()->request->requestUri)).'">выйти</a>';
         }
         else

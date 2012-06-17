@@ -22,7 +22,7 @@ class VDiscussionCommentForm extends CFormModel
 
     public function getFormElements ()
     {
-        $widgetAlias = 'ext.VExtension.widgets.VBbCodeEditorWidget';
+        $widgetAlias = 'ext.VExtension.widgets.VTextEditorWidget';
         return array (
             'elements' => array (
                 'parentId' => array (

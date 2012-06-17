@@ -1,8 +1,9 @@
 <?php
-class VBbCodeEditorWidget extends CWidget
+class VTextEditorWidget extends CWidget
 {
 	public $model;
     public $attribute;
+    public $type = 'bbcode';
 
 	public function run()
 	{

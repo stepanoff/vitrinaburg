@@ -3,8 +3,9 @@ class VAuth extends EAuth {
 
     protected $_fullServices = null;
 
-    public $userRoute = 'vitrinaForum/user';
+    public $userRoute = '/vitrinaForum/user';
     public $templatePath = 'ext.VExtension.views.auth';
+    public $originService = 'inner';
 
     public function init()
     {

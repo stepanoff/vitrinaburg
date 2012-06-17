@@ -11,7 +11,7 @@
                       <div class="body-">
                         <?php echo $comment->getContent(); ?>
                         <div class="actions- clearfix">
-                          <div class="links-"><a class="js-forum-complaint" href="#">пожаловаться модератору</a></div>
+                          <div class="links-"><!--a class="js-forum-complaint" href="#">пожаловаться модератору</a--></div>
                           <div class="buttons-">
                             <a href="#" class="js-forum-answer gradient1">Ответить</a>
                           </div>

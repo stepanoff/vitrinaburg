@@ -6,19 +6,20 @@ class VUserComponent extends CApplicationComponent implements IWebUser
     const COOKIE_DAYS = 1; // сколько дней еще будет жить кука на клиенте после даты протухания, полученной от сервиса (чтобы авторизация внезапно не отвалилась). Реальная дата протухания хранится в базе.
 
     private $_isGuest = null;
+    private $__user = null;
 
     public $defaultAvatars = array (
         'M' => array (
-            'small' => '/images/logo.png',
-            'medium' => '/images/logo.png',
+            'small' => '/images/blank.gif',
+            'medium' => '/images/blank.gif',
         ),
         'F' => array (
-            'small' => '/images/logo.png',
-            'medium' => '/images/logo.png',
+            'small' => '/images/blank.gif',
+            'medium' => '/images/blank.gif',
         ),
         'default' => array (
-            'small' => '/images/logo.png',
-            'medium' => '/images/logo.png',
+            'small' => '/images/blank.gif',
+            'medium' => '/images/blank.gif',
         ),
     );
 
@@ -374,6 +375,17 @@ class VUserComponent extends CApplicationComponent implements IWebUser
             }
         }
         return $this->__userData;
+    }
+
+    public function getUser()
+    {
+        // only mysql
+        if ($this->__user == null)
+        {
+            $id = $this->getId();
+            $this->__user = VUser::model()->findByPk($id);
+        }
+        return $this->__user;
     }
 
     public function getInfoById($id)

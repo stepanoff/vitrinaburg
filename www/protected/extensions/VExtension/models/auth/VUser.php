@@ -51,4 +51,14 @@ class VUser extends CActiveRecord {
         return Yii::app()->user->getDefaultAvatar($size, $this->gender);
     }
 
+    public function getLink ()
+    {
+        $originService = Yii::app()->vauth->originService;
+        if ($this->service == $originService)
+        {
+            return CHtml::normalizeUrl (array(Yii::app()->vauth->getUserRoute(), 'id' => $this->id));
+        }
+        else
+            return $this->url;
+    }
 }

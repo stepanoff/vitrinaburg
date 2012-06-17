@@ -24,6 +24,7 @@
                 </div>
 
                     <div class="comment-form">
+                        <a name="message"></a>
                         <?php $this->widget('application.extensions.VExtension.widgets.VFormBuilderWidget', array('model'=>$commentForm, 'elements'=>$commentForm->getFormElements())); ?>
                     </div>
             </div>

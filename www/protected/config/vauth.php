@@ -1,6 +1,7 @@
 <?php
 return array(
 			'class' => 'ext.VExtension.VAuth',
+            'originService' => $params['originAuthService'],
 			'popup' => true, // Использовать всплывающее окно вместо перенаправления на сайт провайдера
 			'services' => array( // Вы можете настроить список провайдеров и переопределить их классы
                 'inner' => array(
@@ -11,19 +12,13 @@ return array(
 				'google' => array(
 					'class' => 'GoogleOpenIDService',
 				),
-                */
                 'lj' => array(
                     'class' => 'CustomLjService',
                 ),
 				'yandex' => array(
 					'class' => 'CustomYandexService',
 				),
-				'twitter' => array(
-					// регистрация приложения: https://dev.twitter.com/apps/new
-					'class' => 'CustomTwitterService',
-					'key' => $params['twitter']['key'],
-					'secret' => $params['twitter']['secret'],
-				),
+                */
                 /*
 				'google_oauth' => array(
 					// регистрация приложения: https://code.google.com/apis/console/
@@ -45,6 +40,12 @@ return array(
                     'client_id' => $params['vkontakte']['client_id'],
                     'client_secret' => $params['vkontakte']['client_secret'],
 				),
+                'twitter' => array(
+                    // регистрация приложения: https://dev.twitter.com/apps/new
+                    'class' => 'CustomTwitterService',
+                    'key' => $params['twitter']['key'],
+                    'secret' => $params['twitter']['secret'],
+                ),
                 /*
 				'mailru' => array(
 					// регистрация приложения: http://api.mail.ru/sites/my/add

@@ -21,3 +21,33 @@
 .gallery li:hover a { border: 1px solid #c4285c; }
 .gallery li a { display:block; height: 100px; overflow: hidden; }
 .po-pic {border: none;}
+
+/*
+*/
+.user-link {
+	background-image: url(../images/b-link-user-icons.png);
+    background-position: right 15px;
+	background-repeat: no-repeat;
+	padding-left: 0px;
+	padding-right: 15px;
+}
+
+.user-link.vkontakte {
+	background-position: right 2px;
+
+}
+
+.user-link.facebook {
+	background-position: right -12px;
+
+}
+
+.user-link.twitter {
+	background-position: right -26px;
+
+}
+
+.user-link.lj {
+	background-position: right -42px;
+
+}

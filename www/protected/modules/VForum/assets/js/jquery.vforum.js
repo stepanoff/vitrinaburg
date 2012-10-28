@@ -18,6 +18,7 @@
 			'complaintButtonClass' : 'js-forum-complaint',
 			'commentFormClass' : 'comment-form',
             'commentsContainerClass' : 'comments-container',
+            'adminButtonsContainer' : 'admin-actions',
             'itemClass' : 'message',
             'itemAnchorPrefix' : 'comment',
             'onAuthorize' : false
@@ -124,8 +125,40 @@
                 commentForm.find(".form-row").removeClass("error");
             }
 
+            var makeAdminAction = function (el) {
+                var action = el.attr("action");
+                if (action == 'removeComment') {
+                    $.ajax({
+                        url: el.attr('href'),
+                        type: 'post',
+                        dataType: 'json',
+                        success: function(result) {
+                            if (result.success)
+                            {
+                                el.closest("."+o.itemClass).remove();
+                            }
+                            else
+                                if (result.error)
+                                {
+                                    alert(result.message);
+                                }
+                                else
+                                {
+                                    alert ("Ошибка отправки комментария. Попробуйте позже");
+                                }
+                            }
+                        });
+
+                }
+            }
+
             container.delegate("."+o.answerButtonClass, 'click', function(){
                 answer(this);
+                return false;
+            });
+
+            container.find("."+o.adminButtonsContainer).delegate('a', 'click', function(){
+                makeAdminAction($(this));
                 return false;
             });
 

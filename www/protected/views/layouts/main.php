@@ -59,6 +59,7 @@ if (Yii::app()->user->id)
         ?>
         </div>
         <a href="/"><img class="logo" src="<?php echo Yii::app()->request->staticUrl; ?>/images/logo.png" width="275" height="47" alt="<?php echo Yii::app()->params['title']; ?>"  title="<?php echo Yii::app()->params['title']; ?>"></a>
+        <span style="position: absolute; bottom: 40px; left: 0px;">выбирай на витрине &mdash; покупай в магазине</span>
       </div>
     </div>
     <div id="main-menu" class="gradient1">

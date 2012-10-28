@@ -369,8 +369,10 @@ class VUserComponent extends CApplicationComponent implements IWebUser
         // only mysql
         if ($this->__user == null)
         {
+            $this->__user = false;
             $id = $this->getId();
-            $this->__user = VUser::model()->findByPk($id);
+            if ($id)
+                $this->__user = VUser::model()->findByPk($id);
         }
         return $this->__user;
     }
@@ -776,6 +778,22 @@ class VUserComponent extends CApplicationComponent implements IWebUser
     public function checkAccess($operation,$params=array())
     {
         return true;
+    }
+
+    public function checkRoles($roles,$params=array())
+    {
+        $roles = is_array($roles) ? $roles : array($roles);
+
+        $user = $this->getUser();
+        if ($user) {
+            $userRoles = $user->getRoles();
+            foreach ($roles as $role) {
+                if (in_array($role, $userRoles))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public function getDefaultAvatars()

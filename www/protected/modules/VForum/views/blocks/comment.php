@@ -17,4 +17,11 @@
                           </div>
                         </div>
                       </div>
+                      <?php
+                        if (Yii::app()->user->checkRoles(array(VUser::ROLE_ADMIN, VUser::ROLE_MODER))) {
+                            echo '<div class="admin-actions">';
+                            echo CHtml::link('удалить', array('/VForum/VForum/removeComment', 'id' => $comment->id), array('action' => 'removeComment'));
+                            echo '</div>';
+                        }
+                      ?>
                     </div>

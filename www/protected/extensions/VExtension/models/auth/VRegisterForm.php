@@ -50,7 +50,7 @@ class VRegisterForm extends CFormModel
                         'password'  => 'Пароль',
                         'passwordAgain'  => 'Пароль еще раз',
                         'username'  => 'Отображаемое имя',
-        				'rememberMe'   => 'Запонмить меня',
+        				'rememberMe'   => 'Запомнить меня',
                     );
     }
 }

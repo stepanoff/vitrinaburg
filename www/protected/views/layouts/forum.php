@@ -3,7 +3,7 @@
   <div class="base-width clearfix">
     <div class="main-col">
       <?php $this->widget('application.widgets.VitrinaCrumbsWidget', array('items' => $this->crumbs)); ?>
-      <div class="forum">
+      <div class="forum" id="forum">
 		<?php echo $content; ?>
           </div>
         </div>

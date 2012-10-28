@@ -22,7 +22,7 @@ class VAuthForm extends CFormModel
         return array(
                         'login' => 'Логин',
                         'password'  => 'Пароль',
-        				'rememberMe'   => 'Запонмить меня',
+        				'rememberMe'   => 'Запомнить меня',
                     );
     }
 }

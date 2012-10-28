@@ -4,6 +4,15 @@ class VUser extends CActiveRecord {
     const GENDER_MALE = 'M';
     const GENDER_FEMALE = 'F';
 
+    const ROLE_USER = 1;
+    const ROLE_CLIENT = 2;
+    const ROLE_MODER = 3;
+    const ROLE_ADMIN = 4;
+
+    protected $_roles = null;
+
+    protected $roleModel = 'VUserRole';
+
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -25,6 +34,26 @@ class VUser extends CActiveRecord {
 			array('id, name, username, avatar, photo, gender, url, service, serviceId, created, email, updated', 'safe'),
 		);
     }
+
+    public function getRoles()
+    {
+        if ($this->_roles === null) {
+            $this->_roles = array();
+            $sql = '
+    SELECT DISTINCT user_id, role_id
+    FROM users_roles
+    WHERE user_id = '.$this->id.'
+';
+            $roles = Yii::app()->db->commandBuilder->createSqlCommand($sql)->queryAll();
+            if ($roles) {
+                foreach ($roles as $role) {
+                    $this->_roles[] = $role['role_id'];
+                }
+            }
+        }
+        return $this->_roles;
+    }
+
 
     public function byService($service, $serviceId)
     {

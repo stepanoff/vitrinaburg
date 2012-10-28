@@ -34,6 +34,7 @@ return array(
         '/forum' => 'VForum/VForum/index',
         '/forum/addDiscussion' => 'VForum/VForum/addDiscussion',
         '/forum/discussion/<id:([0-9]+)>' => 'VForum/VForum/discussion',
+        '/forum/removeComment/<id:([0-9]+)>' => 'VForum/VForum/removeComment',
         '/user/profile/<id:([0-9]+)>' => 'vitrinaForum/user',
 
         '/<staticPage:([a-zA-Z0-9_]+)>'=>'staticPage/show',

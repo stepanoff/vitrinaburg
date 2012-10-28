@@ -63,7 +63,7 @@
             </div>
             <div class="mp-section">
             <?php
-                if ($actions)
+                if (0 && $actions)
                 {
                     $header = '<h2>Акции и скидки';
                     if ($todayActions)

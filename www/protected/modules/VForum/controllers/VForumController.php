@@ -298,6 +298,31 @@ LIMIT 1
 
     public function actionRemoveComment()
     {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        if ($id && Yii::app()->user->checkRoles(array(VUser::ROLE_ADMIN, VUser::ROLE_MODER))) {
+            $comment = VForumDiscussionComment::model()->findByPk($id);
+            $res = $comment->delete();
+            if (Yii::app()->request->isAjaxRequest) {
+                if ($res) {
+                    $result = array (
+                        'success' => 1,
+                    );
+                }
+                else {
+                    $result = array (
+                        'error' => 1,
+                        'message' => 'Не удалось удалить комментарий'
+                    );
+                }
+                echo CJSON::encode($result);
+                die();
+            }
+            else
+                $this->redirect(Yii::app()->user->returnUrl);
+        }
+        else
+            throw new CHttpException(404, 'Страница не найдена');
+
     }
 
 

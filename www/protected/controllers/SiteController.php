@@ -14,7 +14,7 @@ class SiteController extends Controller
 
         $articles = VitrinaArticle::model()->onSite()->orderDefault()->byLimit(3)->findAll();
 
-        $todayPhotos = VitrinaShopCollectionPhoto::model()->onSite()->byDate(time())->findAll();
+        $todayPhotos = VitrinaShopCollectionPhoto::model()->onSite()->byDate(time())->count();
         $photos = VitrinaShopCollectionPhoto::model()->onSite()->orderCreated()->byLimit(100)->findAll();
         shuffle($photos);
 

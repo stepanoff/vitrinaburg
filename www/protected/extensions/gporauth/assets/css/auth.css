@@ -1,0 +1,91 @@
+/* Height hack for float wrappers */
+.auth {
+    position: relative;
+}
+
+.services {
+    overflow:auto;
+}
+
+.auth-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: url("../images/auth.png") no-repeat;
+}
+
+.auth-icon.google, 
+.auth-icon.google_oauth  { background-position: 0 -34px;  }
+.auth-icon.twitter    	 { background-position: 0 -68px;  }
+.auth-icon.yandex		 { background-position: 0 -102px; }
+.auth-icon.vkontakte	 { background-position: 0 -136px; }
+.auth-icon.facebook		 { background-position: 0 -170px; }
+.auth-icon.mailru		 { background-position: 0 -204px; }
+.auth-icon.moikrug		 { background-position: 0 -238px; }
+.auth-icon.odnoklassniki { background-position: 0 -272px; }
+
+
+.auth-link:hover .auth-icon i,
+.auth-link:focus .auth-icon i {
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: url("../images/auth.png") 0 0 no-repeat;
+}
+
+.auth-services {
+    overflow:auto;
+    position: relative;
+    height: 260px;
+    padding-top: 40px;
+}
+
+.auth-processs {
+    overflow:auto;
+    position: relative;
+    height: 260px;
+    display: none;
+    padding-top: 40px;
+}
+
+.auth-error {
+    overflow:auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #ff0000;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 20px;
+    z-index: 100;
+}
+
+.auth-service {
+    float: left;
+    margin: 0 1em 0 0;
+}
+
+.auth-service-process {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+      
+.auth-services .auth-service .auth-link {
+    display: block;
+    width: 58px;
+    /*padding: 0 0.4em;*/
+}
+
+.auth-service .auth-link .auth-icon {
+    margin: 0 auto;
+}
+          
+.auth-service .auth-link .auth-title {
+    display: block;
+    margin-top: 0.4em;
+    text-align: center;
+}

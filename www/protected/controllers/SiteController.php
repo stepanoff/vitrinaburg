@@ -245,7 +245,8 @@ LIMIT 5';
         Yii::app()->user->logout();
         if (isset($_GET['returnUrl']) && !empty($_GET['returnUrl']))
              $redirectUrl = $_GET['returnUrl'];
-        Yii::app()->request->redirect($redirectUrl);
+        // todo: убрать костыль
+        Yii::app()->request->redirect('/article/?logout=1&returnUrl='.CHtml::encode($redirectUrl));
         Yii::app()->end();
     }
 

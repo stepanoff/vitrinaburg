@@ -7,6 +7,7 @@ class VFormBuilderWidget extends CWidget
 	public $formInputLayout = '<div class="form-row">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
 	public $formErrorInputLayout = '<div class="form-row error">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
     public $renderButtons = true;
+    public $startPageIndex = false;
     public $defaultClasses = array(
 //		'text'=>'grid-span-7',
 //		'password'=>'grid-span-7',
@@ -24,9 +25,7 @@ class VFormBuilderWidget extends CWidget
 
 	public function run()
 	{
-        $cs = Yii::app()->clientScript;
-        $url = Yii::app()->VExtension->getAssetsUrl();
-        $cs->registerCssFile($url.'/css/vform.css');
+        $this->registerAssets();
 
 		$form = $this->form;
         if ($form === null) {
@@ -36,19 +35,9 @@ class VFormBuilderWidget extends CWidget
             return;
 
         $form->activeForm = array_merge($this->defaultOptions, $form->activeForm );
-		echo $form->renderBegin();
-        /*
-		foreach ($form->models as $m)
-		{
-			echo CHtml::errorSummary($m, 'Исправьте ошибки:');
-		}
-        */
+        $this->form->startPageIndex = $this->startPageIndex;
 
-		$this->renderFormElements($form);
-
-        if ($this->renderButtons)
-    		echo '<div class="buttons">'.$form->renderButtons().'</div>';
-		echo $form->renderEnd();
+        echo $form->render();
 	}
 
     protected function _buildForm ($model, $elements)
@@ -69,68 +58,18 @@ class VFormBuilderWidget extends CWidget
         if (!isset($elements['enctype']))
             $elements['enctype'] = 'multipart/form-data';
 
-        $form = new CForm ($elements);
+        $form = new VFormRender ($elements);
         $form->model = $model;
 
         return $form;
-
     }
 
+    public function registerAssets () {
 
-	public function renderFormElements ($form)
-	{
-		$errors = $this->model->getErrors();
-		if($form->title){
-			echo '<h3>'.$form->title.'</h3><hr/>';
-		}
-		foreach ($form->getElements() as $k=>$element)
-		{
-			if (get_class($element)=='CFormStringElement')
-			{
-				$element->layout = $this->formInputLayout;
-				echo $element->render();
-			}
-			elseif (get_class($element)!='CFormInputElement')
-			{
-				if ($element->model)
-				{
-					$this->renderFormElements($element);
-				}
-			}
-			else
-			{
-				$error = false;
-				if(!empty($errors[$element->name])){
-					$error = $errors[$element->name][0];
-//					echo '<div class="alert">';
-				}
-				if ($this->renderSafeAttributes && !$this->model->isAttributeSafe($k))
-					continue;
-
-                if(isset($this->defaultClasses[$element->type])){ // if we have default value
-                    if(!array_key_exists('class',$element->attributes)) { // but we have no attribute class defined
-                        $element->attributes['class'] = $this->defaultClasses[$element->type]; // default will be set
-                    } elseif (is_array($element->attributes['class'])){ // but if array defined
-                        foreach ($element->attributes['class'] as $key => $param){ // every key
-                            if(!strpos($param,'grid') && isset($this->defaultClasses[$element->type][$key])) //will be checked
-                                $element->attributes['class'][$key] = $this->defaultClasses[$element->type][$key]; // and applied if exists not yet
-                        }
-                    } elseif (!@strpos($element->attributes['class'],'grid')) { // if we have no str 'grid' in class str
-                    }
-                }
-                if ($error)
-                    $element->layout = $this->formErrorInputLayout;
-                else
-                    $element->layout = $this->formInputLayout;
-				echo $element->render();
-				if(!empty($element->attributes['description'])) {
-					echo '<div class="hint value row">' . $element->attributes['description'] . '</div>';
-				}
-
-				//if ($error) echo "</div>";
-
-			}
-		}
-	}
+        $cs = Yii::app()->clientScript;
+        $url = Yii::app()->VExtension->getAssetsUrl();
+        $cs->registerCssFile($url.'/css/vform.css');
+        $cs->registerScriptFile($url.'/js/jquery.form.js', CClientScript::POS_HEAD);
+    }
 }
 ?>

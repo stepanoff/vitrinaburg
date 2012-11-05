@@ -39,20 +39,17 @@ return array(
 
 	// autoloading model, component and helper classes
 	'import'=>array(
-		'application.models.*',
-		'application.components.*',
-		'application.extensions.*',
-        'application.extensions.eoauth.*',
-        'application.extensions.eoauth.lib.*',
-        'application.extensions.lightopenid.*',
-        'application.extensions.eauth.*',
-        'application.extensions.eauth.services.*',
-        'application.extensions.gporauth.*',
-        'application.extensions.gporauth.custom_services.*',
-        'application.extensions.gporauth.models.*',
-		'application.helpers.*',
-		'application.widgets.*',
-),
+        'application.models.*',
+        'application.models.forms.*',
+        'application.components.*',
+        'application.extensions.*',
+        'ext.eauth.*',
+        'ext.eauth.services.*',
+        'ext.eoauth.*',
+        'ext.lightopenid.*',
+        'application.helpers.*',
+        'application.widgets.*',
+    ),
 
 	'params'=>$params,
 
@@ -62,40 +59,85 @@ return array(
 			'logPath' => $params['cronLogsPath'],
 		),
 
-        'cache' => array(
-			'class' => 'CFileCache',
-			'cachePath' => ROOT_PATH. DS . 'protected' . DS . 'runtime' . DS . 'cache',
-		),
-
         'log'=>array(
-			'class'=>'CLogRouter',
-			'routes'=>array(
-				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning, notice',
-//					'levels'=>'error, warning',
-				),
-			),
-		),
-        'errorHandler' => array(
-        	'class' => 'application.components.ExtendedErrorHandler'
+            'class'=>'CLogRouter',
+            'routes'=>array(
+                array(
+                    'class'=>'CFileLogRoute',
+                    'levels'=>'error, warning, info',
+                ),
+                array(
+                    'class'=>'CWebLogRoute',
+                    'enabled' => YII_DEBUG_LOG,
+                    'levels'=>'info, error, warning, trace, profile',
+                    'showInFireBug' => false,
+                ),
+                array(
+                    'class'=>'CProfileLogRoute',
+                    'enabled' => YII_DEBUG_LOG,
+                    'showInFireBug' => false,
+                    'report' => 'summary',
+                ),
+            ),
+        ),
+        'fileManager' => array(
+            'class' => 'VFileManager',
+            'filesPath' => $params['filesPath'],
+            'filesUrl' => $params['filesUrl'],
+        ),
+        'request' => array(
+            'class' => 'ExtendedRequestComponent',
+            'staticUrl' => $params['staticUrl'],
+        ),
+        'assetManager' => array(
+            'class' => 'CAssetManager',
+            'basePath' => dirname(__FILE__).DS.'..'.DS.'..'.DS.'assets',
         ),
         'loid' => array(
             'class' => 'ext.lightopenid.loid',
         ),
-		'eauth' => require(dirname(__FILE__).'/eauth.php'),
+        'VExtension' => array (
+            'class' => 'ext.VExtension.VExtensionComponent',
+            'staticUrl' => $params['staticUrl'],
+            'components' => array (
+                'auth' => array (
+                    'name' => 'vauth',
+                    'options' => require(dirname(__FILE__).'/vauth.php'),
+                ),
+                'user' => array (
+                    'name' => 'user',
+                    'options' => array(
+                        'class'=>'application.extensions.VExtension.VUserComponent',
+                        'allowAutoLogin'=>true,
+                        'dbDriver'=> 'VMysqlAuthDbDriver',
+                        'identityCookie'=>array('domain'=>'.'.$params['domain']),
+                        'defaultAvatars' => array (
+                            'M' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            ),
+                            'F' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            ),
+                            'default' => array (
+                                'small' => $params['staticUrl'].'/images/blank.gif',
+                                'medium' => $params['staticUrl'].'/images/blank.gif',
+                            )
+                        ),
 
-		'clientScript'=>array(
-			'class'=>'application.components.ExtendedClientScript',
-			'combineFiles'=>false,
-			'compressCss'=>false,
-			'compressJs'=>false,
-		),
+                    )
+                ),
+            ),
+            'modules' => array (
+
+            ),
+        ),
         'urlManager'=>require(dirname(__FILE__).'/urlManager.php'),
 
         'cache' => array(
-			'class' => 'CFileCache'
-		),
+            'class' => 'CFileCache'
+        ),
         'db'=>array(
             'connectionString'=>'mysql:'.$params['db_host'].'=localhost;dbname='.$params['db_name'],
             'username'=>$params['db_user'],
@@ -105,8 +147,12 @@ return array(
         ),
 
         'errorHandler' => array(
-        	'class' => 'application.components.ExtendedErrorHandler'
+            'class' => 'application.components.ExtendedErrorHandler'
         ),
+        'localConfig' => array(
+            'class' => 'application.components.LocalConfigComponent'
+        ),
+
     ),
 
     'modules'=>require(dirname(__FILE__).'/modules.php'),

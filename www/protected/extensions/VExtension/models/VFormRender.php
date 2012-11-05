@@ -5,31 +5,10 @@
  * @version 1.0
  * todo: вынести верстку в шаблоны. Класс ошики изначально не рендерится
  */
-class FormsFormRender extends CForm
+class VFormRender extends CForm
 {
-    public $formInputLayout = '
-    <fieldset class="b-form-row">
-        <div class="b-form-row__col1">{label}</div>
-        <div class="b-form-row__col2"><div class="context"><div class="b-form-box">{input}{error}{hint}</div></div></div>
-    </fieldset>';
-    public $formErrorLayout = '<div class="b-form-builder_container-for-hint">
-											<div class="relative b-form-builder_hint ">
-												<div class="b-form-builder_hint__ugol-left-top"></div>
-												<div class="b-form-builder_hint__frame">
-													<div class="b-form-builder-blc-cn b-form-builder-blc-tl"></div>
-													<div class="b-form-builder-blc-cn b-form-builder-blc-tr"></div>
-													<div class="b-form-builder_hint__content">
-														<div class="b-form-builder_hint__left-line"></div>
-														<div class="b-form-builder_hint__right-line"></div>
-														<div class="b-user-error-message">
-															<p>{error}</p>
-														</div>
-													</div>
-													<div class="b-form-builder-blc-cn b-form-builder-blc-bl"></div>
-													<div class="b-form-builder-blc-cn b-form-builder-blc-br"></div>
-												</div>
-											</div>
-										</div>';
+    public $formInputLayout = '<div class="form-row">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
+    public $formErrorLayout = '{error}';
     public $stepJs = false;
     public $defaultClasses = array(
         'text'=>'grid-span-7',
@@ -45,6 +24,11 @@ class FormsFormRender extends CForm
     protected $output = '';
 
     public function init() {
+    }
+
+    protected function getUniqueId()
+    {
+        return 'vform_'.get_class($this->model);
     }
 
     public function render()
@@ -63,7 +47,7 @@ class FormsFormRender extends CForm
 
         $oldReq = CHtml::$afterRequiredLabel;
         CHtml::$afterRequiredLabel = '&nbsp;<span class="b-form__label__star">*</span>';
-        $this->output = '<div class="b-from js-form'.$this->getUniqueId().' col-1 span-3">';
+        $this->output = '';
         $this->output .=  $this->renderBegin();
 
         $this->output .= $this->renderFormElements();
@@ -72,12 +56,14 @@ class FormsFormRender extends CForm
         $this->output .=  $this->renderEnd();
         if ($this->stepJs)
             $this->output .= $this->renderStepsJs();
-        $this->output .= '</div>';
         CHtml::$afterRequiredLabel = $oldReq;
         return $this->output;
     }
 
+
     public function renderStepsJs () {
+        $output = '';
+        /*
         $output = '<script type="text/javascript">';
         $output .= "
 app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
@@ -92,6 +78,7 @@ app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
     });
         ";
         $output .= '</script>';
+        */
         return $output;
     }
 
@@ -154,7 +141,7 @@ app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
                 $element->layout = $elementLayout;
                 $elementOutput = $element->render();
                 if ($error) {
-                    $elementOutput = preg_replace('|\"b-form-box\"|','"b-form-box b-form-box__error"',$elementOutput);
+                    $elementOutput = preg_replace('|\"form-row\"|','"form-row error"',$elementOutput);
                 }
                 $output .= $elementOutput;
 
@@ -171,8 +158,7 @@ app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
         $output='';
         foreach($this->getButtons() as $button)
             $output.=$this->renderButton($button);
-        return $output!=='' ? '<div class="b-separator b-separator_size_20"></div><fieldset class="b-form-row">
-        <div class="b-form-row__col2"><div class="_submit-line">'.$output.'</div></div></fieldset>' : '';
+        return $output!=='' ? '<div class="form-row">'.$output.'</div>' : '';
     }
 
     public function renderButton($element) {
@@ -181,14 +167,11 @@ app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
         $attrs['class'] = 'b-btn__submit';
         $element->attributes = $attrs;
 
-        $label = $element->label;
-        $element->label = '';
+        //$label = $element->label;
+        //$element->label = '';
         $output='
-                            <div class="b-btn b-btn_color_green b-btn_size_big b-btn_text-size_big '.$class.'">
-								<ins class="b-btn__crn-left"></ins>
-								<ins class="b-btn__crn-right"></ins>
+                            <div>
 								'.$element->render().'
-								<span class="b-btn__text">'.$label.'</span>
 							</div>
         ';
         return $output;

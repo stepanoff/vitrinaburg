@@ -4,7 +4,7 @@ return array(
 	'showScriptName'=>false,
     'urlSuffix' => '/',
 	'rules'=>array(
-        '/test' => 'site/userMigration',
+        '/test' => 'site/registerShop',
 
         '/login' => 'site/login',
         '/register' => 'site/register',

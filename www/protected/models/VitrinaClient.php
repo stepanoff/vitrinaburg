@@ -1,5 +1,5 @@
 <?php
-class VitrinaMall extends ExtendedActiveRecord
+class VitrinaClient extends ExtendedActiveRecord
 {
 	public static function model($className = __CLASS__)
     {
@@ -8,26 +8,15 @@ class VitrinaMall extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_mall';
+        return 'obj_client';
     }
     
 	public function scopes()
 	{
         $res = parent::scopes();
         return array_merge($res, array(
-            'orderDefault' => array(
-                'order' => 't.name ASC',
-            ),
 		));
 	}
-
-    public function onSite()
-    {
-        $this->getDbCriteria()->mergeWith(array(
-            'condition'=>'t.visible = '.self::VISIBLE_ON,
-        ));
-        return $this;
-    }
 
     public function relations()
     {
@@ -40,9 +29,6 @@ class VitrinaMall extends ExtendedActiveRecord
     {
         $res = parent::rules();
         return array_merge($res, array(
-            array('name', 'required', 'message' => 'Укажите название'),
-        	array('address', 'required', 'message' => 'Укажите адрес'),
-        	array('name, logo, address, text, worktime', 'safe', 'on' => 'admin'),
 		));
     }
 
@@ -50,11 +36,6 @@ class VitrinaMall extends ExtendedActiveRecord
     {
         $res = parent::attributeLabels();
         return array_merge($res, array(
-        	'address' => 'Адрес',
-            'name' => 'Название',
-            'logo' => 'Изображение',
-            'worktime' => 'Время работы',
-            'text' => 'Описание',
         ));
     }
 

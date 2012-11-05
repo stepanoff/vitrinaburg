@@ -114,11 +114,15 @@ LIMIT 5';
                         Yii::app()->user->login($identity, $rememberMe);
                         if (isset($_GET['nopopup']))
                         {
-                            $returnUrl = isset($_GET['returnUrl']) ? $_GET['returnUrl'] : '';
+                            $returnUrl = isset($_GET['returnUrl']) ? $_GET['returnUrl'] : Yii::app()->user->returnUrl;
+                            $this->redirect($returnUrl);
+                            Yii::app()->end();
+                            /*
                             $rUrl = isset($_GET['redirectUrl']) ? $_GET['redirectUrl'] : Yii::app()->user->returnUrl;
                             $rUrl .= (strstr('?', $rUrl) ? '&' : '?').'auth_token='.urlencode(Yii::app()->user->generateTemporaryToken());
                             $rUrl .= '&returnUrl='.urlencode($returnUrl);
                             $authIdentity->redirectUrl = $rUrl;
+                            */
                         }
                         else
                             $authIdentity->redirectUrl = '#reload:1';
@@ -250,92 +254,111 @@ LIMIT 5';
         Yii::app()->end();
     }
 
-    public function actionUserMigration ()
-    {
-        $c = Yii::app()->user;
 
-        $criteria = new CDbCriteria(array(
-            'order' => '`id` ASC',
-        ));
-        $users = Yii::app()->db->commandBuilder->createFindCommand('users', $criteria)->queryAll();
-        foreach ($users as $user)
+    public function actionRegisterShop () {
+        if (Yii::app()->user->id)
         {
-            $userExists = VUser::model()->findByPk($user['id']);
-            if ($userExists)
-                continue;
-
-            $password = false;
-            if (!empty($user['open_pass']))
-                $password = $user['open_pass'];
-            else
-            {
-                $criteria = new CDbCriteria(array(
-                    'condition' => '`user` = "'.$user['id'].'"',
-                ));
-                $client = Yii::app()->db->commandBuilder->createFindCommand('obj_client', $criteria)->queryRow();
-                if ($client)
-                {
-                    $password = $client['pass'];
-                }
-            }
-
-            if (!$password)
-                continue;
-
-            $username = $user['username'];
-            $name = $user['name'].(!empty($user['last_name']) ? ' '.$user['last_name'] : '');
-            $gender = '';
-            $avatar = '';
-            $photo = '';
-            $birthday = '';
-
-            $criteria = new CDbCriteria(array(
-                'condition' => '`user_id` = "'.$user['id'].'"',
-            ));
-            $profile = Yii::app()->db->commandBuilder->createFindCommand('user_profiles', $criteria)->queryRow();
-            if ($profile)
-            {
-                $username = $profile['name'];
-                $name = $profile['fullname'];
-                $gender = $gender == 1 ? 'm' : ($gender == 2 ? 'f' : '');
-                $avatar = $user['avatar'];
-                $photo = $user['photo'];
-                $birthday = ($user['day_birth'] && $user['month_birth']) ? $user['day_birth'].'.'.$user['month_birth'] . ($user['year_birth'] ? '.'.$user['year_birth'] : '') : '';
-            }
-
-            /*
-            $roleId = 1;
-            $criteria = new CDbCriteria(array(
-                'condition' => '`user_id` = "'.$user['id'].'"',
-            ));
-            $role = Yii::app()->db->commandBuilder->createFindCommand('user_roles', $criteria)->queryRow();
-            if ($role)
-            {
-                $roleId = $role['role_id'];
-            }
-            */
-
-            $newUser = new VUser;
-            $newUser->id = $user['id'];
-            $newUser->name = $name;
-            $newUser->service = '';
-            $newUser->serviceId = $user['id'];
-            $newUser->avatar = $avatar;
-            $newUser->email = $user['email'];
-            $newUser->username = $username;
-            $newUser->gender = $gender;
-            $newUser->url = '';
-            $newUser->photo = $photo;
-            $newUser->updated = date ('Y-m-d 00:00:00');
-            $newUser->login = $user['username'];
-            $newUser->password = $password;
-            $newUser->birthday = $birthday;
-
-            $newUser->save();
+            $this->redirect('/');
         }
 
-        echo 'migration completed';
-        die();
+		$service = 'inner';
+        $form = new RegisterShopForm();
+        $cForm = new VFormRender(array());
+        $cForm->model = $form;
+		if ($cForm->submitted()) {
+            if ($cForm->model->validate())
+            {
+                $attrs = $cForm->model->attributes;
+
+                $pass = VStringHelper::generatePassword();
+
+                // добавляем в контакты
+                $values = array('contact'=>$attrs['contactName'].' ('.$attrs['phone'].')', 'pass'=>$pass, 'email'=>$attrs['email'], 'name'=>$attrs['shopName'], );
+                $client = new VitrinaClient;
+                $client->setAttributes($values);
+                $client->save();
+
+                // создаем пользователя
+                $login = 's'.$client->id;
+                $user = new VUser;
+                $user->login = $login;
+                $user->email = $attrs['email'];
+                $user->username = $attrs['shopName'];
+                $user->password = $pass;
+
+                if ($user->save())
+                {
+                    $client->user = $user->id;
+                    $client->login = $login;
+                    $client->save();
+
+                    $user->service = $service;
+                    $user->serviceId = $user->id;
+                    $user->save();
+
+                    // todo: убить костыль
+                    $oldUserValues = array(
+                        'username' => $login,
+                        'password' => $pass,
+                        'open_pass' => $pass,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                    );
+                    Yii::app()->db->commandBuilder->createInsertCommand('users', $oldUserValues)->execute();
+
+                    $profileValues = array(
+                        'user_id' => $user->id,
+                        'name' => $attrs['shopName'],
+                    );
+                    Yii::app()->db->commandBuilder->createInsertCommand('user_profiles', $profileValues)->execute();
+
+                    $rolesValues = array(
+                        'user_id' => $user->id,
+                        'role_id' => '2',
+                    );
+                    Yii::app()->db->commandBuilder->createInsertCommand('users_roles', $rolesValues)->execute();
+                    // конец костыля
+
+                    // даем клиенту магазин
+                    $shop = new VitrinaShop;
+                    $shop->name = $attrs['shopName'];
+                    $shop->owner = $user->id;
+                    $shop->status = VitrinaShop::STATUS_NEW;
+                    $shop->save();
+
+                    // делаем рассылку
+                    $message = array(
+                        'subject' => 'Ваш магазин зарегистрирован на сайте '.Yii::app()->params['siteName'],
+                        'from_email' => Yii::app()->params['senderEmail'],
+                        'from_username' => '',
+                        'to_email' => 'stenlex@gmail.com',
+                        'to_username' => $attrs['contactName'],
+                        'html' => '!!!'
+                    );
+                    MailHelper::sendMail($message);
+
+                    // авторизуем на сайте
+                    $_POST['VAuthForm'] = array(
+                        'login' => $login,
+                        'password' => $pass,
+                    );
+                    $authIdentity = Yii::app()->vauth->getIdentity($service);
+                    if ($authIdentity->authenticate()) {
+                        $identity = new VAuthUserIdentity($authIdentity);
+                        $rememberMe = 1;
+                        if ($identity->authenticate()) {
+                            Yii::app()->user->login($identity, $rememberMe);
+                            Yii::app()->request->redirect('/myshop/');
+                        }
+                    }
+                }
+
+            }
+        }
+
+        $this->render ('registerShop', array(
+            'form' => $cForm,
+        ));
 
     }
 

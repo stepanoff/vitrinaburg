@@ -13,6 +13,8 @@ class VExtensionComponent extends CComponent {
         Yii::import($this->extensionAlias.'.*');
         Yii::import($this->extensionAlias.'.models.*');
         Yii::import($this->extensionAlias.'.widgets.*');
+        Yii::import($this->extensionAlias.'.validators.*');
+        Yii::import($this->extensionAlias.'.widgets.htmlextended.*');
         Yii::import($this->extensionAlias.'.helpers.*');
 
         if ($this->components) {

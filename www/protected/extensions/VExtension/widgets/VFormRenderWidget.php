@@ -1,8 +1,8 @@
 <?php
 /*
- * Рендер формы типа Forms
+ * Рендер формы типа VFormRender
  */
-class FormsFormRenderWidget extends ExtendedWidget
+class VFormRenderWidget extends ExtendedWidget
 {
     public $model; // FormsFormRender
     public $options;
@@ -10,6 +10,7 @@ class FormsFormRenderWidget extends ExtendedWidget
 
 	public function run()
 	{
+        $this->registerAssets();
         $this->model->startPageIndex = $this->startPageIndex;
         echo $this->model->render();
 	}

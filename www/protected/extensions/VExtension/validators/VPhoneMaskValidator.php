@@ -5,7 +5,7 @@
  * Date: 10.01.12
  * Time: 14:35
  */
-class PhoneMaskValidator extends CValidator
+class VPhoneMaskValidator extends CValidator
 {
 	public $mask = '\+\d\s?\(\d{3}\)\s?\d{3}\-\d{2}\-\d{2}';
     public $example = '+7 (555) 555-55-55';

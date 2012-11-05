@@ -38,6 +38,7 @@ $mainConfig = array(
 	// autoloading model, component and helper classes
 	'import'=>array(
 		'application.models.*',
+        'application.models.forms.*',
 		'application.components.*',
 		'application.extensions.*',
         'ext.eauth.*',

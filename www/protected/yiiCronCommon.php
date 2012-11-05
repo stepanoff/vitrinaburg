@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('Asia/Yekaterinburg');
 defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 defined('YII_DEBUG') or define('YII_DEBUG',true);
 error_reporting(E_ALL | E_STRICT);
@@ -17,7 +18,7 @@ require_once(LIB_PATH .'/yii-1.1.8.r3324/framework/yii.php');
 $configFile=dirname(__FILE__).'/config/console.php';
 
 require(dirname(__FILE__) . '/components/ExtendedConsoleApplication.php');
-Yii::createApplication('ExtendedConsoleApplication', $configFile);
+$yiiConsoleApp = Yii::createApplication('ExtendedConsoleApplication', $configFile);
 //Yii::createConsoleApplication($configFile)->run();
 //Yii::import('application.extensions.croncommand.*');
 ?>

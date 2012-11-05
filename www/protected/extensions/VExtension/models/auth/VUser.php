@@ -73,6 +73,15 @@ class VUser extends CActiveRecord {
         return $this;
     }
 
+    public function byEmail($email)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'condition'=>'email=:email',
+            'params'=>array(':email'=>$email),
+        ));
+        return $this;
+    }
+
     public function getAvatar($size = 'medium')
     {
         if ($this->avatar)

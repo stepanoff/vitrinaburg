@@ -43,7 +43,9 @@ class VFormRender extends CForm
                 $i++;
             }
         }
-        $this->configure($this->model->getFormRenderData());
+        $model = $this->model;
+        if (method_exists($model, 'getFormRenderData'))
+            $this->configure($this->model->getFormRenderData());
 
         $oldReq = CHtml::$afterRequiredLabel;
         CHtml::$afterRequiredLabel = '&nbsp;<span class="b-form__label__star">*</span>';

@@ -254,12 +254,55 @@ LIMIT 5';
         Yii::app()->end();
     }
 
+    public function actionForgetPass () {
+        $this->setPageTitle('Вспомнить пароль &mdash; '.Yii::app()->params['siteName']);
+
+        $form = new VitrinaForgetPasswordForm();
+        $cForm = new VFormRender(array());
+        $cForm->model = $form;
+        $text = '';
+		if ($cForm->submitted()) {
+            if ($cForm->model->validate())
+            {
+                $attrs = $cForm->model->attributes;
+
+                $user = VUser::model()->byEmail($attrs['email'])->find();
+
+                if ($user) {
+                    $message = array(
+                        'subject' => 'Напоминание пароля на сайте '.Yii::app()->params['siteName'],
+                        'from_email' => Yii::app()->params['senderEmail'],
+                        'from_username' => '',
+                        'to_email' => $user->email,
+                        'to_username' => $user->username,
+                        'html' => $this->renderPartial('application.views.mail.forgetPass', array(
+                            'login' => $user->login,
+                            'password' => $user->password,
+                        ), true),
+                    );
+                    MailHelper::sendMail($message);
+
+                    $cForm = false;
+                    $text = '<p>Пароль выслан на указанный адрес.</p><p><a href="/">&larr; Вернуться на главную страницу</a></p>';
+                }
+
+            }
+        }
+
+        $this->render ('forgetPass', array(
+            'form' => $cForm,
+            'text' => $text,
+        ));
+
+    }
 
     public function actionRegisterShop () {
         if (Yii::app()->user->id)
         {
             $this->redirect('/');
         }
+
+        $this->setPageTitle('Добавить свой магазин &mdash; '.Yii::app()->params['siteName']);
 
 		$service = 'inner';
         $form = new RegisterShopForm();
@@ -324,18 +367,42 @@ LIMIT 5';
                     $shop->name = $attrs['shopName'];
                     $shop->owner = $user->id;
                     $shop->status = VitrinaShop::STATUS_NEW;
-                    $shop->save();
+                    if (!$shop->save()) {
+                        print_r($shop->getErrors());
+                        die();
+                    }
 
                     // делаем рассылку
                     $message = array(
                         'subject' => 'Ваш магазин зарегистрирован на сайте '.Yii::app()->params['siteName'],
                         'from_email' => Yii::app()->params['senderEmail'],
                         'from_username' => '',
-                        'to_email' => 'stenlex@gmail.com',
+                        'to_email' => $attrs['email'],
                         'to_username' => $attrs['contactName'],
-                        'html' => '!!!'
+                        'html' => $this->renderPartial('application.views.mail.shopRegistration', array(
+                            'contact' => $attrs['contactName'],
+                            'shop' => $shop->name,
+                            'login' => $user->login,
+                            'password' => $user->password,
+                        ), true)
                     );
                     MailHelper::sendMail($message);
+
+                    $message = array(
+                        'subject' => 'Новая регистрация на сайте '.Yii::app()->params['siteName'],
+                        'from_email' => Yii::app()->params['senderEmail'],
+                        'from_username' => '',
+                        'to_email' => Yii::app()->params['adminEmail'],
+                        'to_username' => $attrs['contactName'],
+                        'html' => $this->renderPartial('application.views.mail.shopRegistrationAdmin', array(
+                            'contact' => $attrs['contactName'],
+                            'shop' => $shop->name,
+                            'login' => $user->login,
+                            'password' => $user->password,
+                        ), true)
+                    );
+                    MailHelper::sendMail($message);
+
 
                     // авторизуем на сайте
                     $_POST['VAuthForm'] = array(

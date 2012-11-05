@@ -4,7 +4,8 @@ return array(
 	'showScriptName'=>false,
     'urlSuffix' => '/',
 	'rules'=>array(
-        '/test' => 'site/registerShop',
+        '/addShop' => 'site/registerShop',
+        '/forgetPass' => 'site/forgetPass',
 
         '/login' => 'site/login',
         '/register' => 'site/register',

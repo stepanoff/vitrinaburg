@@ -138,7 +138,7 @@ if (Yii::app()->user->id)
         $links = array (
             array ('label' => 'О проекте', 'route' => array ('/staticPage/show', 'staticPage' => 'about')),
             array ('label' => 'Размещение рекламы', 'route' => array ('/staticPage/show', 'staticPage' => 'adv')),
-            array ('label' => 'Добавить магазин', 'route' => array ('/staticPage/show', 'staticPage' => 'register')),
+            array ('label' => 'Добавить магазин', 'route' => array ('/site/registerShop')),
         );
         echo '<ul>';
         foreach ($links as $link)

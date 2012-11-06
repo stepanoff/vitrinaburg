@@ -99,7 +99,7 @@ LIMIT 5';
 
                     if (isset($_GET['nopopup']))
                     {
-                        $rUrl = isset($_GET['redirect_uri']) ? $_GET['redirect_uri'] : Yii::app()->user->returnUrl;
+                        $rUrl = isset($_GET['returnUrl']) ? $_GET['returnUrl'] : Yii::app()->user->returnUrl;
                         $rUrl .= (strstr('?', $rUrl) ? '&' : '?').'error='.urlencode($service);
                         $authIdentity->cancelUrl = $rUrl;
                     }
@@ -176,9 +176,9 @@ LIMIT 5';
                             'message' => $error,
                         )
                     );
-                    if (isset($_GET['redirectUrl']))
+                    if (isset($_GET['returnUrl']))
                     {
-                        $url = $_GET['redirectUrl'];
+                        $url = $_GET['returnUrl'];
                         $url .= (strstr('?', $url) ? '&' : '?').'error='.urlencode($data['error']['message']);
                         $this->redirect($url);
                         die();

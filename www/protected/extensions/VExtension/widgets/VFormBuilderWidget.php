@@ -4,18 +4,8 @@ class VFormBuilderWidget extends CWidget
 	public $form;
 	public $model;
     public $elements;
-	public $formInputLayout = '<div class="form-row">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
-	public $formErrorInputLayout = '<div class="form-row error">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
-    public $renderButtons = true;
     public $startPageIndex = false;
-    public $defaultClasses = array(
-//		'text'=>'grid-span-7',
-//		'password'=>'grid-span-7',
-//		'textarea'=>'grid-span-9',
-//		'file'=>'grid-span-7',
-//		'listbox'=>'grid-span-7',
-//		'dropdownlist'=>'grid-span-7',
-	);
+
     public $defaultOptions = array(
 		'action'=>'',
 		'method'=>'post',

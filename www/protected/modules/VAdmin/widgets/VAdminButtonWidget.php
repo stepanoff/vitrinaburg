@@ -1,9 +1,4 @@
 <?php
-class VAdminGridWidget extends CGridView {
+class VAdminButtonWidget extends CButtonColumn {
 
-    public $cssFile = false;
-    public $itemsCssClass = 'table table-striped table-hover';
-    public $rowCssClass = false;
-    public $rowCssClassExpression = null;
-    
 }

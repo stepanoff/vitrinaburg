@@ -1,4 +1,4 @@
-	<?php $this->widget('application.widgets.LinkPager',array('pages' => $pages)) ?>
+	<?php /*$this->widget('application.widgets.LinkPager',array('pages' => $pages))*/ ?>
 
 	<?php
 		//echo CHtml::link('Добавить', array('edit')); 
@@ -14,7 +14,7 @@
 			<td>
 				<?php echo nl2br($item->description) ?>
 			</td>
-			<td><?php $this->widget('admin.components.SwitchEditWidget', array('id' => $item->id));  ?></td>
+			<td><?php /*$this->widget('admin.components.SwitchEditWidget', array('id' => $item->id));*/  ?></td>
 		</tr>
 		<?php } ?>
 	</table>

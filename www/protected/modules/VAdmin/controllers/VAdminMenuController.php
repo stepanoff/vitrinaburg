@@ -1,14 +1,12 @@
 <?php
-set_time_limit(60000);
-
-class AdminMenuController extends AdminController
+class VAdminMenuController extends VAdminController
 {
 	public $model = 'MenuItem';
 	
 	public function templates()
 	{
 		return array(
-			'list' => 'admin.views.adminmenu.list',
+			'list' => 'VAdmin.views.adminmenu.list',
 		);
 	}
 	

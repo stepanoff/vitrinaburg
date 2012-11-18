@@ -47,6 +47,8 @@ $mainConfig = array(
         'ext.lightopenid.*',
 		'application.helpers.*',
 		'application.widgets.*',
+
+        'application.modules.VAdmin.controllers.*',
 ),
 
 	// application-level parameters that can be accessed

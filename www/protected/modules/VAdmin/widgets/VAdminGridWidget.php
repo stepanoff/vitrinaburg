@@ -1,16 +1,9 @@
 <?php
-class VAdminMenuWidget extends CWidget {
+class VAdminGridWidget extends CGridView {
 
-    public $uri = false;
-
-    public function run() {
-		parent::run();
-
-        $items = array();
-
-		$this->render('menu', array(
-            'items' => $items,
-		));
-    }
-
+    public $cssFile = false;
+    public $itemsCssClass = 'table table-striped table-hover';
+    public $rowCssClass = false;
+    public $rowCssClassExpression = null;
+    
 }

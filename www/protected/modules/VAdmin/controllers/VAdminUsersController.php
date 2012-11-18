@@ -1,7 +1,5 @@
 <?php
-set_time_limit(60000);
-
-class AdminUsersController extends AdminController
+class VAdminUsersController extends VAdminController
 {
 	public $model = 'UserAdmin';
 	

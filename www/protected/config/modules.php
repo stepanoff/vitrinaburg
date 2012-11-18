@@ -5,4 +5,7 @@ return array(
         'staticUrl' => $params['staticUrl'],
     ),
     
+    'VAdmin' => array (
+        'staticUrl' => $params['staticUrl'],
+    ),
 );

@@ -1,5 +1,5 @@
 <?php
-class ContentpageController extends AdminController
+class VAdminContentpageController extends VAdminController
 {
 	public $model = 'ContentPage';
 	

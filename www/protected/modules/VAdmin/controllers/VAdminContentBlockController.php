@@ -1,14 +1,7 @@
 <?php
-class AdminContentBlockController extends AdminController
+class VAdminContentBlockController extends VAdminController
 {
-	public $model = 'ContentBlock';
-	
-	public function templates()
-	{
-		return array(
-			'list' => 'admin.views.contentblock.list',
-		);
-	}
+	public $model = 'VitrinaCb';
 	
 	public function appendLayoutFilters($model)
 	{

@@ -8,4 +8,7 @@ return array(
     'VAdmin' => array (
         'staticUrl' => $params['staticUrl'],
     ),
+
+    'admin' => array (
+    ),
 );

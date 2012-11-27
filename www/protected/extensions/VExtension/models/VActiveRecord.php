@@ -4,6 +4,9 @@ class VActiveRecord extends CActiveRecord
     const VISIBLE_OFF = 0;
     const VISIBLE_ON = 1;
 
+    protected $visibleColumn = 'visible';
+    protected $statusColumn = 'status';
+
     protected $_statusBefore;
     protected $_tmpStorage = array(); // массив для хранения временных данных вместо кеша
 
@@ -103,17 +106,48 @@ class VActiveRecord extends CActiveRecord
         );
     }
     
-	public function setStatus ($status)
-	{
-		$statuses = self::statusTypes();
-		if (!isset($statuses[$status]))
-			return false;
-        //Мне надо чтобы отработал эвент afterSave поэтому так
-		$this->status = $status;
-        $this->saveAttributes(array('status'));
-		return true;
-	}
+    public function setStatus($status) {
+        $statuses = self::statusTypes();
+        if (isset($statuses[$status])) {
+            $column = $this->statusColumn;
+            $this->$column = $status;
+            $this->saveAttributes(array($column));
+            return $this->afterSetStatus();
+        }
+        return false;
+    }
+
+    protected function afterSetStatus () {
+        return true;
+    }
+
+    public function visibleOn () {
+        return $this->visibleOff(self::VISIBLE_ON);
+    }
+
+    public function visibleOff ($type = false) {
+        $type = $type ? $type : self::VISIBLE_OFF;
+        $column = $this->visibleColumn;
+        $error = true;
+        if ($type == self::VISIBLE_OFF) {
+            $this->$column = self::VISIBLE_OFF;
+            $error = false;
+        }
+        else if ($type == self::VISIBLE_ON) {
+            $this->$column = self::VISIBLE_ON;
+            $error = false;
+        }
+        if (!$error) {
+            $this->saveAttributes(array($column));
+            return $this->afterSetVisible($type);
+        }
+        return false;
+    }
 	
+    protected function afterSetVisible ($type) {
+        return true;
+    }
+
     protected function beforeValidate()
     {
     	

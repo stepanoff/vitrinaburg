@@ -99,12 +99,14 @@ class VitrinaShop extends ExtendedActiveRecord
     public function rules()
     {
         $res = parent::rules();
-        return array_merge($res, array(
+        $res = array_merge($res, array(
         	array('name', 'required', 'message' => 'Укажите название магазина'),
 //        	array('text', 'required', 'message' => 'Укажите наличие скидок, опишите качество товара и другие приемущества вашего магазина перед другими. Все то, что должно привлекать покупателя'),
             array('logo', 'ImageValidator'),
         	array('name, logo, site, text', 'safe', 'on' => 'admin'),
 		));
+        print_r($res);
+        die();
     }
 
     public function ImageValidator($attribute, $params) {

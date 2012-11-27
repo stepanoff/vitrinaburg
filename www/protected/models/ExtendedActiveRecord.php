@@ -12,7 +12,22 @@ class ExtendedActiveRecord extends VActiveRecord
     {
         return parent::model($className);
     }
-    
+
+    public function rules()
+    {
+        $res = parent::rules();
+        return array_merge($res, array(
+        	array('status, visible', 'safe', 'on' => 'admin'),
+		));
+    }
+
+    public function isVisible () {
+        return $this->visible == self::VISIBLE_ON;
+    }
+
+    /*
+     * Работа со статусами
+     */
     public static function statusTypes ()
     {
     	return array (

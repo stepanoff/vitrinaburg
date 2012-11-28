@@ -106,8 +106,9 @@ class VActiveRecord extends CActiveRecord
         );
     }
     
-    public function setStatus($status) {
-        $statuses = self::statusTypes();
+    public function changeStatus($status) {
+        $className = get_class($this);
+        $statuses = $className::statusTypes();
         if (isset($statuses[$status])) {
             $column = $this->statusColumn;
             $this->$column = $status;

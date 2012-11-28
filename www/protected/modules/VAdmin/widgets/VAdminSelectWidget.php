@@ -1,122 +1,21 @@
 <?php
-class VAdminButtonWidget extends CGridColumn {
+class VAdminSelectWidget extends CGridColumn {
 
-    const BUTTON_VIEW = 'view';
-    const BUTTON_EDIT = 'update';
-    const BUTTON_DELETE = 'delete';
-
-    /**
-     * @var array the HTML options for the data cell tags.
-     */
     public $htmlOptions=array('class'=>'button-column');
     /**
      * @var array the HTML options for the header cell tag.
      */
-    public $headerHtmlOptions=array('class'=>'button-column');
+    public $headerHtmlOptions=array('class'=>'button-column', 'width' => '1%');
     /**
      * @var array the HTML options for the footer cell tag.
      */
     public $footerHtmlOptions=array('class'=>'button-column');
-    /**
-     * @var string the template that is used to render the content in each data cell.
-     * These default tokens are recognized: {view}, {update} and {delete}. If the {@link buttons} property
-     * defines additional buttons, their IDs are also recognized here. For example, if a button named 'preview'
-     * is declared in {@link buttons}, we can use the token '{preview}' here to specify where to display the button.
-     */
-    public $template='{view} {update} {delete}';
-    /**
-     * @var string the label for the view button. Defaults to "View".
-     * Note that the label will not be HTML-encoded when rendering.
-     */
-    public $viewButtonLabel;
-    public $updateButtonLabel;
-    public $deleteButtonLabel;
 
-    /**
-     * @var string a PHP expression that is evaluated for every view button and whose result is used
-     * as the URL for the view button. In this expression, the variable
-     * <code>$row</code> the row number (zero-based); <code>$data</code> the data model for the row;
-     * and <code>$this</code> the column object.
-     */
-    public $viewButtonUrl='Yii::app()->controller->createUrl("view",array("id"=>$data->primaryKey))';
-    public $updateButtonUrl='Yii::app()->controller->createUrl("edit",array("id"=>$data->primaryKey))';
-    public $deleteButtonUrl='Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey))';
-
-    /**
-     * @var array the HTML options for the view button tag.
-     */
-    public $viewButtonOptions=array();
-    public $updateButtonOptions=array();
-    public $deleteButtonOptions=array();
-
-    /**
-     * @var string the confirmation message to be displayed when delete button is clicked.
-     * By setting this property to be false, no confirmation message will be displayed.
-     * This property is used only if <code>$this->buttons['delete']['click']</code> is not set.
-     */
-    public $deleteConfirmation;
-    /**
-     * @var string a javascript function that will be invoked after the delete ajax call.
-     * This property is used only if <code>$this->buttons['delete']['click']</code> is not set.
-     *
-     * The function signature is <code>function(link, success, data)</code>
-     * <ul>
-     * <li><code>link</code> references the delete link.</li>
-     * <li><code>success</code> status of the ajax call, true if the ajax call was successful, false if the ajax call failed.
-     * <li><code>data</code> the data returned by the server in case of a successful call or XHR object in case of error.
-     * </ul>
-     * Note that if success is true it does not mean that the delete was successful, it only means that the ajax call was successful.
-     *
-     * Example:
-     * <pre>
-     *  array(
-     *     class'=>'CButtonColumn',
-     *     'afterDelete'=>'function(link,success,data){ if(success) alert("Delete completed successfuly"); }',
-     *  ),
-     * </pre>
-     */
-    public $afterDelete;
-    /**
-     * @var array the configuration for additional buttons. Each array element specifies a single button
-     * which has the following format:
-     * <pre>
-     * 'buttonID' => array(
-     *     'label'=>'...',     // text label of the button
-     *     'url'=>'...',       // a PHP expression for generating the URL of the button
-     *     'imageUrl'=>'...',  // image URL of the button. If not set or false, a text link is used
-     *     'options'=>array(...), // HTML options for the button tag
-     *     'click'=>'...',     // a JS function to be invoked when the button is clicked
-     *     'visible'=>'...',   // a PHP expression for determining whether the button is visible
-     * )
-     * </pre>
-     * In the PHP expression for the 'url' option and/or 'visible' option, the variable <code>$row</code>
-     * refers to the current row number (zero-based), and <code>$data</code> refers to the data model for
-     * the row.
-     *
-     * Note that in order to display these additional buttons, the {@link template} property needs to
-     * be configured so that the corresponding button IDs appear as tokens in the template.
-     */
-    public $buttons=array();
-
-    public function defaultButtons () {
-        return array(
-            self::BUTTON_VIEW => array(
-                'icon' => 'icon-search',
-                'label' => Yii::t('zii','View'),
-                'options' => array('class'=>'btn', 'action' => ''),
-            ),
-            self::BUTTON_EDIT => array(
-                'icon' => 'icon-pencil',
-                'label' => Yii::t('zii','Update'),
-                'options' => array('class'=>'btn', 'action' => ''),
-            ),
-            self::BUTTON_DELETE => array(
-                'icon' => 'icon-remove icon-white',
-                'label' => Yii::t('zii','Delete'),
-                'options' => array('class'=>'btn btn-danger', 'action' => 'delete'),
-            ),
-        );
-    }
+    public $url = 'Yii::app()->controller->createUrl("setValue",array("id"=>$data->primaryKey))';
+    public $value; // выражение для определения текущего значения в выборе
+    public $label = false;
+    public $inputName = 'value';
+    public $data = array();
 
     /**
      * Initializes the column.
@@ -124,84 +23,8 @@ class VAdminButtonWidget extends CGridColumn {
      */
     public function init()
     {
-        $this->initDefaultButtons();
-
-        foreach($this->buttons as $id=>$button)
-        {
-            if(strpos($this->template,'{'.$id.'}')===false)
-                unset($this->buttons[$id]);
-            else if(isset($button['click']))
-            {
-                if(!isset($button['options']['class']))
-                    $this->buttons[$id]['options']['class']=$id;
-                if(strpos($button['click'],'js:')!==0)
-                    $this->buttons[$id]['click']='js:'.$button['click'];
-            }
-        }
-
-        $this->registerClientScript();
-    }
-
-    /**
-     * Initializes the default buttons (view, update and delete).
-     */
-    protected function initDefaultButtons()
-    {
-        $defaults = $this->defaultButtons ();
-        if($this->deleteConfirmation===null)
-            $this->deleteConfirmation=Yii::t('zii','Are you sure you want to delete this item?');
-
-        foreach(array_keys($this->defaultButtons ()) as $id)
-        {
-            $button = $defaults[$id];
-            $button['url'] = $this->{$id.'ButtonUrl'};
-            $button['options'] = array_merge($button['options'], $this->{$id.'ButtonOptions'});
-
-            if(isset($this->buttons[$id]))
-                $this->buttons[$id]=array_merge($button,$this->buttons[$id]);
-            else
-                $this->buttons[$id]=$button;
-        }
-
-        if(!isset($this->buttons['delete']['click']))
-        {
-            if(is_string($this->deleteConfirmation))
-                $confirmation="if(!confirm(".CJavaScript::encode($this->deleteConfirmation).")) return false;";
-            else
-                $confirmation='';
-
-            if(Yii::app()->request->enableCsrfValidation)
-            {
-                $csrfTokenName = Yii::app()->request->csrfTokenName;
-                $csrfToken = Yii::app()->request->csrfToken;
-                $csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
-            }
-            else
-                $csrf = '';
-
-            if($this->afterDelete===null)
-                $this->afterDelete='function(){}';
-
-            $this->buttons['delete']['click']=<<<EOD
-function() {
-    $confirmation
-    var th=this;
-    var afterDelete=$this->afterDelete;
-    $.fn.yiiGridView.update('{$this->grid->id}', {
-        type:'POST',
-        url:$(this).attr('href'),$csrf
-        success:function(data) {
-            $.fn.yiiGridView.update('{$this->grid->id}');
-            afterDelete(th,true,data);
-        },
-        error:function(XHR) {
-            return afterDelete(th,false,XHR);
-        }
-    });
-    return false;
-}
-EOD;
-        }
+        // todo: присобачить js
+        //$this->registerClientScript();
     }
 
     /**
@@ -209,19 +32,7 @@ EOD;
      */
     protected function registerClientScript()
     {
-        $js=array();
-        foreach($this->buttons as $id=>$button)
-        {
-            if(isset($button['click']))
-            {
-                $function=CJavaScript::encode($button['click']);
-                $class=preg_replace('/\s+/','.',$button['options']['class']);
-                $js[]="jQuery('#{$this->grid->id} a.{$class}').live('click',$function);";
-            }
-        }
-
-        if($js!==array())
-            Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n",$js));
+//            Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n",$js));
     }
 
     /**
@@ -232,43 +43,40 @@ EOD;
      */
     protected function renderDataCellContent($row,$data)
     {
-        echo CHtml::openTag ('div', array('class' => 'btn-group'));
-        $tr=array();
         ob_start();
-        foreach($this->buttons as $id=>$button)
+
+        echo CHtml::openTag ('div', array('class' => 'btn-group'));
+
+        $optGroup = $this->data;
+        $currentValue = null;
+        if ($this->value !== null) {
+            $currentValue = $this->evaluateExpression($this->value,array('data'=>$data,'row'=>$row));
+        }
+
+        if (isset($optGroup[$currentValue])) {
+            echo CHtml::tag('button', array('class' => 'btn dropdown-toggle', 'data-toggle' => 'dropdown'), $optGroup[$currentValue].' <span class="caret"></span>');
+            unset($optGroup[$currentValue]);
+        }
+        else {
+            echo CHtml::tag('button', array('class' => 'btn dropdown-toggle', 'data-toggle' => 'dropdown'), ' <span class="caret"></span>');
+        }
+
+        echo CHtml::openTag ('ul', array('class' => 'dropdown-menu'));
+        $url = $this->evaluateExpression($this->url,array('data'=>$data,'row'=>$row));
+        foreach($optGroup as $id=>$optionLabel)
         {
-            $this->renderButton($id,$button,$row,$data);
-            $tr['{'.$id.'}']=ob_get_contents();
-            ob_clean();
+            $optionUrl = $url.(strpos($url, '?') ? '&' : '?' ).CHtml::encode($this->inputName).'='.CHtml::encode($id);
+            echo CHtml::openTag ('li', array('class' => ''));
+            echo CHtml::link($optionLabel, $optionUrl, array('class' => 'js-link', 'actionType' => 'ajaxPage'));
+            echo CHtml::closeTag ('li');
         }
-        ob_end_clean();
-        echo strtr($this->template,$tr);
+        echo CHtml::closeTag ('ul');
+
         echo CHtml::closeTag ('div');
-    }
 
-    /**
-     * Renders a link button.
-     * @param string $id the ID of the button
-     * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
-     * See {@link buttons} for more details.
-     * @param integer $row the row number (zero-based)
-     * @param mixed $data the data object associated with the row
-     */
-    protected function renderButton($id,$button,$row,$data)
-    {
-        if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],array('row'=>$row,'data'=>$data)))
-              return;
-        $label=isset($button['label']) ? $button['label'] : $id;
-        $url=isset($button['url']) ? $this->evaluateExpression($button['url'],array('data'=>$data,'row'=>$row)) : '#';
-        $options=isset($button['options']) ? $button['options'] : array();
-
-        if(isset($button['icon']) && is_string($button['icon'])) {
-            $span = CHtml::tag('i', array('class' => $button['icon']), '');
-            $options = array_merge($options, array('title' => $label));
-            echo CHtml::link($span,$url,$options);
-        }
-        else
-            echo CHtml::link($label,$url,$options);
+        $c = ob_get_contents();
+        ob_end_clean();
+        echo $c;
     }
 
 }

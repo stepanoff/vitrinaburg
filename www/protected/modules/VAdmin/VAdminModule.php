@@ -16,6 +16,7 @@ class VAdminModule extends CWebModule
 
 		// import the module-level models and components
 		$this->setImport(array(	
+            'VAdmin.components.*',
 			'VAdmin.models.*',
 			'VAdmin.models.forms.*',
 			'VAdmin.components.*',

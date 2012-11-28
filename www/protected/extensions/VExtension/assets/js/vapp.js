@@ -1,6 +1,6 @@
 /**
  * Created with JetBrains PhpStorm.
- * User: bazilio
+ * User: stepanoff
  * Date: 03.04.12
  * Time: 21:21
  */
@@ -348,7 +348,7 @@ app = {
 		init:function () {
 			if ($.url === undefined) {
 				// TODO: include automatically
-				console.error("You didn't include <jquery.url.js> plugin");
+				console.log("You didn't include <jquery.url.js> plugin");
 				return;
 			}
 			if (app.historySupport) {

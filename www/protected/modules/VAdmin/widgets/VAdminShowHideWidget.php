@@ -11,7 +11,7 @@ class VAdminShowHideWidget extends CGridColumn {
     /**
      * @var array the HTML options for the header cell tag.
      */
-    public $headerHtmlOptions=array('class'=>'button-column');
+    public $headerHtmlOptions=array('class'=>'button-column', 'width' => '1%');
     /**
      * @var array the HTML options for the footer cell tag.
      */
@@ -34,12 +34,12 @@ class VAdminShowHideWidget extends CGridColumn {
             self::BUTTON_SHOW => array(
                 'icon' => 'icon-eye-open icon-white',
                 'label' => 'Видимый',
-                'options' => array('class'=>'btn btn-success', 'action' => 'hide'),
+                'options' => array('class'=>'btn btn-success', 'actionType' => 'ajaxPage'),
             ),
             self::BUTTON_HIDE => array(
                 'icon' => 'icon-eye-close icon-white',
                 'label' => 'Скрытый',
-                'options' => array('class'=>'btn btn-inverse', 'action' => 'show'),
+                'options' => array('class'=>'btn btn-inverse', 'actionType' => 'ajaxPage'),
             ),
         );
     }

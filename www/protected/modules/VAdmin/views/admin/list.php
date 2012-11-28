@@ -1,6 +1,9 @@
 <?php
-$this->widget('VAdminGridWidget', array(
-    'dataProvider' => $dataProvider,
-    'columns' => $columns,
+$this->widget('VAdminFilterBuilderWidget', array(
+    'form' => $filterForm,
 ));
+?>
+
+<?php
+    echo $table;
 ?>

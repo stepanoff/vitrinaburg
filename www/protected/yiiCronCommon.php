@@ -13,7 +13,7 @@ define('FILES_PATH', dirname(__FILE__). DS . '..' . DS . 'files');
 define('LIB_PATH', realpath(dirname(__FILE__). DS . '..' . DS . '..' . DS . 'lib'));
 
 // подключаем файл инициализации Yii
-require_once(LIB_PATH .'/yii-1.1.8.r3324/framework/yii.php');
+require_once(LIB_PATH .'/yii/framework/yii.php');
 
 $configFile=dirname(__FILE__).'/config/console.php';
 

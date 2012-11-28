@@ -12,7 +12,7 @@ class VAdminButtonWidget extends CGridColumn {
     /**
      * @var array the HTML options for the header cell tag.
      */
-    public $headerHtmlOptions=array('class'=>'button-column');
+    public $headerHtmlOptions=array('class'=>'button-column', 'width' => '1%');
     /**
      * @var array the HTML options for the footer cell tag.
      */
@@ -113,7 +113,7 @@ class VAdminButtonWidget extends CGridColumn {
             self::BUTTON_DELETE => array(
                 'icon' => 'icon-remove icon-white',
                 'label' => Yii::t('zii','Delete'),
-                'options' => array('class'=>'btn btn-danger', 'action' => 'delete'),
+                'options' => array('class'=>'btn btn-danger', 'actionType' => 'ajaxPage'),
             ),
         );
     }
@@ -163,6 +163,7 @@ class VAdminButtonWidget extends CGridColumn {
                 $this->buttons[$id]=$button;
         }
 
+        /*
         if(!isset($this->buttons['delete']['click']))
         {
             if(is_string($this->deleteConfirmation))
@@ -202,6 +203,7 @@ function() {
 }
 EOD;
         }
+        */
     }
 
     /**

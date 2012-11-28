@@ -1,0 +1,52 @@
+-- phpMyAdmin SQL Dump
+-- version 3.5.2.2
+-- http://www.phpmyadmin.net
+--
+-- Хост: localhost
+-- Время создания: Ноя 28 2012 г., 12:47
+-- Версия сервера: 5.5.27-1~dotdeb.0
+-- Версия PHP: 5.3.16-1~dotdeb.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- База данных: `66`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `infomessage2user`
+--
+
+CREATE TABLE IF NOT EXISTS `infomessage2user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `read` tinyint(2) unsigned NOT NULL,
+  `show_once` tinyint(2) unsigned NOT NULL,
+  `message_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`,`message_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+
+--
+-- Дамп данных таблицы `infomessage2user`
+--
+--
+-- Структура таблицы `infomessages`
+--
+
+CREATE TABLE IF NOT EXISTS `infomessages` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(256) NOT NULL,
+  `text` text NOT NULL,
+  `info_type` tinyint(4) NOT NULL,
+  `date` datetime NOT NULL,
+  `author` bigint(20) NOT NULL,
+  `buttons` text NOT NULL,
+  `params` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `date` (`date`,`author`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+

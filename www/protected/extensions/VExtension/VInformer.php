@@ -7,10 +7,10 @@
  */
 
 /**
- * Informer - сообщения в всплывающих окнах
+ * VInformer - сообщения в всплывающих окнах
  *
  */
-class Informer extends CApplicationComponent
+class VInformer extends CApplicationComponent
 {
 	public $userComponent = null;
 	public $_userComponent = 'user';
@@ -19,8 +19,8 @@ class Informer extends CApplicationComponent
 	public $_authManager = 'authManager';
 	
 	//public $messageClass = 'InfoMessage';
-	public $messageClass = 'InfoMessage';
-	public $userClass = 'User';
+	public $messageClass = 'VInfoMessage';
+	public $userClass = 'VUser';
 	
 	protected $toCurrentUser = false;
 	
@@ -44,8 +44,7 @@ class Informer extends CApplicationComponent
 	public $_session_key = 'informer';
 	protected $_unread = null; // массив непрочитанных сообщений
 	protected $_hide_unread = false; // прочитаю потом
-	protected $_useClientCompany = false; // использовать компонент userCompany
-	
+
 	// вские данные для виджета, украшения
 	public static $types = array (
 		self::TYPE_NONE => array ('class'=>false, 'stateClass'=>false, 'name'=>'нет'),
@@ -67,18 +66,14 @@ class Informer extends CApplicationComponent
 		if (!isset($_SESSION[$this->_session_key]))
 			$_SESSION[$this->_session_key] = array();
 		$uid = isset($_SESSION[$this->_session_key]['uid'])?$_SESSION[$this->_session_key]['uid']:false;
-		if ($uid!=Yii::app()->client->id)
+		if ($uid!=$this->userComponent->id)
 			$_SESSION[$this->_session_key] = array();
 		
-		$_SESSION[$this->_session_key]['uid'] = Yii::app()->client->id;
+		$_SESSION[$this->_session_key]['uid'] = $this->userComponent->id;
 		
 		if (isset($_SESSION[$this->_session_key]['hideUnread']))
 			$this->_hide_unread = $_SESSION[$this->_session_key]['hideUnread'];
-		if (Yii::app()->getComponent('userCompany'))
-		{
-			$this->_useClientCompany = true;
-		}
-			
+
 	}
 
 	/**
@@ -168,6 +163,8 @@ class Informer extends CApplicationComponent
 		
 		if ($options['send'])
 		{
+            // todo: отправка не работает
+            /*
 			$mailer = Yii::app()->getComponent('mailQueue');
 			
 			$subject = is_array($options['send'])&&isset($options['send']['title'])?$options['send']['title']:$options['title'];
@@ -193,7 +190,7 @@ class Informer extends CApplicationComponent
 						));
 				}
 			}
-			
+            */
 		}
 	}
 	
@@ -336,8 +333,8 @@ class Informer extends CApplicationComponent
 				'store' => 0,
 			),
 			array(
-				array ('type'=>self::BTN_YES, 'action'=>$action, 'text'=>'Да'),
 				array ('type'=>self::BTN_NO, 'action'=>self::ACTION_CLOSE, 'text'=>'Нет'),
+                array ('type'=>self::BTN_YES, 'action'=>'ajaxPage', 'url' => $action, 'text'=>'Да', 'primary' => true),
 			),
 			$params
 		);

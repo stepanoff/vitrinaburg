@@ -1,65 +1,48 @@
 <?php
-class VFormBuilderWidget extends CWidget
+class VAdminFilterBuilderWidget extends CWidget
 {
 	public $form;
-	public $model;
-    public $elements;
-    public $startPageIndex = false;
 
     public $defaultOptions = array(
 		'action'=>'',
-		'method'=>'post',
-        'htmlOptions' => array('class' => 'v-form'),
+		'method'=>'get',
+        'htmlOptions' => array('class' => ''),
 	);
 	public $renderSafeAttributes = false;
+    public $containerClass = 'navbar filters';
 
 	public function run()
 	{
         $this->registerAssets();
 
 		$form = $this->form;
-        if ($form === null) {
-            $form = $this->_buildForm($this->model, $this->elements);
-        }
         if (!$form)
             return;
 
+        echo CHtml::openTag('div', array('class' => $this->containerClass));
+        echo CHtml::openTag('div', array('class' => 'navbar-inner', 'style' => 'padding-top: 10px;'));
+
         $form->activeForm = array_merge($this->defaultOptions, $form->activeForm );
-        $this->form->startPageIndex = $this->startPageIndex;
+        $form->formInputLayout = '<div class="span3">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
+        $form->buttonsLayout = '<div class="span2">{buttons}</div></div>';
+        $form->buttonLayout = '<div class="span6">{button}</div>';
+        $form->formInputsLayout = '<div class="row-fluid"><div class="span10">{elements}</div>';
+        $form->formErrorLayout = '{error}';
 
         echo $form->render();
+
+        echo CHtml::closeTag('div');
+        echo CHtml::closeTag('div');
 	}
-
-    protected function _buildForm ($model, $elements)
-    {
-        if (!is_array($elements))
-            return false;
-
-        if ($this->renderButtons)
-        {
-            if (!isset($elements['buttons']))
-                $elements['buttons'] = array();
-        }
-        else
-        {
-            unset($elements['buttons']);
-        }
-
-        if (!isset($elements['enctype']))
-            $elements['enctype'] = 'multipart/form-data';
-
-        $form = new VFormRender ($elements);
-        $form->model = $model;
-
-        return $form;
-    }
 
     public function registerAssets () {
 
+        /*
         $cs = Yii::app()->clientScript;
         $url = Yii::app()->VExtension->getAssetsUrl();
         $cs->registerCssFile($url.'/css/vform.css');
         $cs->registerScriptFile($url.'/js/jquery.form.js', CClientScript::POS_HEAD);
+        */
     }
 }
 ?>

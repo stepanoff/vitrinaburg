@@ -12,7 +12,7 @@
  * @author stepanoff
  * @version 1.0
  */
-class InfoMessage extends CActiveRecord
+class VInfoMessage extends CActiveRecord
 {
 	public $to = null;
 	public $read = null;

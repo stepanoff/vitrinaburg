@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Yekaterinburg');
 
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/../lib/yii-1.1.8.r3324/framework/yii.php';
+$yii=dirname(__FILE__).'/../lib/yii/framework/yii.php';
 
 $localConfig = @include(dirname(__FILE__) . '/localConfig/params.php');
 $yiiDebug = (!empty($localConfig) && isset($localConfig['yiiDebug'])) ? $localConfig['yiiDebug'] : false;

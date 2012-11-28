@@ -2,17 +2,7 @@
 Очередь всплывающих окон
 для нормального ф-рования нужны jQuery
 */
-messQueue = function(opts){
-
-    var queueObj = new Object();
-    var messageObj = new Object();
-    var listObj = new Object();
-    var indexSpan = new Object();
-    var totalSpan = new Object();
-    var skipLink = new Object();
-    var prevLink = new Object();
-    var index = 0;
-    var messages = new Array ();
+VMessQueue = function(opts){
 
     var o = $.extend({
     messDiv : 'informerMessages',
@@ -33,15 +23,26 @@ messQueue = function(opts){
     prevWord : 'пред.',
     showOnStart : true,
     sendFunction : false,
+    btnActionAttr : 'action',
     readUrl : '/informer/read/'
     }, opts);
 
+    var queueObj = $("#"+o.messDiv);
+    var messObj = $('<div>').attr('id', o.messContainer).addClass(o.messContainerClass).insertAfter("#"+o.messDiv);
+    var listObj = new Object();
+
+    var indexSpan = new Object();
+    var totalSpan = new Object();
+    var skipLink = new Object();
+    var prevLink = new Object();
+    var index = 0;
+    var messages = new Array ();
+
     var init = function()
     {
-        queueObj = $("#"+o.messDiv);
         $(queueObj).hide();
-        messObj = $('<div>').attr('id', o.messContainer).addClass(o.messContainerClass).insertAfter("#"+o.messDiv);
-        $(messObj).dialog({ autoOpen: false, modal: true, resizable: false, draggable: false });
+        //$(messObj).dialog({ autoOpen: false, modal: true, resizable: false, draggable: false });
+        //$(messObj).modal({});
 
         listObj = $('<div>');
         $(listObj).addClass(o.controlsClass);
@@ -58,12 +59,14 @@ messQueue = function(opts){
 
     var refresh=function()
     {
-        messages = $(queueObj).children("."+o.messClass);
-        if(messages.length)
+        var messes = $(queueObj).children("."+o.messClass);
+        if(messes.length)
         {
-            $(messages).each(function(index){
-                id = o.messClass+index;
+            var i = 1;
+            $(messes).each(function(){
+                var id = o.messClass+i;
                 $(this).attr('id', id);
+                i++;
                 addMessage(id);
             });
             if (o.showOnStart)
@@ -88,12 +91,12 @@ messQueue = function(opts){
 
     var show=function()
     {
-        id = messages[index];
-        html = $("#"+id).html();
+        var html = $("#"+messages[index]).html();
         $(messObj).html(html).show();
         //$(messObj).dialog( "option", "buttons", { "Ok": function() { $(this).dialog("close"); } } );
         refresh_content();
-        $(messObj).dialog('open');
+        $(messObj).children().filter(":first").modal('show');
+        //$(messObj).dialog('open');
     };
 
     var refresh_content=function()
@@ -104,16 +107,7 @@ messQueue = function(opts){
         $(messObj).find("."+o.readActionClass).click(function(){read($(this));return false;});
         $(messObj).find("."+o.actionBtnClass).click(function(){send($(this));return false;});
 
-        messTitle = '';
-        if ($(messObj).find("."+_o.titleClass).get()!=0)
-        {
-            messTitleObj = $(messObj).find("."+_o.titleClass);
-            messTitle = $(messTitleObj).html();
-            $(messTitleObj).remove();
-            $(messObj).dialog('option', {"title": messTitle});
-        }
-
-        if ($(messObj).find("."+_o.listContainer).get()!=0)
+        if ($(messObj).find("."+o.listContainer).get()!=0)
         {
             $(indexSpan).html((index+1));
             $(totalSpan).html((messages.length));
@@ -131,7 +125,7 @@ messQueue = function(opts){
                 $(skipLink).click(function(){skip();return false;});
                 $(skipLink).show();
             }
-            $(listObj).appendTo($(messObj).find("."+_o.listContainer));
+            $(listObj).appendTo($(messObj).find("."+o.listContainer));
         }
     };
 
@@ -152,7 +146,8 @@ messQueue = function(opts){
 
     var close=function()
     {
-        $(messObj).dialog('close');
+        $(messObj).children().filter(":first").modal('hide');
+        //$(messObj).dialog('close');
         $(messObj).hide();
         $(queueObj).html('');
         messages = new Array();
@@ -180,30 +175,37 @@ messQueue = function(opts){
             index++;
     };
 
-    var send=function(obj)
+    var send=function(el)
     {
-        send_url = $(obj).parent("form").attr("action");
-        params = new Object();
-        $(obj).parent("form").children("input").each(function(){
-            params[$(this).attr("name")] = $(this).attr("value");
-        });
-        read (obj, send_url, params);
+        var act = el.attr(o.btnActionAttr);
+        var url = false;
+        if (act) {
+            if (act == 'ajaxPage') {
+                url = el.attr("href");
+                app.ajax.ajaxPage(url, false);
+            }
+        }
+        read (el, url, {});
     };
 
-    var read=function(obj, url, params)
+    var read=function(el, url, params)
     {
-        id = $(obj).attr("name");
-        url = url?url:false;
-        params = params?params:{};
-        jQuery.ajax({
-            type: "POST",
-            url: readUrl+"?Id="+id,
-            success: function(data){
-                next();
-                if (url && o.sendFunction)
-                    callback(o.sendFunction, {}, [url, params]);
-            }
-        });
+        if (o.readUrl) {
+            var id = $(el).attr("name");
+            url = url?url:false;
+            params = params?params:{};
+            jQuery.ajax({
+                type: "POST",
+                url: o.readUrl+"?Id="+id,
+                success: function(data){
+                    next();
+                    if (url && o.sendFunction)
+                        callback(o.sendFunction, {}, [url, params]);
+                }
+            });
+        }
+        else
+            next();
     };
 
     var destructor=function()
@@ -211,6 +213,18 @@ messQueue = function(opts){
         delete o;
         delete messages;
     };
+
+    var obtainAjaxData = function (evt) {
+
+        var result = evt['result'] ? evt['result'] : false;
+        var contextData = result;
+        if (contextData['messages']) {
+            addMessages(contextData['messages']);
+        }
+    };
+
+    app.addListener ('pageReloaded', obtainAjaxData);
+
 
 	this.init = function (opts) {
 		init(opts);

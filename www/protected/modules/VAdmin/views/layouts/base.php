@@ -26,24 +26,15 @@
 
     <div class="container">
 
-      <!-- Jumbotron -->
-      <div class="jumbotron">
-        <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <a class="btn btn-large btn-success" href="#">Get started today</a>
-      </div>
-
-      <hr>
-
       <?php echo $content; ?>
-
-      <hr>
 
       <div class="footer">
         <p>&copy; Company 2012</p>
       </div>
 
     </div> <!-- /container -->
+
+    <?php if (Yii::app()->getComponent('informer')) { $this->widget('VMessagesWidget', array()); } ?>
 
   </body>
 </html>

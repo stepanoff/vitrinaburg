@@ -8,6 +8,9 @@
 class VFormRender extends CForm
 {
     public $formInputLayout = '<div class="form-row">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
+    public $buttonsLayout = '<div class="form-row">{buttons}</div>';
+    public $buttonLayout = '<div>{button}</div>';
+    public $formInputsLayout = '{elements}';
     public $formErrorLayout = '{error}';
     public $stepJs = false;
     public $defaultClasses = array(
@@ -153,30 +156,26 @@ app.module.register( 'jsForm".$this->getUniqueId()."', js_steps_form, {
 
             }
         }
-        return $output;
+        return $output!=='' ? str_replace('{elements}', $output, $this->formInputsLayout) : '';
     }
 
     public function renderButtons() {
         $output='';
         foreach($this->getButtons() as $button)
             $output.=$this->renderButton($button);
-        return $output!=='' ? '<div class="form-row">'.$output.'</div>' : '';
+        return $output!=='' ? str_replace('{buttons}', $output, $this->buttonsLayout) : '';
     }
 
     public function renderButton($element) {
         $attrs = $element->attributes;
-        $class = isset($attrs['class']) ? $attrs['class'] : '';
-        $attrs['class'] = 'b-btn__submit';
+        $class = isset($attrs['class']) ? $attrs['class'] : 'btn';
+        $attrs['class'] = $class;
         $element->attributes = $attrs;
 
         //$label = $element->label;
         //$element->label = '';
-        $output='
-                            <div>
-								'.$element->render().'
-							</div>
-        ';
-        return $output;
+        $output = $element->render();
+        return $output!=='' ? str_replace('{button}', $output, $this->buttonLayout) : '';
     }
 }
 ?>

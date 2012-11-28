@@ -1,25 +1,14 @@
 <?php
-class ListWidget extends CWidget
+class VAdminLinkPager extends CLinkPager
 {
-	public $id;
-	
-	public $value;
-	
-	public $list = array();
-	
-	public $action;
-	
-	public $callback;
-	
-	public function run()
-	{
-		$options = array();
-		
-		$options['onChange'] = 'SendRequest("'.CHtml::normalizeUrl(array($this->action, 'id' => $this->id)).'", {value: this.value}'.($this->callback?', '.$this->callback:'').'); return false;';
-		$options['onKeydown'] = $options['onChange'];
+    public $route = '';
+    
+    public function run()
+    {
+        $pages = $this->getPages();
+        $pages->route = $this->route;
+        $this->setPages($pages);
+        parent::run();
+    }
 
-		$item = CHtml::dropDownList($this->action.$this->id, $this->value, $this->list, $options);
-		
-		$this->render('admin.views.widgets.list', array('item' => $item));
-	}
 }

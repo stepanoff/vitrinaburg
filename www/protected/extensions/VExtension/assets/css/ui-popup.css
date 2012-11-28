@@ -1,0 +1,111 @@
+.ui-dialog {
+	border: none;
+	background: #F1F5E8;
+	padding: 21px 15px 15px;
+	width: 600px !important;
+	
+ -moz-border-radius: 5px; /* Firefox */
+  -webkit-border-radius: 5px; /* Safari, Chrome */
+  -khtml-border-radius: 5px; /* KHTML */
+  border-radius: 5px; /* CSS3 */	
+	
+    -webkit-box-shadow: 0px 0px 15px #222;
+    -moz-box-shadow: 0px 0px 15px #222;
+    box-shadow: 0px 0px 15px #222;	
+	
+}
+.ui-dialog-titlebar {
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	overflow: hidden;
+}
+.ui-dialog-title {
+	color: #52544F;
+	font-size: 23px;
+	font-family: Arial, Tahoma, Sans-Serif;
+	margin-left: 20px;
+	margin-right: 20px;
+	
+}
+.ui-dialog-titlebar-close {
+	cursor: pointer;
+	background: url("../img/icons.png") no-repeat 0 -32px;
+	height: 32px;
+	right: 17px;
+	position: absolute;
+	top: 17px;
+	width: 32px;
+	right: 25px;
+	display: block;
+}
+.ui-dialog-titlebar-close .ui-icon-closethick {
+    left: -999em;
+    position: absolute;
+    top: -999em;
+}
+.messageContainer {
+	height: auto !important;
+	border: none;
+	background: transparent;
+	background: #fff;
+	margin-top: 20px;
+	
+-moz-border-radius: 5px; /* Firefox */
+  -webkit-border-radius: 5px; /* Safari, Chrome */
+  -khtml-border-radius: 5px; /* KHTML */
+  border-radius: 5px; /* CSS3 */		
+  padding: 10px 20px;
+	
+}
+.messageContainer .listContainer {
+	margin-bottom: 10px;
+}
+.messageContainer .controls {
+	width: 100px;
+	margin: 0 auto;
+}
+.messageContainer .controls .index {}
+.messageContainer .controls .total {}
+.messageContainer .controls .messageContainerSkip {}
+.messageContainer .messageContent {
+	line-height: 16px;
+	font-family: Arial, Tahoma, Sans-Serif;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	list-style: 16px;
+	font-size: 13px;
+}
+
+.messageContainer .messageContent b,
+.messageContainer .messageContent strong {
+	font-weight: bold;
+}
+.messageContainer .messageContent p {
+	list-style: 12px;
+}
+.messageContainer .messageContent ul {
+	margin: 10px 0;
+	padding-left: 20px;
+}
+.messageContainer .messageContent li {
+	list-style: disc;
+	margin-bottom: 10px;
+	list-style: 12px;
+}
+
+.messageContainer .buttons {
+	border: none;
+}
+
+
+
+.messageContainer .buttons button.button {
+	font-weight: bold;
+	font-size: 14px;
+	padding: 5px 15px;
+	background: #fff;
+	width: 100px;
+	margin: 0 auto;
+	display: block;
+}

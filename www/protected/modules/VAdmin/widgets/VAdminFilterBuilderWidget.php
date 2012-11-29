@@ -9,7 +9,6 @@ class VAdminFilterBuilderWidget extends CWidget
         'htmlOptions' => array('class' => ''),
 	);
 	public $renderSafeAttributes = false;
-    public $containerClass = 'navbar filters';
 
 	public function run()
 	{
@@ -19,7 +18,7 @@ class VAdminFilterBuilderWidget extends CWidget
         if (!$form)
             return;
 
-        echo CHtml::openTag('div', array('class' => $this->containerClass));
+        echo CHtml::openTag('div', array('class' => 'navbar'));
         echo CHtml::openTag('div', array('class' => 'navbar-inner', 'style' => 'padding-top: 10px;'));
 
         $form->activeForm = array_merge($this->defaultOptions, $form->activeForm );

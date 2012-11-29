@@ -1,0 +1,310 @@
+img.main-foto {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+
+h3 {
+	font: bold 14px/18px Arial, Tahoma, Sans-Serif ;
+	clear: both;
+	margin-bottom: 3px;
+}
+
+h2 {
+	font: normal 18px/20px Arial, Tahoma, Sans-Serif ;
+	margin-bottom: 10px;
+} 
+
+p {
+	font: 14px/20px Arial, Tahoma, Sans-Serif;
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 0px;
+	display: block;
+}
+
+ins {
+	display: block;
+	padding: 0 20px;
+	text-decoration: none;
+	font-style: italic;
+}
+
+p ins {
+	line-height: 21px;
+}
+
+.pic-with-cite {
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 20px;
+	margin-top: 16px;
+}
+
+.pic-with-cite img {
+	float: left;
+}
+
+blockquote {
+	font: italic 14px/21px Arial Tahoma, Sans-Serif;
+	margin-left: 133px;
+	padding-left: 30px;
+	margin-top: -5px;
+	border: none;
+	background: url(images/blockquote.jpg) 0 0 no-repeat;
+}
+
+blockquote p {
+	font: italic 14px/21px Arial Tahoma,Sans-Serif;
+	margin-bottom: 10px;
+}
+
+table {
+	margin-bottom: 1px;
+	margin-left: -10px;
+}
+
+table caption {
+	vertical-align: bottom;
+	text-align: center;
+	color: #7f7f7f;
+	font: 14px/18px Arial, Tahoma, Sans-Serif;
+	padding-top: 4px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #cccccc;
+}
+
+table caption a:link, table caption a:visited {
+	color: #7f7f7f;
+}
+
+table caption a:hover, table caption a:active {
+	color: #7f7f7f;
+	text-decoration: none;
+}
+
+table th,
+table td {
+	padding: 6px 10px;
+}
+
+table th {
+	padding-bottom: 6px;
+	padding-top: 4px;
+}
+
+table th,
+table th p {
+	vertical-align: bottom;
+	background: #8a8f7e;
+	color: #fff;
+	font: 11px/11px Arial, Tahoma, Sans-Serif;
+}
+
+table th p {
+	margin: 0px;
+	padding: 0px;
+}
+
+table td {
+	vertical-align: top;
+	background: #f1f5e8;
+	color: #000;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font: 14px/18px Arial, Tahoma, Sans-Serif;
+}
+
+table tr.odd td {
+	background: #fff;	
+}
+
+table.simple-picture,
+table.positive-picture,
+table.positive_picture,
+table.negative_picture {
+	clear: both;
+	width: 100%;
+	margin-bottom: 20px;
+	float: none;
+}
+
+table.simple-picture td {
+	background: none;
+	padding: 0px;
+}
+
+table.simple-picture td p {
+	padding: 0px;
+	margin: 0px;
+	padding: 0 10px;
+	font-size: 13px;
+	line-height: 16px;
+	margin-top: 2px;
+}
+
+table.simple-picture th,
+table.positive-picture th,
+table.negative-picture th,
+table.positive_picture th,
+table.negative_picture th {
+	background: none;
+	padding: 0px;
+}
+
+table.positive-picture td,
+table.negative-picture td {
+	background: #f1f5e8;
+	color: #3e6d09;
+	padding-left: 90px;
+	padding-top: 20px;
+	padding-bottom: 7px;	
+}
+
+table.positive_picture td,
+table.negative_picture td {
+	background: none repeat scroll 0 0 #F1F5E8;
+    color: #3E6D09;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    padding-top: 20px;		
+    vertical-align: middle;	
+}
+
+table.positive_picture td.table-picture-ico {
+	padding: 14px 8px 14px 18px;
+    width: 1%;
+}
+
+table.negative_picture td.table-picture-ico {
+	padding: 14px 8px 14px 18px;
+    width: 1%;
+}
+
+
+table.positive-picture td p,
+table.negative-picture td p,
+table.positive_picture td p,
+table.negative_picture td p {
+	color: #3e6d09;
+	padding: 0px;
+	margin: 0px;
+	font-size: 13px;
+	line-height: 16px;
+	padding-bottom: 16px;
+}
+
+table.positive_picture th img {
+	width: 100% !important;
+}
+
+table.negative-picture td,
+table.negative-picture td p,
+table.negative_picture td,
+table.negative_picture td p {
+	color: #9b1f05;
+}
+
+table.negative-picture td p a:link,
+table.negative-picture td p a:visited,
+table.negative_picture td p a:link,
+table.negative_picture td p a:visited {
+	color: #9b1f05;
+}
+
+table.negative-picture td p a:hover,
+table.negative-picture td p a:active,
+table.negative_picture td p a:hover,
+table.negative_picture td p a:active {
+	color: #9b1f05;
+	text-decoration: none;
+}
+
+table.positive-picture td p a:link,
+table.positive-picture td p a:visited,
+table.positive_picture td p a:link,
+table.positive_picture td p a:visited {
+	color: #3E6D09;
+}
+
+table.positive-picture td p a:hover,
+table.positive-picture td p a:active,
+table.positive_picture td p a:hover,
+table.positive_picture td p a:active {
+	color: #3E6D09;
+	text-decoration: none;
+}
+
+table.negative-picture td {
+	background: #f1f5e8 url(images/negative.jpg) no-repeat;
+}
+
+table.positive-picture td {
+	background: #f1f5e8 url(images/positive.jpg) no-repeat;
+}
+
+table.negative-picture td,
+table.positive-picture td {
+	background-position: 18px 14px;
+}
+
+table.positive-picture td.table_picture-ico,
+table.negative-picture td.table_picture-ico {
+    padding: 14px 8px 14px 18px;
+    width: 1%;
+}
+
+.js-wysiwyg-link-popup span {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    padding: 0 5px;
+}
+
+.js-wysiwyg-link-popup__text {
+    margin-left: 10px;
+    border: 1px dotted red;
+    display: inline !important;
+}
+
+.js-wysiwyg-link-container ins {
+    display: none;
+}
+
+.cke_show_borders p {
+	font: 14px/23px Arial, Tahoma, Sans-Serif;
+	margin:0px;
+	padding:0px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+.cke_show_borders blockquote {
+	font: italic 14px/21px Arial Tahoma, Sans-Serif;
+	margin-left:133px;
+	padding-left:30px;
+	margin-top:-5px;
+	border:none;
+	background:url(images/blockquote.jpg) 0 0 no-repeat;
+}
+
+.cke_show_borders blockquote p,
+.cke_show_borders blockquote p,
+.cke_show_borders blockquote p {
+	font:italic 14px/21px Arial Tahoma,Sans-Serif;
+	margin-bottom:10px;
+}
+
+.cke_show_borders table th p {
+	vertical-align:bottom;
+	background:#8a8f7e;
+	color:#fff;
+	font:11px/11px Arial, Tahoma, Sans-Serif;
+}
+
+.cke_show_borders h3.news-list__title {
+	margin-left:-10px;
+}
+.cke_show_borders div.news-list__title {
+    margin-left:-10px;
+}

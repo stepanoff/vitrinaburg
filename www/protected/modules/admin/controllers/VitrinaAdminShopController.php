@@ -53,4 +53,25 @@ class VitrinaAdminShopController extends VAdminController
         );
     }
 
+    public function getFormElements() {
+        $brands = VitrinaBrand::model()->orderDefault()->findAll();
+        $items = CHtml::listData($brands, 'id', 'name');
+        $res = array(
+            'name' => array(
+                'type' => 'text',
+            ),
+            'site' => array(
+                'type' => 'text',
+            ),
+            'brandsIds' => array(
+                'type' => 'VHtmlMultiSelectWidget',
+                'data' => $items,
+            ),
+            'text' => array(
+                'type' => 'VHtmlCkEditorWidget',
+            ),
+        );
+        return $res;
+    }
+
 }

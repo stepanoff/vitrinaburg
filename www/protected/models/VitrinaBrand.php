@@ -1,12 +1,6 @@
 <?php
-class VitrinaArticle extends ExtendedActiveRecord
+class VitrinaBrand extends ExtendedActiveRecord
 {
-	protected $__visibleCollections = null; // отображаемые на сайте коллекции
-
-    protected $sectionArticleModel = 'VitrinaArticleSection';
-    protected $sectionModel = 'VitrinaArticleSection';
-    protected $tagModel = 'VitrinaTag';
-
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -14,7 +8,7 @@ class VitrinaArticle extends ExtendedActiveRecord
     
     public function tableName()
     {
-        return 'obj_article';
+        return 'obj_brand';
     }
     
 	public function scopes()
@@ -35,7 +29,7 @@ class VitrinaArticle extends ExtendedActiveRecord
     public function orderDefault($alias = 't')
     {
         $this->getDbCriteria()->mergeWith(array(
-            'order'=>$alias.'.date DESC',
+            'order'=>$alias.'.name ASC',
         ));
         return $this;
     }
@@ -59,16 +53,6 @@ class VitrinaArticle extends ExtendedActiveRecord
     }
 
     public function ImageValidator($attribute, $params) {
-    }
-
-    public function manyToManyRelations ()
-    {
-        $res = parent::manyToManyRelations();
-        return array_merge($res, array(
-            'articleSections' => array($this->sectionArticleModel, 'obj_article_rubric', 'obj_id', 'prop_id'),
-            'sections' => array($this->sectionModel, 'obj_article_tag1', 'obj_id', 'prop_id'),
-            'tags' => array($this->tagModel, 'obj_article_tag2', 'obj_id', 'prop_id'),
-        ));
     }
 
     public function attributeLabels()

@@ -9,7 +9,7 @@ class VFormBuilderWidget extends CWidget
     public $defaultOptions = array(
 		'action'=>'',
 		'method'=>'post',
-        'htmlOptions' => array('class' => 'v-form'),
+        'htmlOptions' => array('class' => 'form-horizontal'),
 	);
 	public $renderSafeAttributes = false;
 
@@ -58,7 +58,6 @@ class VFormBuilderWidget extends CWidget
 
         $cs = Yii::app()->clientScript;
         $url = Yii::app()->VExtension->getAssetsUrl();
-        $cs->registerCssFile($url.'/css/vform.css');
         $cs->registerScriptFile($url.'/js/jquery.form.js', CClientScript::POS_HEAD);
     }
 }

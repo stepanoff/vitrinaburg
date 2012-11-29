@@ -117,9 +117,11 @@ vGrid = function(opts){
             summary.html(html);
         }
 
-        if (contextData['pager'] && pager) {
-            var html = $(contextData['pager']).html();
-            pager.html(html);
+        if (pager) {
+            if (contextData['pager'] || contextData['pager'] == '') {
+                var html = $(contextData['pager']).html();
+                pager.html(html);
+            }
         }
 
     };

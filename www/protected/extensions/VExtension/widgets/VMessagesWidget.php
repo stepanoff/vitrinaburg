@@ -121,7 +121,7 @@ class VMessagesWidget extends CWidget
             $url = Yii::app()->VExtension->getAssetsUrl();
 //            $cs->registerCssFile($url.'/css/ui-popup.css');
             $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('jquery.ui');
+//            $cs->registerCoreScript('jquery.ui');
             $cs->registerScriptFile($url.'/js/vapp.js', CClientScript::POS_HEAD);
             $cs->registerScriptFile($url.'/js/jquery.vmessqueue.js', CClientScript::POS_END);
 			$opts = array();

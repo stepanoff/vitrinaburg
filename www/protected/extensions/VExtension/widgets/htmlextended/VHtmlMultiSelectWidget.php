@@ -2,28 +2,36 @@
 /**
  * MultiSelect widget class file.
  *
- * @copyright Copyright &copy; 2008-2010 Mediasite :)
+ * @copyright Copyright &copy; stepanoff
  */
 
 /**
- * Отображает всплывающие сообщения
+ * Красивый мультиселект
  */
-class HtmlMultiSelectWidget extends ExtendedWidget
+class VHtmlMultiSelectWidget extends CWidget
 {
 	public $model;
 	public $attribute;
 	public $htmlOptions = array();
-	public $data;
+	public $data = array();
 	
 	/**
 	 * 
 	 */
 	public function run()
 	{
-		$cs=Yii::app()->clientScript;
-		$script = '$(document).ready(function() { $("#'.$this->attribute.'").dropdownchecklist({ maxDropHeight: 300, width: 300 }); });';
-		$cs->registerScript($this->attribute.'multiselect', $script, CClientScript::POS_END);
+        $cs = Yii::app()->clientScript;
+        $url = Yii::app()->VExtension->getAssetsUrl();
 
-		echo CHtml::activeDropDownList($this->model, $this->attribute, $this->data, array_merge(array('id'=>$this->attribute, 'multiple' => 'multiple'), $this->htmlOptions));
+        $cs->registerCssFile($url . '/css/multiselect.css');
+        $cs->registerCoreScript('jquery');
+        $cs->registerCoreScript('jquery.ui');
+        $cs->registerScriptFile($url . '/js/jquery.multiselect.js', CClientScript::POS_HEAD);
+
+        $inputId = CHtml::activeId($this->model, $this->attribute);
+        $script = '$(document).ready(function() { $("#'.$inputId.'").dropdownchecklist({ maxDropHeight: 300, width: 300 }); });';
+		$cs->registerScript($inputId.'multiselect', $script, CClientScript::POS_END);
+
+		echo CHtml::activeDropDownList($this->model, $this->attribute, $this->data, array_merge(array('multiple' => 'multiple'), $this->htmlOptions));
 	}
 }

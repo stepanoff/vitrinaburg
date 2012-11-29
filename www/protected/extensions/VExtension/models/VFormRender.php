@@ -7,9 +7,9 @@
  */
 class VFormRender extends CForm
 {
-    public $formInputLayout = '<div class="form-row">{label}{input}{hint}<div class="form-row__error">{error}</div></div>';
-    public $buttonsLayout = '<div class="form-row">{buttons}</div>';
-    public $buttonLayout = '<div>{button}</div>';
+    public $formInputLayout = '<div class="control-group"><div class="control-label">{label}</div><div class="controls">{input}{hint}<div class="form-row__error">{error}</div></div></div>';
+    public $buttonsLayout = '<div class="control-group"><div class="control-label"></div><div class="controls">{buttons}</div></div>';
+    public $buttonLayout = '{button} ';
     public $formInputsLayout = '{elements}';
     public $formErrorLayout = '{error}';
     public $stepJs = false;

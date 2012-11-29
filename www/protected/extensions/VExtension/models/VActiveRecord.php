@@ -10,6 +10,8 @@ class VActiveRecord extends CActiveRecord
     protected $_statusBefore;
     protected $_tmpStorage = array(); // массив для хранения временных данных вместо кеша
 
+    protected $manyToManyIds = array();
+
 	public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -19,6 +21,44 @@ class VActiveRecord extends CActiveRecord
     {
     	return array (
 		);
+    }
+
+    public function __get ($attr) {
+        if (strstr($attr, 'Ids')) {
+            $rels = $this->manyToManyRelations();
+            $attrName = str_replace('Ids', '', $attr);
+            if (isset($rels[$attrName])) {
+                if (!isset($this->manyToManyIds[$attrName])) {
+                    $this->manyToManyIds[$attrName] = $this->getRelatedIds($attrName);
+                }
+                return $this->manyToManyIds[$attrName];
+            }
+        }
+        return parent::__get($attr);
+    }
+
+    public function __set ($attr, $value) {
+        if (strstr($attr, 'Ids')) {
+            $rels = $this->manyToManyRelations();
+            $attrName = str_replace('Ids', '', $attr);
+            if (isset($rels[$attrName])) {
+                $vals = is_array($value) ? $value : array($value);
+                $this->manyToManyIds[$attrName] = $vals;
+                return true;
+            }
+        }
+        return parent::__set($attr, $value);
+    }
+
+    public function __isset ($attr) {
+        if (strstr($attr, 'Ids')) {
+            $rels = $this->manyToManyRelations();
+            $attrName = str_replace('Ids', '', $attr);
+            if (isset($rels[$attrName])) {
+                return true;
+            }
+        }
+        return parent::__isset($attr);
     }
 
 	public function byStatus($status)
@@ -169,6 +209,31 @@ class VActiveRecord extends CActiveRecord
     
     protected function afterSave()
     {
+        if (count($this->manyToManyIds)) {
+            $rels = $this->manyToManyRelations();
+            foreach ($this->manyToManyIds as $attr => $ids) {
+                $rel = $rels[$attr];
+
+                $rel_table = $rel[1];
+                $rel_key = $rel[2];
+                $rel_foreign_key = $rel[3];
+
+                $app = Yii::app();
+                $criteria = new CDbCriteria();
+                $criteria->addCondition($rel_key . ' = ' . $this->id);
+                $app->db->getCommandBuilder()->createDeleteCommand($rel_table, $criteria)->execute();
+                foreach($ids as $id)
+                {
+                    $data = array(
+                               $rel_key => $this->id,
+                               $rel_foreign_key => $id
+                           );
+                    $app->db->getCommandBuilder()->createInsertCommand($rel_table, $data)->execute();
+                }
+
+            }
+        }
+
     	return parent::afterSave();
     }
     

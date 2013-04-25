@@ -29,20 +29,24 @@ type="text/javascript" defer="defer"></script>
 style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
+<!-- Google Analytics -->
 <script type="text/javascript">
 
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37407591-2']);
+  _gaq.push(['_setDomainName', 'vitrinaburg.ru']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+    
 
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+_gaq.push(['_setCustomVar', 1, 'section', 'test', 3]);
+_gaq.push([ '_setCustomVar', 2, 'User', 'Guest', 2 ]);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 
 </script>
-
-<script type="text/javascript">
-
-try {
-
-var pageTracker = _gat._getTracker("UA-15265392-1");
-
-pageTracker._trackPageview();
-
-} catch(err) {}</script>
+<!-- /Google Analytics -->

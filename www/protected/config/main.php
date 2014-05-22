@@ -48,7 +48,10 @@ $mainConfig = array(
 		'application.helpers.*',
 		'application.widgets.*',
 
+        // todo: имопрты модулей должны прописываться в самих модулях
         'application.modules.VAdmin.controllers.*',
+        'application.modules.VСb.controllers.*',
+        'application.modules.VСb.components.*',
 ),
 
 	// application-level parameters that can be accessed
@@ -78,6 +81,9 @@ $mainConfig = array(
 				),
 			),
 		),
+        'authManager' => array(
+            'class'=>'CDbAuthManager'
+        ),
         'fileManager' => array(
             'class' => 'VFileManager',
             'filesPath' => $params['filesPath'],
@@ -128,7 +134,6 @@ $mainConfig = array(
                 ),
             ),
             'modules' => array (
-
             ),
         ),
         'urlManager'=>require(dirname(__FILE__).'/urlManager.php'),

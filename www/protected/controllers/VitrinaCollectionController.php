@@ -60,10 +60,14 @@ class VitrinaCollectionController extends Controller
 			$this->render('banki.views.banki.admin.sub.list', array('list' => $list, 'pages' => $pages, 'template' => $this->__templates['list'], 'bank'=>$bank));
 		}
         */
-        if ($sectionId)
+        if ($sectionId) {
+            $this->setData('top_banner_name', 'section_'.$section->id);
+            $this->setData('top_banner_description', 'Баннер в рубрике '.$section->name);
             $this->setPageTitle($section->name.' &mdash; одежда в Екатеринбурге, ассортимент магазинов с ценами и фото &mdash; '.Yii::app()->params['siteName']);
-        else
+        }
+        else {
             $this->setPageTitle('Одежда в Екатеринбурге, модные бренды и ассортимент магазинов с ценами и фото &mdash; Витринабург, Магазины в Екатеринбурге &mdash; '.Yii::app()->params['siteName']);
+        }
 
 
         $this->render('section', array(

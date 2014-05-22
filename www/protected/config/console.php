@@ -80,6 +80,9 @@ return array(
                 ),
             ),
         ),
+        'authManager' => array(
+            'class'=>'CDbAuthManager'
+        ),
         'fileManager' => array(
             'class' => 'VFileManager',
             'filesPath' => $params['filesPath'],

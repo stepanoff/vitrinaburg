@@ -9,6 +9,10 @@ return array(
         'staticUrl' => $params['staticUrl'],
     ),
 
+    'VCb' => array (
+        'staticUrl' => $params['staticUrl'],
+    ),
+
     'admin' => array (
     ),
 );

@@ -62,6 +62,7 @@
                     if (ad_pushStateSupport)
                     {
                         history.pushState(null, document.title, baseUrl+_id+'/');
+                        // todo: вызывать событие vapp
                         reloadCounters();
                     }
                     else

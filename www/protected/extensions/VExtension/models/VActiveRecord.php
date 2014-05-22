@@ -148,7 +148,9 @@ class VActiveRecord extends CActiveRecord
     
     public function changeStatus($status) {
         $className = get_class($this);
-        $statuses = $className::statusTypes();
+        // todo: вернуть не работает в старом php
+        //$statuses = $className::statusTypes();
+        $statuses = array();
         if (isset($statuses[$status])) {
             $column = $this->statusColumn;
             $this->$column = $status;

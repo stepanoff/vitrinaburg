@@ -1,5 +1,5 @@
 <?php
-class VUserComponent extends CApplicationComponent implements IWebUser
+class VUserComponent extends CWebUser implements IWebUser
 {
 	const STATES_VAR='__states';
 	const AUTH_TIMEOUT_VAR='__timeout';
@@ -148,10 +148,10 @@ class VUserComponent extends CApplicationComponent implements IWebUser
         Yii::import('ext.VExtension.models.auth.*');
         Yii::import('ext.VExtension.models.auth.services.*');
 
-		parent::init();
-
         $className = $this->dbDriver;
         $this->_dbDriver = new $className;
+
+		parent::init();
 
 		Yii::app()->getSession()->open();
 		if($this->getIsGuest() && $this->allowAutoLogin)
@@ -777,7 +777,11 @@ class VUserComponent extends CApplicationComponent implements IWebUser
 
     public function checkAccess($operation,$params=array())
     {
-        return true;
+        if(parent::checkAccess('superAdmin',$params, $allowCaching))
+            return true;
+
+        // Иначе проверим по конкретному праву
+        return parent::checkAccess($operation, $params, $allowCaching);
     }
 
     public function checkRoles($roles,$params=array())

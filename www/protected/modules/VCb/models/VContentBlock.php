@@ -14,6 +14,14 @@
  */
 class VContentBlock extends CActiveRecord
 {
+    const NAME_DEFAULT = 'default';
+
+    public $nList = array();
+
+    public $defaultValue;
+
+    protected $defaultCb = null;
+    protected $namespaceList = null;
     /**
 	 * Returns the static model of the specified AR class.
 	 * The model returned is a static instance of the AR class.
@@ -39,7 +47,8 @@ class VContentBlock extends CActiveRecord
 	{
 		return array(
             array('name', 'required', 'message' => 'Укажите название'),
-			array('name, content', 'safe'),
+            array('namespace', 'required', 'message' => 'Укажите область'),
+			array('name, namespace, description, content, nList', 'safe'),
 		);
 	}
 
@@ -63,6 +72,43 @@ class VContentBlock extends CActiveRecord
         $this->getDbCriteria()->mergeWith(array(
             'condition' => $alias.'.name = :name',
             'params' => array(':name' => $name),
+        ));
+        return $this;
+    }
+
+    public function getNamespaceList ()
+    {
+        if ($this->namespaceList === null) {
+            $this->namespaceList = array();
+            $criteria = new CDbCriteria(array(
+                'select' => 'id, name, description',
+            ));
+            $list = VContentBlock::model()->byNameSpace($this->namespace)->findAll($criteria);
+            foreach ($list as $item) {
+                $this->namespaceList[$item->id] = $item->attributes;
+            }
+        }
+        return $this->namespaceList;
+    }
+
+    public function getDefaultCb ()
+    {
+        if ($this->defaultCb === null) {
+            if ($this->name != self::NAME_DEFAULT) {
+                $this->defaultCb = VContentBlock::model()->byNameSpace($this->namespace)->byName(self::NAME_DEFAULT)->find();
+            } else {
+                $this->defaultCb = false;
+            }
+        }
+        return $this->defaultCb;
+    }
+
+    public function byNamespace($name)
+    {
+        $alias = $this->getTableAlias();
+        $this->getDbCriteria()->mergeWith(array(
+            'condition' => $alias.'.namespace = :namespace',
+            'params' => array(':namespace' => $name),
         ));
         return $this;
     }
@@ -99,6 +145,50 @@ class VContentBlock extends CActiveRecord
     protected function afterDelete()
     {
         return parent::afterDelete();
+    }
+
+    public function getFormElements ()
+    {
+        /*
+        $list = $this->getNamespaceList();
+        $data = array();
+        foreach ($list as $id => $item) {
+            $data[$id] = $item['description'];
+        }
+        */
+
+        $res = array (
+            'elements' => array (
+                'id' => array (
+                    'type' => 'hidden',
+                ),
+                /*
+                $this->namespace,
+                'nList' => array (
+                    'type' => 'dropdownlist',
+                    'items' => $data,
+                ),
+                */
+            ),
+            'buttons' => array (
+                'send'		 => array(
+                    'type' => 'submit',
+                    'label'=> 'Сохранить',
+                ),
+            ),
+        );
+
+        $defaultCb = $this->getDefaultCb();
+        if ($defaultCb) {
+            $res['elements'][] = '<h5>Значение по умолчанию</h5>';
+            $res['elements'][] = '<p>'.CHtml::encode($defaultCb->content).'</p>';
+            $res['elements'][] = '<p>'.$defaultCb->content.'</p>';
+            $res['elements'][] = '<hr>';
+        }
+        $res['elements']['content'] = array('type' => 'textarea');
+        $res['elements'][] = '<p>'.$this->content.'</p>';
+
+        return $res;
     }
 
 }

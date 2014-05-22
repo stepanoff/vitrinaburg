@@ -42,15 +42,12 @@ class VitrinaCb extends CActiveRecord
 		));
     }
 
-    public function ImageValidator($attribute, $params) {
-    }
-
     public function attributeLabels()
     {
         $res = parent::attributeLabels();
         return array_merge($res, array(
         	'path' => 'Урл',
-        	'title' => 'Мкта-тег title',
+        	'title' => 'Мета-тег title',
         	'description' => 'Мета-тег description',
         	'text' => 'Сео-текст',
         ));

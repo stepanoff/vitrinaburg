@@ -2,6 +2,10 @@
 class VContentBlockWidget extends CWidget {
 
     public $name = ''; // content block name
+    public $namespace = ''; // content block namespace
+    public $description = ''; // content block description
+
+    private $_module = null;
 
 
 	/**
@@ -10,19 +14,47 @@ class VContentBlockWidget extends CWidget {
 	 */
     public function run() {
 		parent::run();
+
+
 		$this->registerAssets();
 
-        $cb = VContentBlock::model()->byName($this->name)->find();
+        $name = $this->name ? $this->name : VContentBlock::NAME_DEFAULT;
+
+        $cb = VContentBlock::model()->byNamespace($this->namespace)->byName($name)->find();
         if (!$cb) {
             $cb = new VContentBlock();
-            $cb->name = $this->name;
+            $cb->name = $name;
+            $cb->namespace = $this->namespace;
+            $cb->description = $this->description;
             if (!$cb->save())
                 return '';
+
+            if ($name != VContentBlock::NAME_DEFAULT) {
+                $cbDefault = $cb->getDefaultCb();
+                if ($cbDefault === null)
+                {
+                    $cbDefault = new VContentBlock();
+                    $cbDefault->name = VContentBlock::NAME_DEFAULT;
+                    $cbDefault->namespace = $this->namespace;
+                    $cbDefault->description = '';
+                    if (!$cbDefault->save()) {
+
+                    }
+                }
+
+            }
         }
 
-		$this->render(Yii::app()->VExtension->getViewsAlias() . '.cb', array(
+        if (empty($cb->content) && $cb->name != VContentBlock::NAME_DEFAULT) {
+            $cbDefault = $cb->getDefaultCb();
+            if ($cbDefault)
+                $cb->content = $cbDefault->content;
+        }
+
+		$this->render('cb', array(
 			'isAdmin' => $this->isAdmin(),
-			'cd' => $cb,
+			'cb' => $cb,
+            'route' => $this->getModule()->getBaseRoute(),
 		));
     }
 
@@ -34,7 +66,17 @@ class VContentBlockWidget extends CWidget {
 
     public function isAdmin ()
     {
-        return true;
+        $currentWebUser = Yii::app()->user;
+        return $currentWebUser->checkAccess(VCbModule::ROLE_CB_EDITOR);
+    }
+
+    public function getModule ()
+    {
+        if ($this->_module === null) {
+            // todo: имя модуля должно браться из переменной
+            $this->_module = Yii::app()->getModule('VCb');
+        }
+        return $this->_module;
     }
 
 	/**
@@ -42,15 +84,22 @@ class VContentBlockWidget extends CWidget {
 	 */
 	protected function registerAssets() {
         $cs = Yii::app()->clientScript;
-        $url = Yii::app()->VExtension->getAssetsUrl();
+        $url = $this->getModule()->getAssetsUrl();
+        $extUrl = Yii::app()->VExtension->getAssetsUrl();
 
         if ($this->isAdmin()) {
+            $cs->registerScriptFile($extUrl.'/js/jquery.url.js', CClientScript::POS_HEAD);
+            $cs->registerScriptFile($extUrl.'/js/vapp.js', CClientScript::POS_HEAD);
+
             $cs->registerCssFile($url.'/css/cb.css');
-            $cs->registerScriptFile($url.'/js/vapp.js', CClientScript::POS_HEAD);
             $cs->registerScriptFile($url.'/js/cb.js', CClientScript::POS_HEAD);
-            $js = '';
-            //$js .= 'Vauth.init('.json_encode($this->getJsOptions()).');'."\n";
-            //$cs->registerScript('auth-services', $js, CClientScript::POS_READY);
+            $js = '
+vapp.module.register( "VCb", VCb, {
+    objSelector : ".b-cb",
+    editLinkClass : "b-cb__btn-edit"
+});
+            ';
+            $cs->registerScript('VCb', $js, CClientScript::POS_END);
         }
 	}
 }

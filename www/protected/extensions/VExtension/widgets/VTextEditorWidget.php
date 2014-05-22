@@ -7,10 +7,6 @@ class VTextEditorWidget extends CWidget
 
 	public function run()
 	{
-        $cs = Yii::app()->clientScript;
-        $url = Yii::app()->VExtension->getAssetsUrl();
-        $cs->registerCssFile($url.'/css/vform.css');
-
         parent::run();
         $this->registerAssets();
 

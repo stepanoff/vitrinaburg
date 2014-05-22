@@ -34,7 +34,13 @@ if (Yii::app()->user->id)
     <div id="header">
       <div class="base-width">
         <div class="top-banner">
-            <?php $this->renderPartial('application.views.blocks.banner_top', array()); ?>
+            <?php
+                $this->widget('application.modules.VCb.components.VContentBlockWidget', array(
+                    'namespace' => 'banner_top',
+                    'name' => $this->getData('top_banner_name'),
+                    'description' => $this->getData('top_banner_description'),
+                ));
+            ?>
         </div>
         <div class="auth-box">
         <?php

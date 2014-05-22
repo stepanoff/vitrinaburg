@@ -38,5 +38,9 @@ class VExtensionComponent extends CComponent {
         return $this->assetsUrl;
     }
 
+    public function getViewsAlias () {
+        return $this->extensionAlias . '.views';
+    }
+
 }
 ?>

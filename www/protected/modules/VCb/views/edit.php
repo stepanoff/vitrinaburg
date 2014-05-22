@@ -1,0 +1,1 @@
+<?php $this->widget('application.extensions.VExtension.widgets.VFormBuilderWidget', array('model'=>$cb, 'elements'=>$cb->getFormElements())); ?>

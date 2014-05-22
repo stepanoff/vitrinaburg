@@ -4,7 +4,7 @@
  * Date: 03.04.12
  * Time: 21:21
  */
-app = {
+var vapp = {
 	initialURL:location.href,
 	initialFire: false,
 	popped:false,
@@ -23,7 +23,7 @@ app = {
 		var self = this;
 		self.historySupport = !!(window.history && history.pushState);
 		self.initialFire = document.location.href;
-		app.url.init();
+		vapp.url.init();
 
 		/*
 		 глобальные обработчики событий
@@ -42,7 +42,7 @@ app = {
 	},
 
 	fire:function (event) {
-		app.initialFire = false;
+		vapp.initialFire = false;
 		var event = event;
 		if (typeof event == "string") {
 			event = { type:event };
@@ -295,7 +295,7 @@ app = {
 		send:function (url, options, enableHistory) {
 			var _success = function (data) {
 				if (enableHistory !== false) {
-					app.ajax.setHistory(data, '', url);
+					vapp.ajax.setHistory(data, '', url);
 				}
 			};
 
@@ -324,17 +324,17 @@ app = {
 		hide:function () {
 		},
 		ajaxPage:function (url, enableHistory) {
-			app.fire({'type':'beforePageReloaded'});
-			app.ajax.send(url, {
+			vapp.fire({'type':'beforePageReloaded'});
+			vapp.ajax.send(url, {
 				'success':function (data) {
 					if (enableHistory != false)
-						app.ajax.setHistory(data, '', url);
-					app.fire({'type':'pageReloaded', 'result':data});
+						vapp.ajax.setHistory(data, '', url);
+					vapp.fire({'type':'pageReloaded', 'result':data});
 				}
 			});
 		},
 		setHistory:function (data, title, url) {
-			if (app.historySupport && url.length > 0) {
+			if (vapp.historySupport && url.length > 0) {
 				if (title.length == 0)
 					title = $(data).find('title').first().text();
 				if (data && data["pageTitle"] != undefined && data["pageTitle"])
@@ -351,15 +351,15 @@ app = {
 				console.log("You didn't include <jquery.url.js> plugin");
 				return;
 			}
-			if (app.historySupport) {
+			if (vapp.historySupport) {
 				// Add event listener on "back" and "forward" buttons on browser if support
 				window.onpopstate = function () {
 					// Webkit old "bug" http://www.splefty.com/js/popstate.html
-					if ( app.initialFire === document.location.href ) {
-						return app.initialFire = false;
+					if ( vapp.initialFire === document.location.href ) {
+						return vapp.initialFire = false;
 					}
-					app.initialFire = false;
-					app.fire({'type':'urlChanged', 'url':$.url()});
+					vapp.initialFire = false;
+					vapp.fire({'type':'urlChanged', 'url':$.url()});
 				}
 			}
 		},
@@ -396,7 +396,7 @@ app = {
 						// remove slashes and add value to the end string
 						src = src.replace(/(.*?)\/*$/, "$1") + "/" +value + "/";
 					}
-					app.ajax.setHistory(null, '', src);
+					vapp.ajax.setHistory(null, '', src);
 					return;
 				}
 
@@ -411,11 +411,11 @@ app = {
 			var tmp = {};
 			tmp['tmp2'] = classObj;
 			options = options ? options : {};
-			app.modules[name] = new tmp['tmp2'](options);
+			vapp.modules[name] = new tmp['tmp2'](options);
 		}
 	}
 };
 
 $(document).ready(function () {
-	app.init();
+	vapp.init();
 });

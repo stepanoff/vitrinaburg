@@ -3,6 +3,13 @@ class SiteController extends Controller
 {
     public $layout='column1';
 
+    public function actionTest()
+    {
+        $this->layout = 'v2';
+        $this->actionIndex();
+//        $this->render('test', array());
+    }
+
     public function actionIndex()
     {
         $this->setPageTitle('Одежда в Екатеринбурге, модные бренды и ассортимент магазинов с ценами и фото &mdash; Витринабург, Магазины в Екатеринбурге &mdash; '.Yii::app()->params['siteName']);

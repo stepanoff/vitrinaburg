@@ -101,7 +101,7 @@ return array(
         ),
         'VExtension' => array (
             'class' => 'ext.VExtension.VExtensionComponent',
-            'staticUrl' => $params['staticUrl'],
+            'staticUrl' => $params['baseUrl'],
             'components' => array (
                 'auth' => array (
                     'name' => 'vauth',

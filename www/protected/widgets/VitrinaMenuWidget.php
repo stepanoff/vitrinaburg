@@ -2,6 +2,7 @@
 class VitrinaMenuWidget extends CWidget {
 
     public $uri = false;
+    public $template = 'menu';
 
     public function run() {
 		parent::run();
@@ -33,7 +34,7 @@ class VitrinaMenuWidget extends CWidget {
         }
         $items = $tmp;
 
-		$this->render('menu', array(
+		$this->render($this->template, array(
             'items' => $items,
 		));
     }

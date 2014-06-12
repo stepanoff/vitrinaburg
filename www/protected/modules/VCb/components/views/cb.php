@@ -2,8 +2,8 @@
 if ($isAdmin) {
     ?>
 <div class="b-cb">
-     <a class="b-cb__btn-edit" href="#"></a>
-    <?
+    <?php
+    echo CHtml::link('e', array($route.'/VCb/edit', 'id' => $cb->id), array('class' => 'b-cb__btn-edit'));
 }
 
 echo $cb->content;

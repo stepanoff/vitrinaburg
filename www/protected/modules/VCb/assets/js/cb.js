@@ -4,15 +4,20 @@
 VCb = function(opts){
 
     var o = $.extend({
-    readUrl : '/informer/read/'
+    objSelector : '',
+    editLinkClass : ''
     }, opts);
 
-    //var obj = $("#"+o.messDiv);
+    var obj = $(o.objSelector);
 
     var init = function()
     {
     }
 
+    obj.delegate('.'+o.editLinkClass, 'click', function () {
+        window.open(this.href, 'cb_window', 'width=1000,height=768');
+        return false;
+    });
    //app.addListener ('pageReloaded', obtainAjaxData);
 
 

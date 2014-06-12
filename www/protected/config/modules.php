@@ -2,15 +2,15 @@
 return array(
     'VForum' => array (
         'defaultLayout' => 'application.views.layouts.forum',
-        'staticUrl' => $params['staticUrl'],
+        'staticUrl' => $params['baseUrl'],
     ),
     
     'VAdmin' => array (
-        'staticUrl' => $params['staticUrl'],
+        'staticUrl' => $params['baseUrl'],
     ),
 
     'VCb' => array (
-        'staticUrl' => $params['staticUrl'],
+        'staticUrl' => $params['baseUrl'],
     ),
 
     'admin' => array (

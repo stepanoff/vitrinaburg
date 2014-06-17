@@ -4,6 +4,7 @@ class VitrinaFavoriteWidget extends CWidget {
     public $type = false;
     public $typeId = false;
     public $link = false;
+    public $jsCallback = false;
 
     public function run() {
     	$userId = Yii::app()->user->id;
@@ -14,6 +15,7 @@ class VitrinaFavoriteWidget extends CWidget {
 			'type' => $this->type,
 			'typeId' => $this->typeId,
 			'link' => $this->link,
+			'jsCallback' => $this->jsCallback,
 		));
     }
 

@@ -21,26 +21,43 @@ else {
 		};
 
 		$.fn.vfavorites.instances = new Object();
-		$.fn.vfavorites_refresh = function(){
+		$.fn.vfavorites_refresh = function(opts){
+            var id = $(this).attr('id')
+            if ($.fn.vfavorites.instances[id]) {
+                $.fn.vfavorites.instances[id].update(opts);
+            }
 		};
 
 		// default options
 		$.fn.vfavorites.defaults = {
+            'isFavorite' : false,
 			'isAuthorized' : false,
+            'link' : false,
 			'isFavoriteClass' : 'in',
 			'isFavoriteLabel' : 'В избранном',
 			'toFavoriteLabel' : 'В избранное',
-            'onAuthorize' : false
+            'onAuthorize' : false,
+            'onToggle' : false
 		};
 
 		var VFavorites = function(obj, o, instance_id){
 
 			var obj = $(obj);
-			var isFavorite = false;
-            var isAuthorized = o.isAuthorized ? true : false;
-			if (obj.hasClass(o.isFvoriteClass))
-				isFavorite = true;
+            var isFavorite = false;
+            var isAuthorized = false;
             var inProgress = false;
+
+            this.update = function (opts) {
+                o = $.extend(o, opts);
+                isFavorite = o.isFavorite;
+                isAuthorized = o.isAuthorized ? true : false;
+                inProgress = false;
+                if (o.link !== false) {
+                    obj.attr('href', o.link);
+                }
+                setState(isFavorite);
+            }
+
 
             var showAuthMessage = function () {
                 if (o.onAuthorize)
@@ -48,6 +65,18 @@ else {
                 else
                     alert ("Чтобы добавлять в избранное вы должны войти на сайт");
                 return false;
+            }
+
+            var setState = function (state) {
+                if (state) {
+                    isFavorite = true;
+                    obj.addClass(o.isFavoriteClass);
+                    obj.html(o.isFavoriteLabel);
+                } else {
+                    isFavorite = false;
+                    obj.removeClass(o.isFavoriteClass);
+                    obj.html(o.toFavoriteLabel);
+                }
             }
 
             var toggleFavorite = function () {
@@ -67,38 +96,33 @@ else {
                     type: 'post',
                     dataType: 'json',
                     success: function(result) {
-                        if (result.success)
-                        {
-                        	if (result.result == 'on') {
-                        		isFavorite = true;
-                        		obj.addClass(o.isFavoriteClass);
-                        		obj.html(o.isFavoriteLabel);
-                        	} else {
-                        		isFavorite = false;
-                        		obj.removeClass(o.isFavoriteClass);
-                        		obj.html(o.toFavoriteLabel);
-                        	}
+                        if (result.success) {
+                            var state = result.result == 'on' ? true : false;
+                            setState (state);
                             inProgress = false;
+                            if (o.onToggle) {
+                                o.onToggle(state);
+                            }
                         }
-                        else
-                            if (result['error'])
-                            {
+                        else {
+                            if (result['error']) {
                             	alert(result['error']);
                             }
-                            else
-                            {
+                            else {
                                 alert ("Ошибка. Попробуйте позже");
                             }
                             inProgress = false;
                         }
-                    });
-                    return false;
+                    }
+                });
+                return false;
             };
 
             obj.click(function(){
                 toggleFavorite();
                 return false;
             });
+            this.update();
 
 		};
 
@@ -111,6 +135,7 @@ var VAuthLaunch = function() {
 $(document).ready(function() {
 	$('#tofav2').vfavorites({
 		'isAuthorized' : <?php echo $userId ? 'true' : 'false'; ?>,
+        'onToggle' : <?php echo $jsCallback ? $jsCallback : 'false'; ?>,
 		'onAuthorize' : VAuthLaunch
 	});
 });

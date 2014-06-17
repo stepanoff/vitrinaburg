@@ -19,6 +19,18 @@
   <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/jquery.docwrite.js"></script>
   <script type="text/javascript" src="<?php echo Yii::app()->request->staticUrl; ?>/js/ad-gallery/jquery.ad-gallery.js"></script>
   <script type="text/javascript">
+    var favoritesAr = {
+      <?php
+          $tmp = array();
+          foreach ($collection->photos as $_photo)
+          {
+            $isFavorite = Yii::app()->favorites->isFavorite(VitrinaFavorite::TYPE_COLITEM, $_photo->id) ? 'true' : 'false';
+            $tmp[] = "'".CHtml::normalizeUrl(array('/vitrinaCollection/show/', 'collectionId'=>$collection->id,'photoId'=>$_photo->id))."':".$isFavorite;
+          }
+          echo implode(','."\n", $tmp);
+      ?>
+    };
+
   $(function() {
     var ad_pushStateSupport = !!(window.history && history.pushState);
     var baseUrl = '<?php echo CHtml::normalizeUrl(array('/vitrinaCollection/show/', 'collectionId'=>$collection->id)); ?>';
@@ -57,7 +69,10 @@
             afterImageVisible: function () {
                 var thumb = this.images[this.current_index]['thumb'];
                 var _id = $(thumb).attr("ad-id");
-                $('#tofav2').attr('href', baseUrl+_id+'/toggleFavorite/');
+                $('#tofav2').vfavorites_refresh ({
+                  'link' : baseUrl+_id+'/toggleFavorite/',
+                  'isFavorite' : favoritesAr[baseUrl+_id+'/']
+                });
                 if (saveInHistory)
                 {
                     if (ad_pushStateSupport)
@@ -135,6 +150,7 @@
                       'link' => CHtml::normalizeUrl(array('/vitrinaCollection/toggleFavorite/', 'collectionId'=>$collection->id, 'photoId'=>$photo->id)),
                       'type' => VitrinaFavorite::TYPE_COLITEM,
                       'typeId' => $photo->id,
+                      'jsCallback' => 'function(state){ favoritesAr[location.pathname] = state; }',
                   ));
               ?>
                 <h3>Где купить</h3>

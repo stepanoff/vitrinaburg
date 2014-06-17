@@ -93,6 +93,9 @@ $mainConfig = array(
             'class' => 'ExtendedRequestComponent',
             'staticUrl' => $params['staticUrl'],
         ),
+        'favorites' => array(
+            'class' => 'VitrinaFavoritesComponent',
+        ),
         'assetManager' => array(
             'class' => 'CAssetManager',
             'basePath' => dirname(__FILE__).DS.'..'.DS.'..'.DS.'assets',

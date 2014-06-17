@@ -3,7 +3,6 @@
 ?>
 	
 	<section id="content">
-		<div style="padding: 20px 40px;" id="<?php echo $this->mainPage ? 'main-page' : 'inner-page'; ?>">
 			<div id="pageDescription">
 				<?php
 				if ($this->seoText) {
@@ -20,7 +19,6 @@
 				});
 			</script>
 			<?php echo $content; ?>
-		</div>
 	</section>
 	
 <?php

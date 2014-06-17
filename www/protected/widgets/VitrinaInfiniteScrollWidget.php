@@ -4,6 +4,7 @@ class VitrinaInfiniteScrollWidget extends CWidget {
     public $navSelector = "#collsPhotosContainer .pagination";
     public $nextSelector = "#collsPhotosContainer .pagination li.next a";
     public $contentSelector = "#collsPhotosContainer ul.js-collsPhotos";
+    public $containerSelector = "#collsPhotosContainer";
     public $itemSelector = "#collsPhotosContainer ul.js-collsPhotos li";
     public $finishedMsg = 'Изображения загружены';
     public $msgText = 'Загрузка изображений...';
@@ -13,7 +14,7 @@ class VitrinaInfiniteScrollWidget extends CWidget {
 
         $script = '
 $(document).ready(function(){
-  $("#collsPhotosContainer").infinitescroll({
+  $("'.$this->containerSelector.'").infinitescroll({
     navSelector  : "'.$this->navSelector.'",
     nextSelector : "'.$this->nextSelector.'",
     contentSelector : "'.$this->contentSelector.'",

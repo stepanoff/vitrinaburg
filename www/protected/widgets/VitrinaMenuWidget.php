@@ -13,7 +13,7 @@ class VitrinaMenuWidget extends CWidget {
             array ('link' => array('/vitrinaCollection/section', 'sectionId'=>313), 'caption' => 'Для мужчин', 'regexp' => '/coll/cat313.*'),
             array ('link' => array('/vitrinaCollection/section', 'sectionId'=>314), 'caption' => 'Для детей', 'regexp' => '/coll/cat314.*'),
             array ('link' => array('/vitrinaCollection/section', 'sectionId'=>315), 'caption' => 'Обувь', 'regexp' => '/coll/cat315.*'),
-            array ('link' => array('/vitrinaAction/index'), 'caption' => 'Акции', 'regexp' => '/action*'),
+            array ('link' => array('/vitrinaArticle/index'), 'caption' => 'Статьи', 'regexp' => '/article*'),
             array ('link' => array('/vitrinaWidget/create'), 'caption' => 'Создать стиль', 'regexp' => '/mystyle*'),
         );
 

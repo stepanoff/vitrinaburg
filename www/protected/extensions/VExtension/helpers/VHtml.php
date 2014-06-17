@@ -32,7 +32,7 @@ class VHtml
 		return CHtml::image($thumb->getSiteUrl(),$alt,$htmlOptions);
     }
 
-    public static function thumbSrc ($src, $sizes = false, $scaleMethod = false)
+    public static function thumbSrc ($src, $sizes = false, $scaleMethod = false, $absoluteUrl = true)
     {
         $sizes = is_array($sizes) ? $sizes : array();
         $w = isset($sizes[0]) && $sizes[0] ? $sizes[0] : false;
@@ -48,6 +48,10 @@ class VHtml
 
         if (!$thumb)
             return '';
+
+        // TODO: не у всех есть параметр domain
+        if ($absoluteUrl)
+            return 'http://' . Yii::app()->params['domain'] . $thumb->getSiteUrl();
 
         return $thumb->getSiteUrl();
     }
@@ -141,6 +145,19 @@ class VHtml
         );
 
         return self::sum($sum, $currency, $format);
+    }
+
+    public static function formatDate ($date) {
+        if (is_string($date)) {
+            $date = strtotime($date);
+        }
+        $y = date ('Y', $date);
+        $currentYear = date('Y', time());
+        if ($y != $currentYear) {
+            return strftime('%e %B %Y', $date);
+        }
+        return strftime('%e %B', $date);
+
     }
 
     public static function plural($n, $format)

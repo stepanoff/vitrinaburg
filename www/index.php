@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Yekaterinburg');
+setlocale(LC_ALL, 'ru_RU.UTF-8');
 
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/../lib/yii/framework/yii.php';

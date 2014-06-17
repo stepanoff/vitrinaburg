@@ -109,6 +109,13 @@ class VitrinaCollectionController extends Controller
                 $i++;
             }
         }
+        else {
+            foreach ($collection->photos as $_photo)
+            {
+                $photo = $_photo;
+                break;
+            }
+        }
         /*
 		if (Yii::app()->request->isAjaxRequest)
 		{
@@ -148,6 +155,39 @@ class VitrinaCollectionController extends Controller
             'photo' => $photo,
             'index' => $index,
         ));
+    }
+
+    public function actionToggleFavorite () {
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(404);
+        }
+
+        $id = isset($_GET['collectionId']) ? (int) $_GET['collectionId'] : false;
+        $photoId = isset($_GET['photoId']) ? (int) $_GET['photoId'] : false;
+        if (!$id)
+            throw new CHttpException(404);
+
+        $collection = VitrinaShopCollection::model()->findByPk($id);
+        if (!$collection)
+            throw new CHttpException(404);
+
+        $photo = VitrinaShopCollectionPhoto::model()->findByPk($photoId);
+        if (!$photoId)
+            throw new CHttpException(404);
+
+        $res = Yii::app()->favorites->toggleFavorite(VitrinaFavorite::TYPE_COLITEM, $photoId);
+        if ($res !== null) {
+            $result = array(
+                'success' => true,
+                'result' => ($res ? 'on' : 'off'), 
+            );
+        } else {
+            $result = array(
+                'success' => false,
+            );
+        }
+        echo CJSON::encode($result);
+        die();
     }
 
 }

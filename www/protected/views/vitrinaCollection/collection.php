@@ -55,10 +55,11 @@
         'slideshow' : {'enable' : false},
         callbacks: {
             afterImageVisible: function () {
+                var thumb = this.images[this.current_index]['thumb'];
+                var _id = $(thumb).attr("ad-id");
+                $('#tofav2').attr('href', baseUrl+_id+'/toggleFavorite/');
                 if (saveInHistory)
                 {
-                    var thumb = this.images[this.current_index]['thumb'];
-                    var _id = $(thumb).attr("ad-id");
                     if (ad_pushStateSupport)
                     {
                         history.pushState(null, document.title, baseUrl+_id+'/');
@@ -129,9 +130,13 @@
             ?>
 
               <div class="ad-po-right po-right">
-                <div class="fav-link">
-                  <!-- a class="gradient1" href="#">отложить в избранное</a -->
-                </div>
+              <?php
+                  $this->widget('application.widgets.VitrinaFavoriteWidget', array(
+                      'link' => CHtml::normalizeUrl(array('/vitrinaCollection/toggleFavorite/', 'collectionId'=>$collection->id, 'photoId'=>$photo->id)),
+                      'type' => VitrinaFavorite::TYPE_COLITEM,
+                      'typeId' => $photo->id,
+                  ));
+              ?>
                 <h3>Где купить</h3>
                 <p>Магазин: <?php echo CHtml::link($collection->shopObj->name, array('/vitrinaShop/show/', 'id'=>$collection->shopObj->id), array()); ?>
                   <?php

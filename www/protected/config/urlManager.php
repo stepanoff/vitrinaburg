@@ -14,6 +14,7 @@ return array(
 
         '/coll/cat<sectionId:([0-9]+)>'=>'vitrinaCollection/section/',
         '/coll/<collectionId:([0-9]+)>/<photoId:([0-9]+)>'=>'vitrinaCollection/show',
+        '/coll/<collectionId:([0-9]+)>/<photoId:([0-9]+)>/toggleFavorite'=>'vitrinaCollection/toggleFavorite',
         '/coll/<collectionId:([0-9]+)>'=>'vitrinaCollection/show/',
         '/coll'=>'vitrinaCollection/index/',
 
